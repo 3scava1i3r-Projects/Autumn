@@ -1,0 +1,38 @@
+{
+  "name": "spring",
+  "version": "1.0.0",
+  "description": "metaverse for NFT Vision Hackathon",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gg": "browserify game.js -o builtgame.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3scava1i3r/Spring.git"
+  },
+  "author": "3scava1i3r",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/3scava1i3r/Spring/issues"
+  },
+  "homepage": "https://github.com/3scava1i3r/Spring#readme",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "game-shell-fps-camera": "^0.7.0",
+    "voxel-bedrock": "^1.0.1",
+    "voxel-bucket": "^1.0.0",
+    "voxel-carry": "^1.0.0",
+    "voxel-engine-stackgl": "^2.0.0",
+    "voxel-flatland": "^0.1.1",
+    "voxel-fluid": "^0.0.2",
+    "voxel-hello-world": "^0.6.0",
+    "voxel-inventory-crafting": "^1.0.0",
+    "voxel-inventory-creative": "^1.0.0",
+    "voxel-inventory-hotbar": "^1.0.0",
+    "voxel-land": "^0.2.3",
+    "voxel-pickaxe": "^1.0.0",
+    "voxel-stitch": "^1.0.1",
+    "voxel-webview": "^0.2.5"
+  }
+}
