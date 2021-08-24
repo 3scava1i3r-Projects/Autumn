@@ -1,10 +1,11 @@
 "use strict";
 
-var createGame = require("voxel-engine-stackgl"); // browserify game.js -o builtgame.js
+var createEngine = require("voxel-engine-stackgl");
 
+function main() {
+  console.log("voxelmetaverse starting"); // TODO: show git version (browserify-commit-sha)
 
-var init = function init() {
-  createGame({
+  createEngine({
     exposeGlobal: true,
     pluginLoaders: {
       "voxel-artpacks": require("voxel-artpacks"),
@@ -60,10 +61,7 @@ var init = function init() {
       "voxel-plugins-ui": require("voxel-plugins-ui"),
       "voxel-fullscreen": require("voxel-fullscreen"),
       "voxel-keys": require("voxel-keys"),
-      "kb-bindings-ui": require("kb-bindings-ui"),
-      "voxel-player": require("voxel-player") //"voxel-web3-login":require("./myVoxelPlugins/voxel-web3-login.js")
-      //"voxel-modal-dialog": require("voxel-modal-dialog"),
-
+      "kb-bindings-ui": require("kb-bindings-ui")
     },
     pluginOpts: {
       "voxel-engine-stackgl": {
@@ -103,8 +101,6 @@ var init = function init() {
           F5: "pov",
           O: "home",
           E: "inventory",
-          L: "login",
-          G: "dialog",
           T: "console",
           "/": "console2",
           ".": "console3",
@@ -157,8 +153,7 @@ var init = function init() {
       "voxel-pumpkin": {},
       "voxel-glass": {},
       "voxel-land": {
-        populateTrees: true,
-        seed: "dkfjvbdfjkbvkddfvdfvdvdfvdfvdbjkledvedfb"
+        populateTrees: true
       },
       "voxel-flatland": {
         block: "bedrock",
@@ -211,12 +206,9 @@ var init = function init() {
       "camera-debug": {},
       // TODO: port from game-shell-fps-camera
       "voxel-plugins-ui": {},
-      "kb-bindings-ui": {},
-      "voxel-player": {} //"voxel-web3-login":{}
-      //"voxel-modal-dialog": {}
-
+      "kb-bindings-ui": {}
     }
   });
-};
+}
 
-init();
+main();

@@ -16781,21 +16781,80 @@ const init = () => {
     createGame({
       exposeGlobal: true,
       pluginLoaders: {
-        "voxel-bedrock": require("voxel-bedrock"),
-        "voxel-flatland": require("voxel-flatland"),
-        "voxel-land": require("voxel-land"),
+        "voxel-artpacks": require("voxel-artpacks"),
+        "voxel-wireframe": require("voxel-wireframe"),
+        "voxel-chunkborder": require("voxel-chunkborder"),
+        "voxel-outline": require("voxel-outline"),
         "voxel-carry": require("voxel-carry"),
-        //"voxel-bucket": require("voxel-bucket"),
+        "voxel-bucket": require("voxel-bucket"),
         "voxel-fluid": require("voxel-fluid"),
-        //"voxel-inventory-creative": require("voxel-inventory-creative"),
-        //"voxel-inventory-hotbar": require("voxel-inventory-hotbar"),
-        //"voxel-inventory-crafting": require("voxel-inventory-crafting"),
-        "voxel-pickaxe": require("voxel-pickaxe"),
+        "voxel-skyhook": require("voxel-skyhook"),
+        "voxel-bedrock": require("voxel-bedrock"),
+        "voxel-recipes": require("voxel-recipes"),
+        "voxel-quarry": require("voxel-quarry"),
+        "voxel-measure": require("voxel-measure"),
         "voxel-webview": require("voxel-webview"),
+        "voxel-vr": require("voxel-vr"),
+        "voxel-workbench": require("voxel-workbench"),
+        "voxel-furnace": require("voxel-furnace"),
+        "voxel-chest": require("voxel-chest"),
+        "voxel-inventory-hotbar": require("voxel-inventory-hotbar"),
+        "voxel-inventory-crafting": require("voxel-inventory-crafting"),
+        "voxel-voila": require("voxel-voila"),
+        "voxel-health": require("voxel-health"),
+        "voxel-health-bar": require("voxel-health-bar"),
+        //'voxel-health-fall': require('voxel-health-fall'); // TODO: after https://github.com/deathcap/voxel-health-fall/issues/1
+        "voxel-food": require("voxel-food"),
+        "voxel-scriptblock": require("voxel-scriptblock"),
+        "voxel-sfx": require("voxel-sfx"),
+        "voxel-flight": require("voxel-flight"),
+        "voxel-gamemode": require("voxel-gamemode"),
+        "voxel-sprint": require("voxel-sprint"),
+        "voxel-decals": require("voxel-decals"),
+        "voxel-mine": require("voxel-mine"),
+        "voxel-harvest": require("voxel-harvest"),
+        "voxel-use": require("voxel-use"),
+        "voxel-reach": require("voxel-reach"),
+        "voxel-pickaxe": require("voxel-pickaxe"),
+        "voxel-hammer": require("voxel-hammer"),
+        "voxel-wool": require("voxel-wool"),
+        "voxel-pumpkin": require("voxel-pumpkin"),
+        "voxel-blockdata": require("voxel-blockdata"),
+        "voxel-glass": require("voxel-glass"),
+        "voxel-land": require("voxel-land"),
+        "voxel-flatland": require("voxel-flatland"),
+        "voxel-decorative": require("voxel-decorative"),
+        "voxel-inventory-creative": require("voxel-inventory-creative"),
+        //'voxel-clientmc': require('voxel-clientmc');  // TODO: after published
+        "voxel-console": require("voxel-console"),
+        "voxel-commands": require("voxel-commands"),
+        "voxel-drop": require("voxel-drop"),
+        "voxel-zen": require("voxel-zen"),
+        "camera-debug": require("camera-debug"),
+        "voxel-plugins-ui": require("voxel-plugins-ui"),
+        "voxel-fullscreen": require("voxel-fullscreen"),
+        "voxel-keys": require("voxel-keys"),
+        "kb-bindings-ui": require("kb-bindings-ui"),
+        "voxel-player": require("voxel-player"),
+        //"voxel-web3-login":require("./myVoxelPlugins/voxel-web3-login.js")
+        //"voxel-modal-dialog": require("voxel-modal-dialog"),
       },
       pluginOpts: {
         "voxel-engine-stackgl": {
+          appendDocument: true,
+          exposeGlobal: true, // for debugging
+
+          lightsDisabled: true,
+          arrayTypeSize: 2, // arrayType: Uint16Array
+          useAtlas: true,
           generateChunks: false,
+          chunkDistance: 2,
+          worldOrigin: [0, 0, 0],
+          controls: {
+            discreteFire: false,
+            fireRate: 100, // ms between firing
+            jumpTimer: 25,
+          },
           keybindings: {
             // voxel-engine defaults
             W: "forward",
@@ -16814,37 +16873,125 @@ const init = () => {
             "<tab>": "sprint",
 
             // our extras
+            F5: "pov",
+            O: "home",
             E: "inventory",
+            L: "login",
+            G: "dialog",
+            T: "console",
+            "/": "console2",
+            ".": "console3",
 
-            T: "console"
+            P: "packs",
+
+            F1: "zen",
           },
         },
+
+        // built-in plugins
+        "voxel-registry": {},
         "voxel-stitch": {
           artpacks: ["ProgrammerArt-ResourcePack.zip"],
         },
-        "game-shell-fps-camera": { position: [0, -100, 0] },
+        "voxel-shader": {
+          //cameraFOV: 45,
+          //cameraFOV: 70,
+          cameraFOV: 90,
+          //cameraFOV: 110,
+        },
 
+        "voxel-mesher": {},
+        "game-shell-fps-camera": {
+          position: [0, -100, 0],
+        },
+
+        "voxel-artpacks": {},
+        "voxel-wireframe": {},
+        "voxel-chunkborder": {},
+        "voxel-outline": {},
+        "voxel-recipes": {},
+        "voxel-quarry": {},
+        "voxel-measure": {},
+        "voxel-webview": {},
+        "voxel-vr": { onDemand: true }, // has to be enabled after gl-init to replace renderer
+        "voxel-carry": {},
+        "voxel-bucket": { fluids: ["water", "lava"] },
+        "voxel-fluid": {},
+        //'voxel-virus': {materialSource: 'water', material: 'waterFlow', isWater: true}, // requires this.game.materials TODO: water
+        "voxel-skyhook": {},
         "voxel-bedrock": {},
-        "voxel-flatland": { block: "bedrock", onDemand: true },
+        "voxel-blockdata": {},
+        "voxel-chest": {},
+        "voxel-workbench": {},
+        "voxel-furnace": {},
+        "voxel-pickaxe": {},
+        "voxel-hammer": {},
+        "voxel-wool": {},
+        "voxel-pumpkin": {},
+
+        "voxel-glass": {},
         "voxel-land": {
           populateTrees: true,
-          seed: "ggwpscvjshjcvgsjvcbuisdfvsvb",
+          seed: "dkfjvbdfjkbvkddfvdfvdvdfvdfvdbjkledvedfb",
         },
-        "voxel-carry": {},
-        //"voxel-bucket": { fluids: ["water", "lava"] },
-        "voxel-fluid": {},
-        //"voxel-inventory-creative": {},
-        //"voxel-inventory-hotbar": { inventorySize: 9, wheelEnable: true },
-        //"voxel-inventory-crafting": {},
-        "voxel-pickaxe": {},
-        "voxel-webview": { planeWidth: 20, planeHeight: 20 },
+        "voxel-flatland": { block: "bedrock", onDemand: true },
+        "voxel-decorative": {},
+        "voxel-inventory-creative": {},
+        //'voxel-clientmc': {url: 'ws://localhost:1234', onDemand: true}, // TODO
+
+        "voxel-console": {},
+        "voxel-commands": {},
+        "voxel-drop": {},
+        "voxel-zen": {},
+
+        //'voxel-player': {image: 'player.png', homePosition: [2,14,4], homeRotation: [0,0,0]}, // three.js TODO: stackgl avatar
+        "voxel-health": {},
+        "voxel-health-bar": {},
+        //'voxel-health-fall': {}, // requires voxel-player TODO: enable and test
+        "voxel-food": {},
+        "voxel-scriptblock": {},
+        "voxel-sfx": {},
+        "voxel-flight": { flySpeed: 0.8, onDemand: true },
+        "voxel-gamemode": {},
+        "voxel-sprint": {},
+        "voxel-inventory-hotbar": { inventorySize: 10, wheelEnable: true },
+        "voxel-inventory-crafting": {},
+        "voxel-reach": { reachDistance: 8 },
+        "voxel-decals": {},
+        // left-click hold to mine
+        "voxel-mine": {
+          instaMine: false,
+          progressTexturesPrefix: "destroy_stage_",
+          progressTexturesCount: 9,
+        },
+        // right-click to place block (etc.)
+        "voxel-use": {},
+        // handles 'break' event from voxel-mine (left-click hold breaks blocks), collects block and adds to inventory
+        "voxel-harvest": {},
+        "voxel-voila": {},
+        "voxel-fullscreen": {},
+        "voxel-keys": {},
+
+        // the GUI window (built-in toggle with 'H')
+        //'voxel-debug': {}, // heavily three.js dependent TODO: more debugging options for stackgl-based engine besides camera?
+        "camera-debug": {}, // TODO: port from game-shell-fps-camera
+        "voxel-plugins-ui": {},
+        "kb-bindings-ui": {},
+        "voxel-player": {},
+        //"voxel-web3-login":{}
+        //"voxel-modal-dialog": {}
       },
     });
 
+
+    
 }
 
 init();
-},{"voxel-bedrock":306,"voxel-carry":307,"voxel-engine-stackgl":309,"voxel-flatland":323,"voxel-fluid":324,"voxel-land":326,"voxel-pickaxe":333,"voxel-webview":341}],66:[function(require,module,exports){
+
+
+
+},{"camera-debug":102,"kb-bindings-ui":283,"voxel-artpacks":351,"voxel-bedrock":352,"voxel-blockdata":353,"voxel-bucket":354,"voxel-carry":355,"voxel-chest":356,"voxel-chunkborder":357,"voxel-commands":358,"voxel-console":359,"voxel-decals":361,"voxel-decorative":362,"voxel-drop":364,"voxel-engine-stackgl":365,"voxel-flatland":379,"voxel-flight":380,"voxel-fluid":381,"voxel-food":383,"voxel-fullscreen":384,"voxel-furnace":385,"voxel-gamemode":386,"voxel-glass":387,"voxel-hammer":388,"voxel-harvest":389,"voxel-health":391,"voxel-health-bar":390,"voxel-inventory-crafting":392,"voxel-inventory-creative":393,"voxel-inventory-hotbar":395,"voxel-keys":396,"voxel-land":398,"voxel-measure":400,"voxel-mine":404,"voxel-outline":407,"voxel-pickaxe":410,"voxel-player":411,"voxel-plugins-ui":412,"voxel-pumpkin":415,"voxel-quarry":416,"voxel-reach":419,"voxel-recipes":420,"voxel-scriptblock":423,"voxel-sfx":424,"voxel-skyhook":426,"voxel-sprint":427,"voxel-use":430,"voxel-voila":431,"voxel-vr":432,"voxel-webview":433,"voxel-wireframe":434,"voxel-wool":436,"voxel-workbench":437,"voxel-zen":438}],66:[function(require,module,exports){
 module.exports = AABB
 
 var vec3 = require('gl-matrix').vec3
@@ -16943,7 +17090,7 @@ proto.union = function(aabb) {
   return new AABB([base_x, base_y, base_z], [max_x - base_x, max_y - base_y, max_z - base_z])
 }
 
-},{"gl-matrix":158}],67:[function(require,module,exports){
+},{"gl-matrix":177}],67:[function(require,module,exports){
 var padLeft = require('pad-left')
 
 module.exports = addLineNumbers
@@ -16961,7 +17108,7 @@ function addLineNumbers (string, start, delim) {
   }).join('\n')
 }
 
-},{"pad-left":277}],68:[function(require,module,exports){
+},{"pad-left":314}],68:[function(require,module,exports){
 (function (root, factory) {
   if (typeof exports === 'object') {
       module.exports = factory();
@@ -17073,6 +17220,153 @@ function addLineNumbers (string, start, delim) {
 }));
 
 },{}],69:[function(require,module,exports){
+'use strict';
+
+module.exports = (artPacks) => new APSelector(artPacks);
+
+class APSelector {
+  constructor(artPacks, opts) {
+    this.artPacks = artPacks;
+    this.container = document.createElement('div');
+    this.draggingIndex = undefined;
+
+    if (!opts) opts = {};
+    this.logoSize = opts.logoSize !== undefined ? opts.logoSize : 64; // natively 128x128
+
+    this.enable();
+  }
+
+  enable() {
+    this.refresh();
+    this.artPacks.on('refresh', this.refresh.bind(this));
+
+    document.addEventListener('dragover', this.onDocDragOver.bind(this));
+    document.addEventListener('drop', this.onDocDrop.bind(this));
+  }
+
+  disable() {
+    // TODO
+  }
+
+  refresh() {
+    while(this.container.firstChild) {
+      this.container.removeChild(this.container.firstChild);
+    }
+
+    const reversedPacks = this.artPacks.packs.slice(0).reverse();
+    for (let iReverse in reversedPacks) {
+      const pack = reversedPacks[iReverse];
+
+      const i = this.artPacks.packs.length - 1 - iReverse;
+
+      if (!pack) continue;
+
+      const node = document.createElement('div');
+      node.setAttribute('draggable', 'true');
+      node.setAttribute('style', `
+        border: 1px solid black;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        cursor: move;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+      `);
+
+      node.addEventListener('dragstart', this.onDragStart.bind(this, node, i), false);
+      node.addEventListener('dragend', this.onDragEnd.bind(this, node, i), false);
+      node.addEventListener('dragenter', this.onDragEnter.bind(this, node, i), false);
+      node.addEventListener('dragleave', this.onDragLeave.bind(this, node, i), false);
+      node.addEventListener('dragover', this.onDragOver.bind(this, node, i), false);
+      node.addEventListener('drop', this.onDrop.bind(this, node, i), false);
+
+      const logo = new Image();
+      logo.src = pack.getPackLogo();
+      logo.width = logo.height = this.logoSize;
+      logo.style.paddingRight = '5px'; // give some space before text
+
+      node.appendChild(logo);
+      node.appendChild(document.createTextNode(pack.getDescription()));
+
+      this.container.appendChild(node);
+    }
+  }
+
+  onDragStart(node, i, ev) {
+    this.draggingIndex = i;
+    node.style.opacity = '0.4';
+    ev.dataTransfer.effectAllowed = 'move';
+    ev.dataTransfer.setData('text/plain', ''+i);
+  }
+
+  onDragEnd(node, i) {
+    this.draggingIndex = undefined;
+    node.style.opacity = '';
+  }
+
+  onDragEnter(node, i) {
+    if (i === this.draggingIndex) return;
+
+    node.style.border = '1px dashed black';
+  }
+
+  onDragLeave(node, i) {
+    if (i === this.draggingIndex) return;
+
+    node.style.border = '1px solid black';
+  }
+
+  onDragOver(node, i, ev) {
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = 'move';
+  }
+  
+  onDrop(node, i, ev) {
+    ev.stopPropagation();
+    ev.preventDefault();
+
+    if (ev.dataTransfer.files.length !== 0) {
+      this.addDroppedFiles(ev.dataTransfer.files, i);
+    } else {
+      this.draggingIndex = +ev.dataTransfer.getData('text/plain');  // note: should be the same
+      this.artPacks.swap(this.draggingIndex, i);
+    }
+  }
+
+  addDroppedFiles(files, at) {
+    //for (let file of files) { // TypeError:  is not a function? (yes its actually blank. Chrome 48)
+    for (let i = 0; i < files.length; ++i) {
+      const file = files[i];
+      let reader = new FileReader();
+      reader.addEventListener('load', (readEvent) => {
+        if (readEvent.total !== readEvent.loaded) return; // TODO: progress bar
+        // always add at beginning
+        // TODO: honor 'at', add at specific index
+        this.artPacks.addPack(readEvent.currentTarget.result, file.name);
+      });
+
+      reader.readAsArrayBuffer(file);
+    }
+  }
+
+  onDocDragOver(ev) {
+    ev.preventDefault();   // required to allow dropping
+    ev.stopPropagation();
+
+    ev.dataTransfer.dropEffect = 'move';
+  }
+
+  onDocDrop(ev) {
+    if (ev.dataTransfer.files.length !== 0) {
+      // dropped file somewhere in document - add as first pack
+      ev.stopPropagation();
+      ev.preventDefault();
+      this.addDroppedFiles(ev.dataTransfer.files);
+    }
+  }
+}
+
+},{}],70:[function(require,module,exports){
 'use strict';
 
 const ZIP = require('zip');
@@ -17553,7 +17847,21 @@ module.exports = (opts) => {
   return new ArtPacks(opts);
 }
 
-},{"binary-xhr":75,"events":15,"fs":1,"get-pixels":122,"graycolorize":237,"mcmeta":254,"path":41,"save-pixels":293,"zip":350}],70:[function(require,module,exports){
+},{"binary-xhr":84,"events":15,"fs":1,"get-pixels":141,"graycolorize":266,"mcmeta":288,"path":41,"save-pixels":331,"zip":454}],71:[function(require,module,exports){
+'use strict';
+
+module.exports = function(o) {
+  var length = o.length;
+  var a = Array(length);
+
+  for (var i = 0; i < length; i += 1) {
+    a[i] = o[i];
+  }
+
+  return a;
+}
+
+},{}],72:[function(require,module,exports){
 (function (global){(function (){
 !function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.atlaspack=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /*
@@ -17815,12 +18123,212 @@ Atlas.prototype._debug = function() {
 });;
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 module.exports = function _atob(str) {
   return atob(str)
 }
 
-},{}],72:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
+module.exports = require('./lib/player');
+
+},{"./lib/player":76}],75:[function(require,module,exports){
+var table = {
+  aif  : "audio/x-aiff",
+  aiff : "audio/x-aiff",
+  wav  : "audio/x-wav",
+  mp3  : 'audio/mpeg',
+  m3u  : "audio/x-mpegurl",
+  mid  : "audio/midi",
+  midi : "audio/midi",
+  m4a  : 'audio/m4a',
+  ogg  : 'audio/ogg'
+};
+
+module.exports = mimeOf;
+
+function mimeOf(url){
+  return table[ url.split('.').slice(-1)[0] ];
+}
+
+},{}],76:[function(require,module,exports){
+var newChain  = require('../new-chain'),
+    src = require('./src'),
+    render = require('./render');
+
+module.exports = play;
+
+function play(urls, dom){
+  var el, chain, url;
+
+  dom || ( dom = document.documentElement );
+  el = render();
+  dom.appendChild(el);
+
+  chain = newChain({
+    autoplay: bool('autoplay'),
+    controls: bool('controls'),
+    load: method('load'),
+    loop: bool('loop'),
+    muted: bool('muted'),
+    on: on,
+    pause: method('pause'),
+    play: method('play'),
+    preload: bool('preload')
+  });
+
+  chain.currentTime = attr('currentTime');
+  chain.element = element;
+  chain.src = src.attr(el);
+  chain.volume = attr('volume');
+  chain.remove = remove;
+
+  chain.src(urls);
+
+  return chain;
+
+  function attr(name){
+    return function(value){
+      if ( arguments.length ) {
+        el[name] = value;
+        return chain;
+      }
+
+      return el[name];
+    };
+  }
+
+  function bool(name){
+    return function(value){
+      if (value === false) {
+        return el[name] = false;
+      }
+
+      return el[name] = true;
+    };
+  }
+
+  function element(){
+    return el;
+  }
+
+  function on(event, callback){
+    el.addEventListener(event, callback, false);
+  }
+
+  function method(name){
+    return function(){
+      return el[name].apply(el, arguments);
+    };
+  }
+
+  function remove(){
+    return el.parentNode.removeChild(el);
+  }
+
+}
+
+},{"../new-chain":80,"./render":77,"./src":78}],77:[function(require,module,exports){
+var domify = require('domify'),
+    templates = require("./templates");
+
+module.exports = render;
+
+function render(src){
+  return domify(templates['audio.html']);
+}
+
+},{"./templates":79,"domify":122}],78:[function(require,module,exports){
+var mimeOf = require("./mime");
+
+module.exports = {
+  attr: attr,
+  pick: pick
+};
+
+function attr(el){
+  var value;
+
+  return function(urls){
+    if (arguments.length) {
+      value = urls;
+      el.setAttribute('src', pick(el, value));
+    }
+
+    return value;
+  };
+}
+
+function pick(el, urls){
+  if(!urls) return;
+
+  if(typeof urls == 'string'){
+    return urls;
+  }
+
+  return urls.filter(function(url){
+    return !!el.canPlayType(mimeOf(url));
+  })[0];
+}
+
+},{"./mime":75}],79:[function(require,module,exports){
+exports["audio.html"] = "<audio preload=\"auto\" /></audio>"
+},{}],80:[function(require,module,exports){
+module.exports = newChain;
+module.exports.from = from;
+
+function from(chain){
+
+  return function(){
+    var m, i;
+
+    m = methods.apply(undefined, arguments);
+    i   = m.length;
+
+    while ( i -- ) {
+      chain[ m[i].name ] = m[i].fn;
+    }
+
+    m.forEach(function(method){
+      chain[ method.name ] = function(){
+        method.fn.apply(this, arguments);
+        return chain;
+      };
+    });
+
+    return chain;
+  };
+
+}
+
+function methods(){
+  var all, el, i, len, result, key;
+
+  all    = Array.prototype.slice.call(arguments);
+  result = [];
+  i      = all.length;
+
+  while ( i -- ) {
+    el = all[i];
+
+    if ( typeof el == 'function' ) {
+      result.push({ name: el.name, fn: el });
+      continue;
+    }
+
+    if ( typeof el != 'object' ) continue;
+
+    for ( key in el ) {
+      result.push({ name: key, fn: el[key] });
+    }
+  }
+
+  return result;
+}
+
+function newChain(){
+  return from({}).apply(undefined, arguments);
+}
+},{}],81:[function(require,module,exports){
 var glm = require('gl-matrix')
 var vec3 = glm.vec3
 var mat4 = glm.mat4
@@ -17874,7 +18382,7 @@ noclip.prototype.rotateZ   = function(angle) {
   return this
 }
 
-},{"gl-matrix":73}],73:[function(require,module,exports){
+},{"gl-matrix":82}],82:[function(require,module,exports){
 /*!
 @fileoverview gl-matrix - High performance matrix and vector operations
 @author Brandon Jones
@@ -17903,7 +18411,7 @@ THE SOFTWARE.
 
 */
 !function(t,n){if("object"==typeof exports&&"object"==typeof module)module.exports=n();else if("function"==typeof define&&define.amd)define([],n);else{var r=n();for(var a in r)("object"==typeof exports?exports:t)[a]=r[a]}}("undefined"!=typeof self?self:this,function(){return function(t){var n={};function r(a){if(n[a])return n[a].exports;var e=n[a]={i:a,l:!1,exports:{}};return t[a].call(e.exports,e,e.exports,r),e.l=!0,e.exports}return r.m=t,r.c=n,r.d=function(t,n,a){r.o(t,n)||Object.defineProperty(t,n,{enumerable:!0,get:a})},r.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},r.t=function(t,n){if(1&n&&(t=r(t)),8&n)return t;if(4&n&&"object"==typeof t&&t&&t.__esModule)return t;var a=Object.create(null);if(r.r(a),Object.defineProperty(a,"default",{enumerable:!0,value:t}),2&n&&"string"!=typeof t)for(var e in t)r.d(a,e,function(n){return t[n]}.bind(null,e));return a},r.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return r.d(n,"a",n),n},r.o=function(t,n){return Object.prototype.hasOwnProperty.call(t,n)},r.p="",r(r.s=10)}([function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.setMatrixArrayType=function(t){n.ARRAY_TYPE=t},n.toRadian=function(t){return t*e},n.equals=function(t,n){return Math.abs(t-n)<=a*Math.max(1,Math.abs(t),Math.abs(n))};var a=n.EPSILON=1e-6;n.ARRAY_TYPE="undefined"!=typeof Float32Array?Float32Array:Array,n.RANDOM=Math.random;var e=Math.PI/180},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.forEach=n.sqrLen=n.len=n.sqrDist=n.dist=n.div=n.mul=n.sub=void 0,n.create=e,n.clone=function(t){var n=new a.ARRAY_TYPE(4);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n[3]=t[3],n},n.fromValues=function(t,n,r,e){var u=new a.ARRAY_TYPE(4);return u[0]=t,u[1]=n,u[2]=r,u[3]=e,u},n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t},n.set=function(t,n,r,a,e){return t[0]=n,t[1]=r,t[2]=a,t[3]=e,t},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t[3]=n[3]+r[3],t},n.subtract=u,n.multiply=o,n.divide=i,n.ceil=function(t,n){return t[0]=Math.ceil(n[0]),t[1]=Math.ceil(n[1]),t[2]=Math.ceil(n[2]),t[3]=Math.ceil(n[3]),t},n.floor=function(t,n){return t[0]=Math.floor(n[0]),t[1]=Math.floor(n[1]),t[2]=Math.floor(n[2]),t[3]=Math.floor(n[3]),t},n.min=function(t,n,r){return t[0]=Math.min(n[0],r[0]),t[1]=Math.min(n[1],r[1]),t[2]=Math.min(n[2],r[2]),t[3]=Math.min(n[3],r[3]),t},n.max=function(t,n,r){return t[0]=Math.max(n[0],r[0]),t[1]=Math.max(n[1],r[1]),t[2]=Math.max(n[2],r[2]),t[3]=Math.max(n[3],r[3]),t},n.round=function(t,n){return t[0]=Math.round(n[0]),t[1]=Math.round(n[1]),t[2]=Math.round(n[2]),t[3]=Math.round(n[3]),t},n.scale=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t[3]=n[3]*r,t},n.scaleAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t[2]=n[2]+r[2]*a,t[3]=n[3]+r[3]*a,t},n.distance=s,n.squaredDistance=c,n.length=f,n.squaredLength=M,n.negate=function(t,n){return t[0]=-n[0],t[1]=-n[1],t[2]=-n[2],t[3]=-n[3],t},n.inverse=function(t,n){return t[0]=1/n[0],t[1]=1/n[1],t[2]=1/n[2],t[3]=1/n[3],t},n.normalize=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=r*r+a*a+e*e+u*u;o>0&&(o=1/Math.sqrt(o),t[0]=r*o,t[1]=a*o,t[2]=e*o,t[3]=u*o);return t},n.dot=function(t,n){return t[0]*n[0]+t[1]*n[1]+t[2]*n[2]+t[3]*n[3]},n.lerp=function(t,n,r,a){var e=n[0],u=n[1],o=n[2],i=n[3];return t[0]=e+a*(r[0]-e),t[1]=u+a*(r[1]-u),t[2]=o+a*(r[2]-o),t[3]=i+a*(r[3]-i),t},n.random=function(t,n){var r,e,u,o,i,s;n=n||1;do{r=2*a.RANDOM()-1,e=2*a.RANDOM()-1,i=r*r+e*e}while(i>=1);do{u=2*a.RANDOM()-1,o=2*a.RANDOM()-1,s=u*u+o*o}while(s>=1);var c=Math.sqrt((1-i)/s);return t[0]=n*r,t[1]=n*e,t[2]=n*u*c,t[3]=n*o*c,t},n.transformMat4=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3];return t[0]=r[0]*a+r[4]*e+r[8]*u+r[12]*o,t[1]=r[1]*a+r[5]*e+r[9]*u+r[13]*o,t[2]=r[2]*a+r[6]*e+r[10]*u+r[14]*o,t[3]=r[3]*a+r[7]*e+r[11]*u+r[15]*o,t},n.transformQuat=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=r[0],i=r[1],s=r[2],c=r[3],f=c*a+i*u-s*e,M=c*e+s*a-o*u,h=c*u+o*e-i*a,l=-o*a-i*e-s*u;return t[0]=f*c+l*-o+M*-s-h*-i,t[1]=M*c+l*-i+h*-o-f*-s,t[2]=h*c+l*-s+f*-i-M*-o,t[3]=n[3],t},n.str=function(t){return"vec4("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+")"},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=t[3],i=n[0],s=n[1],c=n[2],f=n[3];return Math.abs(r-i)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(i))&&Math.abs(e-s)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(s))&&Math.abs(u-c)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(c))&&Math.abs(o-f)<=a.EPSILON*Math.max(1,Math.abs(o),Math.abs(f))};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(){var t=new a.ARRAY_TYPE(4);return a.ARRAY_TYPE!=Float32Array&&(t[0]=0,t[1]=0,t[2]=0,t[3]=0),t}function u(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t[2]=n[2]-r[2],t[3]=n[3]-r[3],t}function o(t,n,r){return t[0]=n[0]*r[0],t[1]=n[1]*r[1],t[2]=n[2]*r[2],t[3]=n[3]*r[3],t}function i(t,n,r){return t[0]=n[0]/r[0],t[1]=n[1]/r[1],t[2]=n[2]/r[2],t[3]=n[3]/r[3],t}function s(t,n){var r=n[0]-t[0],a=n[1]-t[1],e=n[2]-t[2],u=n[3]-t[3];return Math.sqrt(r*r+a*a+e*e+u*u)}function c(t,n){var r=n[0]-t[0],a=n[1]-t[1],e=n[2]-t[2],u=n[3]-t[3];return r*r+a*a+e*e+u*u}function f(t){var n=t[0],r=t[1],a=t[2],e=t[3];return Math.sqrt(n*n+r*r+a*a+e*e)}function M(t){var n=t[0],r=t[1],a=t[2],e=t[3];return n*n+r*r+a*a+e*e}n.sub=u,n.mul=o,n.div=i,n.dist=s,n.sqrDist=c,n.len=f,n.sqrLen=M,n.forEach=function(){var t=e();return function(n,r,a,e,u,o){var i=void 0,s=void 0;for(r||(r=4),a||(a=0),s=e?Math.min(e*r+a,n.length):n.length,i=a;i<s;i+=r)t[0]=n[i],t[1]=n[i+1],t[2]=n[i+2],t[3]=n[i+3],u(t,t,o),n[i]=t[0],n[i+1]=t[1],n[i+2]=t[2],n[i+3]=t[3];return n}}()},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.forEach=n.sqrLen=n.len=n.sqrDist=n.dist=n.div=n.mul=n.sub=void 0,n.create=e,n.clone=function(t){var n=new a.ARRAY_TYPE(3);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n},n.length=u,n.fromValues=o,n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t},n.set=function(t,n,r,a){return t[0]=n,t[1]=r,t[2]=a,t},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t},n.subtract=i,n.multiply=s,n.divide=c,n.ceil=function(t,n){return t[0]=Math.ceil(n[0]),t[1]=Math.ceil(n[1]),t[2]=Math.ceil(n[2]),t},n.floor=function(t,n){return t[0]=Math.floor(n[0]),t[1]=Math.floor(n[1]),t[2]=Math.floor(n[2]),t},n.min=function(t,n,r){return t[0]=Math.min(n[0],r[0]),t[1]=Math.min(n[1],r[1]),t[2]=Math.min(n[2],r[2]),t},n.max=function(t,n,r){return t[0]=Math.max(n[0],r[0]),t[1]=Math.max(n[1],r[1]),t[2]=Math.max(n[2],r[2]),t},n.round=function(t,n){return t[0]=Math.round(n[0]),t[1]=Math.round(n[1]),t[2]=Math.round(n[2]),t},n.scale=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t},n.scaleAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t[2]=n[2]+r[2]*a,t},n.distance=f,n.squaredDistance=M,n.squaredLength=h,n.negate=function(t,n){return t[0]=-n[0],t[1]=-n[1],t[2]=-n[2],t},n.inverse=function(t,n){return t[0]=1/n[0],t[1]=1/n[1],t[2]=1/n[2],t},n.normalize=l,n.dot=v,n.cross=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=r[0],i=r[1],s=r[2];return t[0]=e*s-u*i,t[1]=u*o-a*s,t[2]=a*i-e*o,t},n.lerp=function(t,n,r,a){var e=n[0],u=n[1],o=n[2];return t[0]=e+a*(r[0]-e),t[1]=u+a*(r[1]-u),t[2]=o+a*(r[2]-o),t},n.hermite=function(t,n,r,a,e,u){var o=u*u,i=o*(2*u-3)+1,s=o*(u-2)+u,c=o*(u-1),f=o*(3-2*u);return t[0]=n[0]*i+r[0]*s+a[0]*c+e[0]*f,t[1]=n[1]*i+r[1]*s+a[1]*c+e[1]*f,t[2]=n[2]*i+r[2]*s+a[2]*c+e[2]*f,t},n.bezier=function(t,n,r,a,e,u){var o=1-u,i=o*o,s=u*u,c=i*o,f=3*u*i,M=3*s*o,h=s*u;return t[0]=n[0]*c+r[0]*f+a[0]*M+e[0]*h,t[1]=n[1]*c+r[1]*f+a[1]*M+e[1]*h,t[2]=n[2]*c+r[2]*f+a[2]*M+e[2]*h,t},n.random=function(t,n){n=n||1;var r=2*a.RANDOM()*Math.PI,e=2*a.RANDOM()-1,u=Math.sqrt(1-e*e)*n;return t[0]=Math.cos(r)*u,t[1]=Math.sin(r)*u,t[2]=e*n,t},n.transformMat4=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=r[3]*a+r[7]*e+r[11]*u+r[15];return o=o||1,t[0]=(r[0]*a+r[4]*e+r[8]*u+r[12])/o,t[1]=(r[1]*a+r[5]*e+r[9]*u+r[13])/o,t[2]=(r[2]*a+r[6]*e+r[10]*u+r[14])/o,t},n.transformMat3=function(t,n,r){var a=n[0],e=n[1],u=n[2];return t[0]=a*r[0]+e*r[3]+u*r[6],t[1]=a*r[1]+e*r[4]+u*r[7],t[2]=a*r[2]+e*r[5]+u*r[8],t},n.transformQuat=function(t,n,r){var a=r[0],e=r[1],u=r[2],o=r[3],i=n[0],s=n[1],c=n[2],f=e*c-u*s,M=u*i-a*c,h=a*s-e*i,l=e*h-u*M,v=u*f-a*h,d=a*M-e*f,b=2*o;return f*=b,M*=b,h*=b,l*=2,v*=2,d*=2,t[0]=i+f+l,t[1]=s+M+v,t[2]=c+h+d,t},n.rotateX=function(t,n,r,a){var e=[],u=[];return e[0]=n[0]-r[0],e[1]=n[1]-r[1],e[2]=n[2]-r[2],u[0]=e[0],u[1]=e[1]*Math.cos(a)-e[2]*Math.sin(a),u[2]=e[1]*Math.sin(a)+e[2]*Math.cos(a),t[0]=u[0]+r[0],t[1]=u[1]+r[1],t[2]=u[2]+r[2],t},n.rotateY=function(t,n,r,a){var e=[],u=[];return e[0]=n[0]-r[0],e[1]=n[1]-r[1],e[2]=n[2]-r[2],u[0]=e[2]*Math.sin(a)+e[0]*Math.cos(a),u[1]=e[1],u[2]=e[2]*Math.cos(a)-e[0]*Math.sin(a),t[0]=u[0]+r[0],t[1]=u[1]+r[1],t[2]=u[2]+r[2],t},n.rotateZ=function(t,n,r,a){var e=[],u=[];return e[0]=n[0]-r[0],e[1]=n[1]-r[1],e[2]=n[2]-r[2],u[0]=e[0]*Math.cos(a)-e[1]*Math.sin(a),u[1]=e[0]*Math.sin(a)+e[1]*Math.cos(a),u[2]=e[2],t[0]=u[0]+r[0],t[1]=u[1]+r[1],t[2]=u[2]+r[2],t},n.angle=function(t,n){var r=o(t[0],t[1],t[2]),a=o(n[0],n[1],n[2]);l(r,r),l(a,a);var e=v(r,a);return e>1?0:e<-1?Math.PI:Math.acos(e)},n.str=function(t){return"vec3("+t[0]+", "+t[1]+", "+t[2]+")"},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=n[0],i=n[1],s=n[2];return Math.abs(r-o)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(o))&&Math.abs(e-i)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(i))&&Math.abs(u-s)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(s))};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(){var t=new a.ARRAY_TYPE(3);return a.ARRAY_TYPE!=Float32Array&&(t[0]=0,t[1]=0,t[2]=0),t}function u(t){var n=t[0],r=t[1],a=t[2];return Math.sqrt(n*n+r*r+a*a)}function o(t,n,r){var e=new a.ARRAY_TYPE(3);return e[0]=t,e[1]=n,e[2]=r,e}function i(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t[2]=n[2]-r[2],t}function s(t,n,r){return t[0]=n[0]*r[0],t[1]=n[1]*r[1],t[2]=n[2]*r[2],t}function c(t,n,r){return t[0]=n[0]/r[0],t[1]=n[1]/r[1],t[2]=n[2]/r[2],t}function f(t,n){var r=n[0]-t[0],a=n[1]-t[1],e=n[2]-t[2];return Math.sqrt(r*r+a*a+e*e)}function M(t,n){var r=n[0]-t[0],a=n[1]-t[1],e=n[2]-t[2];return r*r+a*a+e*e}function h(t){var n=t[0],r=t[1],a=t[2];return n*n+r*r+a*a}function l(t,n){var r=n[0],a=n[1],e=n[2],u=r*r+a*a+e*e;return u>0&&(u=1/Math.sqrt(u),t[0]=n[0]*u,t[1]=n[1]*u,t[2]=n[2]*u),t}function v(t,n){return t[0]*n[0]+t[1]*n[1]+t[2]*n[2]}n.sub=i,n.mul=s,n.div=c,n.dist=f,n.sqrDist=M,n.len=u,n.sqrLen=h,n.forEach=function(){var t=e();return function(n,r,a,e,u,o){var i=void 0,s=void 0;for(r||(r=3),a||(a=0),s=e?Math.min(e*r+a,n.length):n.length,i=a;i<s;i+=r)t[0]=n[i],t[1]=n[i+1],t[2]=n[i+2],u(t,t,o),n[i]=t[0],n[i+1]=t[1],n[i+2]=t[2];return n}}()},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.setAxes=n.sqlerp=n.rotationTo=n.equals=n.exactEquals=n.normalize=n.sqrLen=n.squaredLength=n.len=n.length=n.lerp=n.dot=n.scale=n.mul=n.add=n.set=n.copy=n.fromValues=n.clone=void 0,n.create=s,n.identity=function(t){return t[0]=0,t[1]=0,t[2]=0,t[3]=1,t},n.setAxisAngle=c,n.getAxisAngle=function(t,n){var r=2*Math.acos(n[3]),e=Math.sin(r/2);e>a.EPSILON?(t[0]=n[0]/e,t[1]=n[1]/e,t[2]=n[2]/e):(t[0]=1,t[1]=0,t[2]=0);return r},n.multiply=f,n.rotateX=function(t,n,r){r*=.5;var a=n[0],e=n[1],u=n[2],o=n[3],i=Math.sin(r),s=Math.cos(r);return t[0]=a*s+o*i,t[1]=e*s+u*i,t[2]=u*s-e*i,t[3]=o*s-a*i,t},n.rotateY=function(t,n,r){r*=.5;var a=n[0],e=n[1],u=n[2],o=n[3],i=Math.sin(r),s=Math.cos(r);return t[0]=a*s-u*i,t[1]=e*s+o*i,t[2]=u*s+a*i,t[3]=o*s-e*i,t},n.rotateZ=function(t,n,r){r*=.5;var a=n[0],e=n[1],u=n[2],o=n[3],i=Math.sin(r),s=Math.cos(r);return t[0]=a*s+e*i,t[1]=e*s-a*i,t[2]=u*s+o*i,t[3]=o*s-u*i,t},n.calculateW=function(t,n){var r=n[0],a=n[1],e=n[2];return t[0]=r,t[1]=a,t[2]=e,t[3]=Math.sqrt(Math.abs(1-r*r-a*a-e*e)),t},n.slerp=M,n.random=function(t){var n=a.RANDOM(),r=a.RANDOM(),e=a.RANDOM(),u=Math.sqrt(1-n),o=Math.sqrt(n);return t[0]=u*Math.sin(2*Math.PI*r),t[1]=u*Math.cos(2*Math.PI*r),t[2]=o*Math.sin(2*Math.PI*e),t[3]=o*Math.cos(2*Math.PI*e),t},n.invert=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=r*r+a*a+e*e+u*u,i=o?1/o:0;return t[0]=-r*i,t[1]=-a*i,t[2]=-e*i,t[3]=u*i,t},n.conjugate=function(t,n){return t[0]=-n[0],t[1]=-n[1],t[2]=-n[2],t[3]=n[3],t},n.fromMat3=h,n.fromEuler=function(t,n,r,a){var e=.5*Math.PI/180;n*=e,r*=e,a*=e;var u=Math.sin(n),o=Math.cos(n),i=Math.sin(r),s=Math.cos(r),c=Math.sin(a),f=Math.cos(a);return t[0]=u*s*f-o*i*c,t[1]=o*i*f+u*s*c,t[2]=o*s*c-u*i*f,t[3]=o*s*f+u*i*c,t},n.str=function(t){return"quat("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+")"};var a=i(r(0)),e=i(r(5)),u=i(r(2)),o=i(r(1));function i(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}function s(){var t=new a.ARRAY_TYPE(4);return a.ARRAY_TYPE!=Float32Array&&(t[0]=0,t[1]=0,t[2]=0),t[3]=1,t}function c(t,n,r){r*=.5;var a=Math.sin(r);return t[0]=a*n[0],t[1]=a*n[1],t[2]=a*n[2],t[3]=Math.cos(r),t}function f(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=r[0],s=r[1],c=r[2],f=r[3];return t[0]=a*f+o*i+e*c-u*s,t[1]=e*f+o*s+u*i-a*c,t[2]=u*f+o*c+a*s-e*i,t[3]=o*f-a*i-e*s-u*c,t}function M(t,n,r,e){var u=n[0],o=n[1],i=n[2],s=n[3],c=r[0],f=r[1],M=r[2],h=r[3],l=void 0,v=void 0,d=void 0,b=void 0,m=void 0;return(v=u*c+o*f+i*M+s*h)<0&&(v=-v,c=-c,f=-f,M=-M,h=-h),1-v>a.EPSILON?(l=Math.acos(v),d=Math.sin(l),b=Math.sin((1-e)*l)/d,m=Math.sin(e*l)/d):(b=1-e,m=e),t[0]=b*u+m*c,t[1]=b*o+m*f,t[2]=b*i+m*M,t[3]=b*s+m*h,t}function h(t,n){var r=n[0]+n[4]+n[8],a=void 0;if(r>0)a=Math.sqrt(r+1),t[3]=.5*a,a=.5/a,t[0]=(n[5]-n[7])*a,t[1]=(n[6]-n[2])*a,t[2]=(n[1]-n[3])*a;else{var e=0;n[4]>n[0]&&(e=1),n[8]>n[3*e+e]&&(e=2);var u=(e+1)%3,o=(e+2)%3;a=Math.sqrt(n[3*e+e]-n[3*u+u]-n[3*o+o]+1),t[e]=.5*a,a=.5/a,t[3]=(n[3*u+o]-n[3*o+u])*a,t[u]=(n[3*u+e]+n[3*e+u])*a,t[o]=(n[3*o+e]+n[3*e+o])*a}return t}n.clone=o.clone,n.fromValues=o.fromValues,n.copy=o.copy,n.set=o.set,n.add=o.add,n.mul=f,n.scale=o.scale,n.dot=o.dot,n.lerp=o.lerp;var l=n.length=o.length,v=(n.len=l,n.squaredLength=o.squaredLength),d=(n.sqrLen=v,n.normalize=o.normalize);n.exactEquals=o.exactEquals,n.equals=o.equals,n.rotationTo=function(){var t=u.create(),n=u.fromValues(1,0,0),r=u.fromValues(0,1,0);return function(a,e,o){var i=u.dot(e,o);return i<-.999999?(u.cross(t,n,e),u.len(t)<1e-6&&u.cross(t,r,e),u.normalize(t,t),c(a,t,Math.PI),a):i>.999999?(a[0]=0,a[1]=0,a[2]=0,a[3]=1,a):(u.cross(t,e,o),a[0]=t[0],a[1]=t[1],a[2]=t[2],a[3]=1+i,d(a,a))}}(),n.sqlerp=function(){var t=s(),n=s();return function(r,a,e,u,o,i){return M(t,a,o,i),M(n,e,u,i),M(r,t,n,2*i*(1-i)),r}}(),n.setAxes=function(){var t=e.create();return function(n,r,a,e){return t[0]=a[0],t[3]=a[1],t[6]=a[2],t[1]=e[0],t[4]=e[1],t[7]=e[2],t[2]=-r[0],t[5]=-r[1],t[8]=-r[2],d(n,h(n,t))}}()},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.sub=n.mul=void 0,n.create=function(){var t=new a.ARRAY_TYPE(16);a.ARRAY_TYPE!=Float32Array&&(t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[11]=0,t[12]=0,t[13]=0,t[14]=0);return t[0]=1,t[5]=1,t[10]=1,t[15]=1,t},n.clone=function(t){var n=new a.ARRAY_TYPE(16);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n[3]=t[3],n[4]=t[4],n[5]=t[5],n[6]=t[6],n[7]=t[7],n[8]=t[8],n[9]=t[9],n[10]=t[10],n[11]=t[11],n[12]=t[12],n[13]=t[13],n[14]=t[14],n[15]=t[15],n},n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t[4]=n[4],t[5]=n[5],t[6]=n[6],t[7]=n[7],t[8]=n[8],t[9]=n[9],t[10]=n[10],t[11]=n[11],t[12]=n[12],t[13]=n[13],t[14]=n[14],t[15]=n[15],t},n.fromValues=function(t,n,r,e,u,o,i,s,c,f,M,h,l,v,d,b){var m=new a.ARRAY_TYPE(16);return m[0]=t,m[1]=n,m[2]=r,m[3]=e,m[4]=u,m[5]=o,m[6]=i,m[7]=s,m[8]=c,m[9]=f,m[10]=M,m[11]=h,m[12]=l,m[13]=v,m[14]=d,m[15]=b,m},n.set=function(t,n,r,a,e,u,o,i,s,c,f,M,h,l,v,d,b){return t[0]=n,t[1]=r,t[2]=a,t[3]=e,t[4]=u,t[5]=o,t[6]=i,t[7]=s,t[8]=c,t[9]=f,t[10]=M,t[11]=h,t[12]=l,t[13]=v,t[14]=d,t[15]=b,t},n.identity=e,n.transpose=function(t,n){if(t===n){var r=n[1],a=n[2],e=n[3],u=n[6],o=n[7],i=n[11];t[1]=n[4],t[2]=n[8],t[3]=n[12],t[4]=r,t[6]=n[9],t[7]=n[13],t[8]=a,t[9]=u,t[11]=n[14],t[12]=e,t[13]=o,t[14]=i}else t[0]=n[0],t[1]=n[4],t[2]=n[8],t[3]=n[12],t[4]=n[1],t[5]=n[5],t[6]=n[9],t[7]=n[13],t[8]=n[2],t[9]=n[6],t[10]=n[10],t[11]=n[14],t[12]=n[3],t[13]=n[7],t[14]=n[11],t[15]=n[15];return t},n.invert=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=n[4],i=n[5],s=n[6],c=n[7],f=n[8],M=n[9],h=n[10],l=n[11],v=n[12],d=n[13],b=n[14],m=n[15],p=r*i-a*o,P=r*s-e*o,A=r*c-u*o,E=a*s-e*i,O=a*c-u*i,R=e*c-u*s,y=f*d-M*v,q=f*b-h*v,x=f*m-l*v,_=M*b-h*d,Y=M*m-l*d,L=h*m-l*b,S=p*L-P*Y+A*_+E*x-O*q+R*y;if(!S)return null;return S=1/S,t[0]=(i*L-s*Y+c*_)*S,t[1]=(e*Y-a*L-u*_)*S,t[2]=(d*R-b*O+m*E)*S,t[3]=(h*O-M*R-l*E)*S,t[4]=(s*x-o*L-c*q)*S,t[5]=(r*L-e*x+u*q)*S,t[6]=(b*A-v*R-m*P)*S,t[7]=(f*R-h*A+l*P)*S,t[8]=(o*Y-i*x+c*y)*S,t[9]=(a*x-r*Y-u*y)*S,t[10]=(v*O-d*A+m*p)*S,t[11]=(M*A-f*O-l*p)*S,t[12]=(i*q-o*_-s*y)*S,t[13]=(r*_-a*q+e*y)*S,t[14]=(d*P-v*E-b*p)*S,t[15]=(f*E-M*P+h*p)*S,t},n.adjoint=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=n[4],i=n[5],s=n[6],c=n[7],f=n[8],M=n[9],h=n[10],l=n[11],v=n[12],d=n[13],b=n[14],m=n[15];return t[0]=i*(h*m-l*b)-M*(s*m-c*b)+d*(s*l-c*h),t[1]=-(a*(h*m-l*b)-M*(e*m-u*b)+d*(e*l-u*h)),t[2]=a*(s*m-c*b)-i*(e*m-u*b)+d*(e*c-u*s),t[3]=-(a*(s*l-c*h)-i*(e*l-u*h)+M*(e*c-u*s)),t[4]=-(o*(h*m-l*b)-f*(s*m-c*b)+v*(s*l-c*h)),t[5]=r*(h*m-l*b)-f*(e*m-u*b)+v*(e*l-u*h),t[6]=-(r*(s*m-c*b)-o*(e*m-u*b)+v*(e*c-u*s)),t[7]=r*(s*l-c*h)-o*(e*l-u*h)+f*(e*c-u*s),t[8]=o*(M*m-l*d)-f*(i*m-c*d)+v*(i*l-c*M),t[9]=-(r*(M*m-l*d)-f*(a*m-u*d)+v*(a*l-u*M)),t[10]=r*(i*m-c*d)-o*(a*m-u*d)+v*(a*c-u*i),t[11]=-(r*(i*l-c*M)-o*(a*l-u*M)+f*(a*c-u*i)),t[12]=-(o*(M*b-h*d)-f*(i*b-s*d)+v*(i*h-s*M)),t[13]=r*(M*b-h*d)-f*(a*b-e*d)+v*(a*h-e*M),t[14]=-(r*(i*b-s*d)-o*(a*b-e*d)+v*(a*s-e*i)),t[15]=r*(i*h-s*M)-o*(a*h-e*M)+f*(a*s-e*i),t},n.determinant=function(t){var n=t[0],r=t[1],a=t[2],e=t[3],u=t[4],o=t[5],i=t[6],s=t[7],c=t[8],f=t[9],M=t[10],h=t[11],l=t[12],v=t[13],d=t[14],b=t[15];return(n*o-r*u)*(M*b-h*d)-(n*i-a*u)*(f*b-h*v)+(n*s-e*u)*(f*d-M*v)+(r*i-a*o)*(c*b-h*l)-(r*s-e*o)*(c*d-M*l)+(a*s-e*i)*(c*v-f*l)},n.multiply=u,n.translate=function(t,n,r){var a=r[0],e=r[1],u=r[2],o=void 0,i=void 0,s=void 0,c=void 0,f=void 0,M=void 0,h=void 0,l=void 0,v=void 0,d=void 0,b=void 0,m=void 0;n===t?(t[12]=n[0]*a+n[4]*e+n[8]*u+n[12],t[13]=n[1]*a+n[5]*e+n[9]*u+n[13],t[14]=n[2]*a+n[6]*e+n[10]*u+n[14],t[15]=n[3]*a+n[7]*e+n[11]*u+n[15]):(o=n[0],i=n[1],s=n[2],c=n[3],f=n[4],M=n[5],h=n[6],l=n[7],v=n[8],d=n[9],b=n[10],m=n[11],t[0]=o,t[1]=i,t[2]=s,t[3]=c,t[4]=f,t[5]=M,t[6]=h,t[7]=l,t[8]=v,t[9]=d,t[10]=b,t[11]=m,t[12]=o*a+f*e+v*u+n[12],t[13]=i*a+M*e+d*u+n[13],t[14]=s*a+h*e+b*u+n[14],t[15]=c*a+l*e+m*u+n[15]);return t},n.scale=function(t,n,r){var a=r[0],e=r[1],u=r[2];return t[0]=n[0]*a,t[1]=n[1]*a,t[2]=n[2]*a,t[3]=n[3]*a,t[4]=n[4]*e,t[5]=n[5]*e,t[6]=n[6]*e,t[7]=n[7]*e,t[8]=n[8]*u,t[9]=n[9]*u,t[10]=n[10]*u,t[11]=n[11]*u,t[12]=n[12],t[13]=n[13],t[14]=n[14],t[15]=n[15],t},n.rotate=function(t,n,r,e){var u=e[0],o=e[1],i=e[2],s=Math.sqrt(u*u+o*o+i*i),c=void 0,f=void 0,M=void 0,h=void 0,l=void 0,v=void 0,d=void 0,b=void 0,m=void 0,p=void 0,P=void 0,A=void 0,E=void 0,O=void 0,R=void 0,y=void 0,q=void 0,x=void 0,_=void 0,Y=void 0,L=void 0,S=void 0,w=void 0,I=void 0;if(s<a.EPSILON)return null;u*=s=1/s,o*=s,i*=s,c=Math.sin(r),f=Math.cos(r),M=1-f,h=n[0],l=n[1],v=n[2],d=n[3],b=n[4],m=n[5],p=n[6],P=n[7],A=n[8],E=n[9],O=n[10],R=n[11],y=u*u*M+f,q=o*u*M+i*c,x=i*u*M-o*c,_=u*o*M-i*c,Y=o*o*M+f,L=i*o*M+u*c,S=u*i*M+o*c,w=o*i*M-u*c,I=i*i*M+f,t[0]=h*y+b*q+A*x,t[1]=l*y+m*q+E*x,t[2]=v*y+p*q+O*x,t[3]=d*y+P*q+R*x,t[4]=h*_+b*Y+A*L,t[5]=l*_+m*Y+E*L,t[6]=v*_+p*Y+O*L,t[7]=d*_+P*Y+R*L,t[8]=h*S+b*w+A*I,t[9]=l*S+m*w+E*I,t[10]=v*S+p*w+O*I,t[11]=d*S+P*w+R*I,n!==t&&(t[12]=n[12],t[13]=n[13],t[14]=n[14],t[15]=n[15]);return t},n.rotateX=function(t,n,r){var a=Math.sin(r),e=Math.cos(r),u=n[4],o=n[5],i=n[6],s=n[7],c=n[8],f=n[9],M=n[10],h=n[11];n!==t&&(t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t[12]=n[12],t[13]=n[13],t[14]=n[14],t[15]=n[15]);return t[4]=u*e+c*a,t[5]=o*e+f*a,t[6]=i*e+M*a,t[7]=s*e+h*a,t[8]=c*e-u*a,t[9]=f*e-o*a,t[10]=M*e-i*a,t[11]=h*e-s*a,t},n.rotateY=function(t,n,r){var a=Math.sin(r),e=Math.cos(r),u=n[0],o=n[1],i=n[2],s=n[3],c=n[8],f=n[9],M=n[10],h=n[11];n!==t&&(t[4]=n[4],t[5]=n[5],t[6]=n[6],t[7]=n[7],t[12]=n[12],t[13]=n[13],t[14]=n[14],t[15]=n[15]);return t[0]=u*e-c*a,t[1]=o*e-f*a,t[2]=i*e-M*a,t[3]=s*e-h*a,t[8]=u*a+c*e,t[9]=o*a+f*e,t[10]=i*a+M*e,t[11]=s*a+h*e,t},n.rotateZ=function(t,n,r){var a=Math.sin(r),e=Math.cos(r),u=n[0],o=n[1],i=n[2],s=n[3],c=n[4],f=n[5],M=n[6],h=n[7];n!==t&&(t[8]=n[8],t[9]=n[9],t[10]=n[10],t[11]=n[11],t[12]=n[12],t[13]=n[13],t[14]=n[14],t[15]=n[15]);return t[0]=u*e+c*a,t[1]=o*e+f*a,t[2]=i*e+M*a,t[3]=s*e+h*a,t[4]=c*e-u*a,t[5]=f*e-o*a,t[6]=M*e-i*a,t[7]=h*e-s*a,t},n.fromTranslation=function(t,n){return t[0]=1,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=1,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[10]=1,t[11]=0,t[12]=n[0],t[13]=n[1],t[14]=n[2],t[15]=1,t},n.fromScaling=function(t,n){return t[0]=n[0],t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=n[1],t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[10]=n[2],t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t},n.fromRotation=function(t,n,r){var e=r[0],u=r[1],o=r[2],i=Math.sqrt(e*e+u*u+o*o),s=void 0,c=void 0,f=void 0;if(i<a.EPSILON)return null;return e*=i=1/i,u*=i,o*=i,s=Math.sin(n),c=Math.cos(n),f=1-c,t[0]=e*e*f+c,t[1]=u*e*f+o*s,t[2]=o*e*f-u*s,t[3]=0,t[4]=e*u*f-o*s,t[5]=u*u*f+c,t[6]=o*u*f+e*s,t[7]=0,t[8]=e*o*f+u*s,t[9]=u*o*f-e*s,t[10]=o*o*f+c,t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t},n.fromXRotation=function(t,n){var r=Math.sin(n),a=Math.cos(n);return t[0]=1,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=a,t[6]=r,t[7]=0,t[8]=0,t[9]=-r,t[10]=a,t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t},n.fromYRotation=function(t,n){var r=Math.sin(n),a=Math.cos(n);return t[0]=a,t[1]=0,t[2]=-r,t[3]=0,t[4]=0,t[5]=1,t[6]=0,t[7]=0,t[8]=r,t[9]=0,t[10]=a,t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t},n.fromZRotation=function(t,n){var r=Math.sin(n),a=Math.cos(n);return t[0]=a,t[1]=r,t[2]=0,t[3]=0,t[4]=-r,t[5]=a,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[10]=1,t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t},n.fromRotationTranslation=o,n.fromQuat2=function(t,n){var r=new a.ARRAY_TYPE(3),e=-n[0],u=-n[1],i=-n[2],s=n[3],c=n[4],f=n[5],M=n[6],h=n[7],l=e*e+u*u+i*i+s*s;l>0?(r[0]=2*(c*s+h*e+f*i-M*u)/l,r[1]=2*(f*s+h*u+M*e-c*i)/l,r[2]=2*(M*s+h*i+c*u-f*e)/l):(r[0]=2*(c*s+h*e+f*i-M*u),r[1]=2*(f*s+h*u+M*e-c*i),r[2]=2*(M*s+h*i+c*u-f*e));return o(t,n,r),t},n.getTranslation=function(t,n){return t[0]=n[12],t[1]=n[13],t[2]=n[14],t},n.getScaling=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[4],o=n[5],i=n[6],s=n[8],c=n[9],f=n[10];return t[0]=Math.sqrt(r*r+a*a+e*e),t[1]=Math.sqrt(u*u+o*o+i*i),t[2]=Math.sqrt(s*s+c*c+f*f),t},n.getRotation=function(t,n){var r=n[0]+n[5]+n[10],a=0;r>0?(a=2*Math.sqrt(r+1),t[3]=.25*a,t[0]=(n[6]-n[9])/a,t[1]=(n[8]-n[2])/a,t[2]=(n[1]-n[4])/a):n[0]>n[5]&&n[0]>n[10]?(a=2*Math.sqrt(1+n[0]-n[5]-n[10]),t[3]=(n[6]-n[9])/a,t[0]=.25*a,t[1]=(n[1]+n[4])/a,t[2]=(n[8]+n[2])/a):n[5]>n[10]?(a=2*Math.sqrt(1+n[5]-n[0]-n[10]),t[3]=(n[8]-n[2])/a,t[0]=(n[1]+n[4])/a,t[1]=.25*a,t[2]=(n[6]+n[9])/a):(a=2*Math.sqrt(1+n[10]-n[0]-n[5]),t[3]=(n[1]-n[4])/a,t[0]=(n[8]+n[2])/a,t[1]=(n[6]+n[9])/a,t[2]=.25*a);return t},n.fromRotationTranslationScale=function(t,n,r,a){var e=n[0],u=n[1],o=n[2],i=n[3],s=e+e,c=u+u,f=o+o,M=e*s,h=e*c,l=e*f,v=u*c,d=u*f,b=o*f,m=i*s,p=i*c,P=i*f,A=a[0],E=a[1],O=a[2];return t[0]=(1-(v+b))*A,t[1]=(h+P)*A,t[2]=(l-p)*A,t[3]=0,t[4]=(h-P)*E,t[5]=(1-(M+b))*E,t[6]=(d+m)*E,t[7]=0,t[8]=(l+p)*O,t[9]=(d-m)*O,t[10]=(1-(M+v))*O,t[11]=0,t[12]=r[0],t[13]=r[1],t[14]=r[2],t[15]=1,t},n.fromRotationTranslationScaleOrigin=function(t,n,r,a,e){var u=n[0],o=n[1],i=n[2],s=n[3],c=u+u,f=o+o,M=i+i,h=u*c,l=u*f,v=u*M,d=o*f,b=o*M,m=i*M,p=s*c,P=s*f,A=s*M,E=a[0],O=a[1],R=a[2],y=e[0],q=e[1],x=e[2],_=(1-(d+m))*E,Y=(l+A)*E,L=(v-P)*E,S=(l-A)*O,w=(1-(h+m))*O,I=(b+p)*O,N=(v+P)*R,g=(b-p)*R,T=(1-(h+d))*R;return t[0]=_,t[1]=Y,t[2]=L,t[3]=0,t[4]=S,t[5]=w,t[6]=I,t[7]=0,t[8]=N,t[9]=g,t[10]=T,t[11]=0,t[12]=r[0]+y-(_*y+S*q+N*x),t[13]=r[1]+q-(Y*y+w*q+g*x),t[14]=r[2]+x-(L*y+I*q+T*x),t[15]=1,t},n.fromQuat=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=r+r,i=a+a,s=e+e,c=r*o,f=a*o,M=a*i,h=e*o,l=e*i,v=e*s,d=u*o,b=u*i,m=u*s;return t[0]=1-M-v,t[1]=f+m,t[2]=h-b,t[3]=0,t[4]=f-m,t[5]=1-c-v,t[6]=l+d,t[7]=0,t[8]=h+b,t[9]=l-d,t[10]=1-c-M,t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t},n.frustum=function(t,n,r,a,e,u,o){var i=1/(r-n),s=1/(e-a),c=1/(u-o);return t[0]=2*u*i,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=2*u*s,t[6]=0,t[7]=0,t[8]=(r+n)*i,t[9]=(e+a)*s,t[10]=(o+u)*c,t[11]=-1,t[12]=0,t[13]=0,t[14]=o*u*2*c,t[15]=0,t},n.perspective=function(t,n,r,a,e){var u=1/Math.tan(n/2),o=void 0;t[0]=u/r,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=u,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[11]=-1,t[12]=0,t[13]=0,t[15]=0,null!=e&&e!==1/0?(o=1/(a-e),t[10]=(e+a)*o,t[14]=2*e*a*o):(t[10]=-1,t[14]=-2*a);return t},n.perspectiveFromFieldOfView=function(t,n,r,a){var e=Math.tan(n.upDegrees*Math.PI/180),u=Math.tan(n.downDegrees*Math.PI/180),o=Math.tan(n.leftDegrees*Math.PI/180),i=Math.tan(n.rightDegrees*Math.PI/180),s=2/(o+i),c=2/(e+u);return t[0]=s,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=c,t[6]=0,t[7]=0,t[8]=-(o-i)*s*.5,t[9]=(e-u)*c*.5,t[10]=a/(r-a),t[11]=-1,t[12]=0,t[13]=0,t[14]=a*r/(r-a),t[15]=0,t},n.ortho=function(t,n,r,a,e,u,o){var i=1/(n-r),s=1/(a-e),c=1/(u-o);return t[0]=-2*i,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=-2*s,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[10]=2*c,t[11]=0,t[12]=(n+r)*i,t[13]=(e+a)*s,t[14]=(o+u)*c,t[15]=1,t},n.lookAt=function(t,n,r,u){var o=void 0,i=void 0,s=void 0,c=void 0,f=void 0,M=void 0,h=void 0,l=void 0,v=void 0,d=void 0,b=n[0],m=n[1],p=n[2],P=u[0],A=u[1],E=u[2],O=r[0],R=r[1],y=r[2];if(Math.abs(b-O)<a.EPSILON&&Math.abs(m-R)<a.EPSILON&&Math.abs(p-y)<a.EPSILON)return e(t);h=b-O,l=m-R,v=p-y,d=1/Math.sqrt(h*h+l*l+v*v),o=A*(v*=d)-E*(l*=d),i=E*(h*=d)-P*v,s=P*l-A*h,(d=Math.sqrt(o*o+i*i+s*s))?(o*=d=1/d,i*=d,s*=d):(o=0,i=0,s=0);c=l*s-v*i,f=v*o-h*s,M=h*i-l*o,(d=Math.sqrt(c*c+f*f+M*M))?(c*=d=1/d,f*=d,M*=d):(c=0,f=0,M=0);return t[0]=o,t[1]=c,t[2]=h,t[3]=0,t[4]=i,t[5]=f,t[6]=l,t[7]=0,t[8]=s,t[9]=M,t[10]=v,t[11]=0,t[12]=-(o*b+i*m+s*p),t[13]=-(c*b+f*m+M*p),t[14]=-(h*b+l*m+v*p),t[15]=1,t},n.targetTo=function(t,n,r,a){var e=n[0],u=n[1],o=n[2],i=a[0],s=a[1],c=a[2],f=e-r[0],M=u-r[1],h=o-r[2],l=f*f+M*M+h*h;l>0&&(l=1/Math.sqrt(l),f*=l,M*=l,h*=l);var v=s*h-c*M,d=c*f-i*h,b=i*M-s*f;(l=v*v+d*d+b*b)>0&&(l=1/Math.sqrt(l),v*=l,d*=l,b*=l);return t[0]=v,t[1]=d,t[2]=b,t[3]=0,t[4]=M*b-h*d,t[5]=h*v-f*b,t[6]=f*d-M*v,t[7]=0,t[8]=f,t[9]=M,t[10]=h,t[11]=0,t[12]=e,t[13]=u,t[14]=o,t[15]=1,t},n.str=function(t){return"mat4("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+", "+t[4]+", "+t[5]+", "+t[6]+", "+t[7]+", "+t[8]+", "+t[9]+", "+t[10]+", "+t[11]+", "+t[12]+", "+t[13]+", "+t[14]+", "+t[15]+")"},n.frob=function(t){return Math.sqrt(Math.pow(t[0],2)+Math.pow(t[1],2)+Math.pow(t[2],2)+Math.pow(t[3],2)+Math.pow(t[4],2)+Math.pow(t[5],2)+Math.pow(t[6],2)+Math.pow(t[7],2)+Math.pow(t[8],2)+Math.pow(t[9],2)+Math.pow(t[10],2)+Math.pow(t[11],2)+Math.pow(t[12],2)+Math.pow(t[13],2)+Math.pow(t[14],2)+Math.pow(t[15],2))},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t[3]=n[3]+r[3],t[4]=n[4]+r[4],t[5]=n[5]+r[5],t[6]=n[6]+r[6],t[7]=n[7]+r[7],t[8]=n[8]+r[8],t[9]=n[9]+r[9],t[10]=n[10]+r[10],t[11]=n[11]+r[11],t[12]=n[12]+r[12],t[13]=n[13]+r[13],t[14]=n[14]+r[14],t[15]=n[15]+r[15],t},n.subtract=i,n.multiplyScalar=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t[3]=n[3]*r,t[4]=n[4]*r,t[5]=n[5]*r,t[6]=n[6]*r,t[7]=n[7]*r,t[8]=n[8]*r,t[9]=n[9]*r,t[10]=n[10]*r,t[11]=n[11]*r,t[12]=n[12]*r,t[13]=n[13]*r,t[14]=n[14]*r,t[15]=n[15]*r,t},n.multiplyScalarAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t[2]=n[2]+r[2]*a,t[3]=n[3]+r[3]*a,t[4]=n[4]+r[4]*a,t[5]=n[5]+r[5]*a,t[6]=n[6]+r[6]*a,t[7]=n[7]+r[7]*a,t[8]=n[8]+r[8]*a,t[9]=n[9]+r[9]*a,t[10]=n[10]+r[10]*a,t[11]=n[11]+r[11]*a,t[12]=n[12]+r[12]*a,t[13]=n[13]+r[13]*a,t[14]=n[14]+r[14]*a,t[15]=n[15]+r[15]*a,t},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]&&t[4]===n[4]&&t[5]===n[5]&&t[6]===n[6]&&t[7]===n[7]&&t[8]===n[8]&&t[9]===n[9]&&t[10]===n[10]&&t[11]===n[11]&&t[12]===n[12]&&t[13]===n[13]&&t[14]===n[14]&&t[15]===n[15]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=t[3],i=t[4],s=t[5],c=t[6],f=t[7],M=t[8],h=t[9],l=t[10],v=t[11],d=t[12],b=t[13],m=t[14],p=t[15],P=n[0],A=n[1],E=n[2],O=n[3],R=n[4],y=n[5],q=n[6],x=n[7],_=n[8],Y=n[9],L=n[10],S=n[11],w=n[12],I=n[13],N=n[14],g=n[15];return Math.abs(r-P)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(P))&&Math.abs(e-A)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(A))&&Math.abs(u-E)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(E))&&Math.abs(o-O)<=a.EPSILON*Math.max(1,Math.abs(o),Math.abs(O))&&Math.abs(i-R)<=a.EPSILON*Math.max(1,Math.abs(i),Math.abs(R))&&Math.abs(s-y)<=a.EPSILON*Math.max(1,Math.abs(s),Math.abs(y))&&Math.abs(c-q)<=a.EPSILON*Math.max(1,Math.abs(c),Math.abs(q))&&Math.abs(f-x)<=a.EPSILON*Math.max(1,Math.abs(f),Math.abs(x))&&Math.abs(M-_)<=a.EPSILON*Math.max(1,Math.abs(M),Math.abs(_))&&Math.abs(h-Y)<=a.EPSILON*Math.max(1,Math.abs(h),Math.abs(Y))&&Math.abs(l-L)<=a.EPSILON*Math.max(1,Math.abs(l),Math.abs(L))&&Math.abs(v-S)<=a.EPSILON*Math.max(1,Math.abs(v),Math.abs(S))&&Math.abs(d-w)<=a.EPSILON*Math.max(1,Math.abs(d),Math.abs(w))&&Math.abs(b-I)<=a.EPSILON*Math.max(1,Math.abs(b),Math.abs(I))&&Math.abs(m-N)<=a.EPSILON*Math.max(1,Math.abs(m),Math.abs(N))&&Math.abs(p-g)<=a.EPSILON*Math.max(1,Math.abs(p),Math.abs(g))};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(t){return t[0]=1,t[1]=0,t[2]=0,t[3]=0,t[4]=0,t[5]=1,t[6]=0,t[7]=0,t[8]=0,t[9]=0,t[10]=1,t[11]=0,t[12]=0,t[13]=0,t[14]=0,t[15]=1,t}function u(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=n[6],f=n[7],M=n[8],h=n[9],l=n[10],v=n[11],d=n[12],b=n[13],m=n[14],p=n[15],P=r[0],A=r[1],E=r[2],O=r[3];return t[0]=P*a+A*i+E*M+O*d,t[1]=P*e+A*s+E*h+O*b,t[2]=P*u+A*c+E*l+O*m,t[3]=P*o+A*f+E*v+O*p,P=r[4],A=r[5],E=r[6],O=r[7],t[4]=P*a+A*i+E*M+O*d,t[5]=P*e+A*s+E*h+O*b,t[6]=P*u+A*c+E*l+O*m,t[7]=P*o+A*f+E*v+O*p,P=r[8],A=r[9],E=r[10],O=r[11],t[8]=P*a+A*i+E*M+O*d,t[9]=P*e+A*s+E*h+O*b,t[10]=P*u+A*c+E*l+O*m,t[11]=P*o+A*f+E*v+O*p,P=r[12],A=r[13],E=r[14],O=r[15],t[12]=P*a+A*i+E*M+O*d,t[13]=P*e+A*s+E*h+O*b,t[14]=P*u+A*c+E*l+O*m,t[15]=P*o+A*f+E*v+O*p,t}function o(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=a+a,s=e+e,c=u+u,f=a*i,M=a*s,h=a*c,l=e*s,v=e*c,d=u*c,b=o*i,m=o*s,p=o*c;return t[0]=1-(l+d),t[1]=M+p,t[2]=h-m,t[3]=0,t[4]=M-p,t[5]=1-(f+d),t[6]=v+b,t[7]=0,t[8]=h+m,t[9]=v-b,t[10]=1-(f+l),t[11]=0,t[12]=r[0],t[13]=r[1],t[14]=r[2],t[15]=1,t}function i(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t[2]=n[2]-r[2],t[3]=n[3]-r[3],t[4]=n[4]-r[4],t[5]=n[5]-r[5],t[6]=n[6]-r[6],t[7]=n[7]-r[7],t[8]=n[8]-r[8],t[9]=n[9]-r[9],t[10]=n[10]-r[10],t[11]=n[11]-r[11],t[12]=n[12]-r[12],t[13]=n[13]-r[13],t[14]=n[14]-r[14],t[15]=n[15]-r[15],t}n.mul=u,n.sub=i},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.sub=n.mul=void 0,n.create=function(){var t=new a.ARRAY_TYPE(9);a.ARRAY_TYPE!=Float32Array&&(t[1]=0,t[2]=0,t[3]=0,t[5]=0,t[6]=0,t[7]=0);return t[0]=1,t[4]=1,t[8]=1,t},n.fromMat4=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[4],t[4]=n[5],t[5]=n[6],t[6]=n[8],t[7]=n[9],t[8]=n[10],t},n.clone=function(t){var n=new a.ARRAY_TYPE(9);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n[3]=t[3],n[4]=t[4],n[5]=t[5],n[6]=t[6],n[7]=t[7],n[8]=t[8],n},n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t[4]=n[4],t[5]=n[5],t[6]=n[6],t[7]=n[7],t[8]=n[8],t},n.fromValues=function(t,n,r,e,u,o,i,s,c){var f=new a.ARRAY_TYPE(9);return f[0]=t,f[1]=n,f[2]=r,f[3]=e,f[4]=u,f[5]=o,f[6]=i,f[7]=s,f[8]=c,f},n.set=function(t,n,r,a,e,u,o,i,s,c){return t[0]=n,t[1]=r,t[2]=a,t[3]=e,t[4]=u,t[5]=o,t[6]=i,t[7]=s,t[8]=c,t},n.identity=function(t){return t[0]=1,t[1]=0,t[2]=0,t[3]=0,t[4]=1,t[5]=0,t[6]=0,t[7]=0,t[8]=1,t},n.transpose=function(t,n){if(t===n){var r=n[1],a=n[2],e=n[5];t[1]=n[3],t[2]=n[6],t[3]=r,t[5]=n[7],t[6]=a,t[7]=e}else t[0]=n[0],t[1]=n[3],t[2]=n[6],t[3]=n[1],t[4]=n[4],t[5]=n[7],t[6]=n[2],t[7]=n[5],t[8]=n[8];return t},n.invert=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=n[4],i=n[5],s=n[6],c=n[7],f=n[8],M=f*o-i*c,h=-f*u+i*s,l=c*u-o*s,v=r*M+a*h+e*l;if(!v)return null;return v=1/v,t[0]=M*v,t[1]=(-f*a+e*c)*v,t[2]=(i*a-e*o)*v,t[3]=h*v,t[4]=(f*r-e*s)*v,t[5]=(-i*r+e*u)*v,t[6]=l*v,t[7]=(-c*r+a*s)*v,t[8]=(o*r-a*u)*v,t},n.adjoint=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=n[4],i=n[5],s=n[6],c=n[7],f=n[8];return t[0]=o*f-i*c,t[1]=e*c-a*f,t[2]=a*i-e*o,t[3]=i*s-u*f,t[4]=r*f-e*s,t[5]=e*u-r*i,t[6]=u*c-o*s,t[7]=a*s-r*c,t[8]=r*o-a*u,t},n.determinant=function(t){var n=t[0],r=t[1],a=t[2],e=t[3],u=t[4],o=t[5],i=t[6],s=t[7],c=t[8];return n*(c*u-o*s)+r*(-c*e+o*i)+a*(s*e-u*i)},n.multiply=e,n.translate=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=n[6],f=n[7],M=n[8],h=r[0],l=r[1];return t[0]=a,t[1]=e,t[2]=u,t[3]=o,t[4]=i,t[5]=s,t[6]=h*a+l*o+c,t[7]=h*e+l*i+f,t[8]=h*u+l*s+M,t},n.rotate=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=n[6],f=n[7],M=n[8],h=Math.sin(r),l=Math.cos(r);return t[0]=l*a+h*o,t[1]=l*e+h*i,t[2]=l*u+h*s,t[3]=l*o-h*a,t[4]=l*i-h*e,t[5]=l*s-h*u,t[6]=c,t[7]=f,t[8]=M,t},n.scale=function(t,n,r){var a=r[0],e=r[1];return t[0]=a*n[0],t[1]=a*n[1],t[2]=a*n[2],t[3]=e*n[3],t[4]=e*n[4],t[5]=e*n[5],t[6]=n[6],t[7]=n[7],t[8]=n[8],t},n.fromTranslation=function(t,n){return t[0]=1,t[1]=0,t[2]=0,t[3]=0,t[4]=1,t[5]=0,t[6]=n[0],t[7]=n[1],t[8]=1,t},n.fromRotation=function(t,n){var r=Math.sin(n),a=Math.cos(n);return t[0]=a,t[1]=r,t[2]=0,t[3]=-r,t[4]=a,t[5]=0,t[6]=0,t[7]=0,t[8]=1,t},n.fromScaling=function(t,n){return t[0]=n[0],t[1]=0,t[2]=0,t[3]=0,t[4]=n[1],t[5]=0,t[6]=0,t[7]=0,t[8]=1,t},n.fromMat2d=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=0,t[3]=n[2],t[4]=n[3],t[5]=0,t[6]=n[4],t[7]=n[5],t[8]=1,t},n.fromQuat=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=r+r,i=a+a,s=e+e,c=r*o,f=a*o,M=a*i,h=e*o,l=e*i,v=e*s,d=u*o,b=u*i,m=u*s;return t[0]=1-M-v,t[3]=f-m,t[6]=h+b,t[1]=f+m,t[4]=1-c-v,t[7]=l-d,t[2]=h-b,t[5]=l+d,t[8]=1-c-M,t},n.normalFromMat4=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=n[4],i=n[5],s=n[6],c=n[7],f=n[8],M=n[9],h=n[10],l=n[11],v=n[12],d=n[13],b=n[14],m=n[15],p=r*i-a*o,P=r*s-e*o,A=r*c-u*o,E=a*s-e*i,O=a*c-u*i,R=e*c-u*s,y=f*d-M*v,q=f*b-h*v,x=f*m-l*v,_=M*b-h*d,Y=M*m-l*d,L=h*m-l*b,S=p*L-P*Y+A*_+E*x-O*q+R*y;if(!S)return null;return S=1/S,t[0]=(i*L-s*Y+c*_)*S,t[1]=(s*x-o*L-c*q)*S,t[2]=(o*Y-i*x+c*y)*S,t[3]=(e*Y-a*L-u*_)*S,t[4]=(r*L-e*x+u*q)*S,t[5]=(a*x-r*Y-u*y)*S,t[6]=(d*R-b*O+m*E)*S,t[7]=(b*A-v*R-m*P)*S,t[8]=(v*O-d*A+m*p)*S,t},n.projection=function(t,n,r){return t[0]=2/n,t[1]=0,t[2]=0,t[3]=0,t[4]=-2/r,t[5]=0,t[6]=-1,t[7]=1,t[8]=1,t},n.str=function(t){return"mat3("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+", "+t[4]+", "+t[5]+", "+t[6]+", "+t[7]+", "+t[8]+")"},n.frob=function(t){return Math.sqrt(Math.pow(t[0],2)+Math.pow(t[1],2)+Math.pow(t[2],2)+Math.pow(t[3],2)+Math.pow(t[4],2)+Math.pow(t[5],2)+Math.pow(t[6],2)+Math.pow(t[7],2)+Math.pow(t[8],2))},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t[3]=n[3]+r[3],t[4]=n[4]+r[4],t[5]=n[5]+r[5],t[6]=n[6]+r[6],t[7]=n[7]+r[7],t[8]=n[8]+r[8],t},n.subtract=u,n.multiplyScalar=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t[3]=n[3]*r,t[4]=n[4]*r,t[5]=n[5]*r,t[6]=n[6]*r,t[7]=n[7]*r,t[8]=n[8]*r,t},n.multiplyScalarAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t[2]=n[2]+r[2]*a,t[3]=n[3]+r[3]*a,t[4]=n[4]+r[4]*a,t[5]=n[5]+r[5]*a,t[6]=n[6]+r[6]*a,t[7]=n[7]+r[7]*a,t[8]=n[8]+r[8]*a,t},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]&&t[4]===n[4]&&t[5]===n[5]&&t[6]===n[6]&&t[7]===n[7]&&t[8]===n[8]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=t[3],i=t[4],s=t[5],c=t[6],f=t[7],M=t[8],h=n[0],l=n[1],v=n[2],d=n[3],b=n[4],m=n[5],p=n[6],P=n[7],A=n[8];return Math.abs(r-h)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(h))&&Math.abs(e-l)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(l))&&Math.abs(u-v)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(v))&&Math.abs(o-d)<=a.EPSILON*Math.max(1,Math.abs(o),Math.abs(d))&&Math.abs(i-b)<=a.EPSILON*Math.max(1,Math.abs(i),Math.abs(b))&&Math.abs(s-m)<=a.EPSILON*Math.max(1,Math.abs(s),Math.abs(m))&&Math.abs(c-p)<=a.EPSILON*Math.max(1,Math.abs(c),Math.abs(p))&&Math.abs(f-P)<=a.EPSILON*Math.max(1,Math.abs(f),Math.abs(P))&&Math.abs(M-A)<=a.EPSILON*Math.max(1,Math.abs(M),Math.abs(A))};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=n[6],f=n[7],M=n[8],h=r[0],l=r[1],v=r[2],d=r[3],b=r[4],m=r[5],p=r[6],P=r[7],A=r[8];return t[0]=h*a+l*o+v*c,t[1]=h*e+l*i+v*f,t[2]=h*u+l*s+v*M,t[3]=d*a+b*o+m*c,t[4]=d*e+b*i+m*f,t[5]=d*u+b*s+m*M,t[6]=p*a+P*o+A*c,t[7]=p*e+P*i+A*f,t[8]=p*u+P*s+A*M,t}function u(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t[2]=n[2]-r[2],t[3]=n[3]-r[3],t[4]=n[4]-r[4],t[5]=n[5]-r[5],t[6]=n[6]-r[6],t[7]=n[7]-r[7],t[8]=n[8]-r[8],t}n.mul=e,n.sub=u},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.forEach=n.sqrLen=n.sqrDist=n.dist=n.div=n.mul=n.sub=n.len=void 0,n.create=e,n.clone=function(t){var n=new a.ARRAY_TYPE(2);return n[0]=t[0],n[1]=t[1],n},n.fromValues=function(t,n){var r=new a.ARRAY_TYPE(2);return r[0]=t,r[1]=n,r},n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t},n.set=function(t,n,r){return t[0]=n,t[1]=r,t},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t},n.subtract=u,n.multiply=o,n.divide=i,n.ceil=function(t,n){return t[0]=Math.ceil(n[0]),t[1]=Math.ceil(n[1]),t},n.floor=function(t,n){return t[0]=Math.floor(n[0]),t[1]=Math.floor(n[1]),t},n.min=function(t,n,r){return t[0]=Math.min(n[0],r[0]),t[1]=Math.min(n[1],r[1]),t},n.max=function(t,n,r){return t[0]=Math.max(n[0],r[0]),t[1]=Math.max(n[1],r[1]),t},n.round=function(t,n){return t[0]=Math.round(n[0]),t[1]=Math.round(n[1]),t},n.scale=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t},n.scaleAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t},n.distance=s,n.squaredDistance=c,n.length=f,n.squaredLength=M,n.negate=function(t,n){return t[0]=-n[0],t[1]=-n[1],t},n.inverse=function(t,n){return t[0]=1/n[0],t[1]=1/n[1],t},n.normalize=function(t,n){var r=n[0],a=n[1],e=r*r+a*a;e>0&&(e=1/Math.sqrt(e),t[0]=n[0]*e,t[1]=n[1]*e);return t},n.dot=function(t,n){return t[0]*n[0]+t[1]*n[1]},n.cross=function(t,n,r){var a=n[0]*r[1]-n[1]*r[0];return t[0]=t[1]=0,t[2]=a,t},n.lerp=function(t,n,r,a){var e=n[0],u=n[1];return t[0]=e+a*(r[0]-e),t[1]=u+a*(r[1]-u),t},n.random=function(t,n){n=n||1;var r=2*a.RANDOM()*Math.PI;return t[0]=Math.cos(r)*n,t[1]=Math.sin(r)*n,t},n.transformMat2=function(t,n,r){var a=n[0],e=n[1];return t[0]=r[0]*a+r[2]*e,t[1]=r[1]*a+r[3]*e,t},n.transformMat2d=function(t,n,r){var a=n[0],e=n[1];return t[0]=r[0]*a+r[2]*e+r[4],t[1]=r[1]*a+r[3]*e+r[5],t},n.transformMat3=function(t,n,r){var a=n[0],e=n[1];return t[0]=r[0]*a+r[3]*e+r[6],t[1]=r[1]*a+r[4]*e+r[7],t},n.transformMat4=function(t,n,r){var a=n[0],e=n[1];return t[0]=r[0]*a+r[4]*e+r[12],t[1]=r[1]*a+r[5]*e+r[13],t},n.rotate=function(t,n,r,a){var e=n[0]-r[0],u=n[1]-r[1],o=Math.sin(a),i=Math.cos(a);return t[0]=e*i-u*o+r[0],t[1]=e*o+u*i+r[1],t},n.angle=function(t,n){var r=t[0],a=t[1],e=n[0],u=n[1],o=r*r+a*a;o>0&&(o=1/Math.sqrt(o));var i=e*e+u*u;i>0&&(i=1/Math.sqrt(i));var s=(r*e+a*u)*o*i;return s>1?0:s<-1?Math.PI:Math.acos(s)},n.str=function(t){return"vec2("+t[0]+", "+t[1]+")"},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]},n.equals=function(t,n){var r=t[0],e=t[1],u=n[0],o=n[1];return Math.abs(r-u)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(u))&&Math.abs(e-o)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(o))};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(){var t=new a.ARRAY_TYPE(2);return a.ARRAY_TYPE!=Float32Array&&(t[0]=0,t[1]=0),t}function u(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t}function o(t,n,r){return t[0]=n[0]*r[0],t[1]=n[1]*r[1],t}function i(t,n,r){return t[0]=n[0]/r[0],t[1]=n[1]/r[1],t}function s(t,n){var r=n[0]-t[0],a=n[1]-t[1];return Math.sqrt(r*r+a*a)}function c(t,n){var r=n[0]-t[0],a=n[1]-t[1];return r*r+a*a}function f(t){var n=t[0],r=t[1];return Math.sqrt(n*n+r*r)}function M(t){var n=t[0],r=t[1];return n*n+r*r}n.len=f,n.sub=u,n.mul=o,n.div=i,n.dist=s,n.sqrDist=c,n.sqrLen=M,n.forEach=function(){var t=e();return function(n,r,a,e,u,o){var i=void 0,s=void 0;for(r||(r=2),a||(a=0),s=e?Math.min(e*r+a,n.length):n.length,i=a;i<s;i+=r)t[0]=n[i],t[1]=n[i+1],u(t,t,o),n[i]=t[0],n[i+1]=t[1];return n}}()},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.sqrLen=n.squaredLength=n.len=n.length=n.dot=n.mul=n.setReal=n.getReal=void 0,n.create=function(){var t=new a.ARRAY_TYPE(8);a.ARRAY_TYPE!=Float32Array&&(t[0]=0,t[1]=0,t[2]=0,t[4]=0,t[5]=0,t[6]=0,t[7]=0);return t[3]=1,t},n.clone=function(t){var n=new a.ARRAY_TYPE(8);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n[3]=t[3],n[4]=t[4],n[5]=t[5],n[6]=t[6],n[7]=t[7],n},n.fromValues=function(t,n,r,e,u,o,i,s){var c=new a.ARRAY_TYPE(8);return c[0]=t,c[1]=n,c[2]=r,c[3]=e,c[4]=u,c[5]=o,c[6]=i,c[7]=s,c},n.fromRotationTranslationValues=function(t,n,r,e,u,o,i){var s=new a.ARRAY_TYPE(8);s[0]=t,s[1]=n,s[2]=r,s[3]=e;var c=.5*u,f=.5*o,M=.5*i;return s[4]=c*e+f*r-M*n,s[5]=f*e+M*t-c*r,s[6]=M*e+c*n-f*t,s[7]=-c*t-f*n-M*r,s},n.fromRotationTranslation=i,n.fromTranslation=function(t,n){return t[0]=0,t[1]=0,t[2]=0,t[3]=1,t[4]=.5*n[0],t[5]=.5*n[1],t[6]=.5*n[2],t[7]=0,t},n.fromRotation=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t[4]=0,t[5]=0,t[6]=0,t[7]=0,t},n.fromMat4=function(t,n){var r=e.create();u.getRotation(r,n);var o=new a.ARRAY_TYPE(3);return u.getTranslation(o,n),i(t,r,o),t},n.copy=s,n.identity=function(t){return t[0]=0,t[1]=0,t[2]=0,t[3]=1,t[4]=0,t[5]=0,t[6]=0,t[7]=0,t},n.set=function(t,n,r,a,e,u,o,i,s){return t[0]=n,t[1]=r,t[2]=a,t[3]=e,t[4]=u,t[5]=o,t[6]=i,t[7]=s,t},n.getDual=function(t,n){return t[0]=n[4],t[1]=n[5],t[2]=n[6],t[3]=n[7],t},n.setDual=function(t,n){return t[4]=n[0],t[5]=n[1],t[6]=n[2],t[7]=n[3],t},n.getTranslation=function(t,n){var r=n[4],a=n[5],e=n[6],u=n[7],o=-n[0],i=-n[1],s=-n[2],c=n[3];return t[0]=2*(r*c+u*o+a*s-e*i),t[1]=2*(a*c+u*i+e*o-r*s),t[2]=2*(e*c+u*s+r*i-a*o),t},n.translate=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=.5*r[0],s=.5*r[1],c=.5*r[2],f=n[4],M=n[5],h=n[6],l=n[7];return t[0]=a,t[1]=e,t[2]=u,t[3]=o,t[4]=o*i+e*c-u*s+f,t[5]=o*s+u*i-a*c+M,t[6]=o*c+a*s-e*i+h,t[7]=-a*i-e*s-u*c+l,t},n.rotateX=function(t,n,r){var a=-n[0],u=-n[1],o=-n[2],i=n[3],s=n[4],c=n[5],f=n[6],M=n[7],h=s*i+M*a+c*o-f*u,l=c*i+M*u+f*a-s*o,v=f*i+M*o+s*u-c*a,d=M*i-s*a-c*u-f*o;return e.rotateX(t,n,r),a=t[0],u=t[1],o=t[2],i=t[3],t[4]=h*i+d*a+l*o-v*u,t[5]=l*i+d*u+v*a-h*o,t[6]=v*i+d*o+h*u-l*a,t[7]=d*i-h*a-l*u-v*o,t},n.rotateY=function(t,n,r){var a=-n[0],u=-n[1],o=-n[2],i=n[3],s=n[4],c=n[5],f=n[6],M=n[7],h=s*i+M*a+c*o-f*u,l=c*i+M*u+f*a-s*o,v=f*i+M*o+s*u-c*a,d=M*i-s*a-c*u-f*o;return e.rotateY(t,n,r),a=t[0],u=t[1],o=t[2],i=t[3],t[4]=h*i+d*a+l*o-v*u,t[5]=l*i+d*u+v*a-h*o,t[6]=v*i+d*o+h*u-l*a,t[7]=d*i-h*a-l*u-v*o,t},n.rotateZ=function(t,n,r){var a=-n[0],u=-n[1],o=-n[2],i=n[3],s=n[4],c=n[5],f=n[6],M=n[7],h=s*i+M*a+c*o-f*u,l=c*i+M*u+f*a-s*o,v=f*i+M*o+s*u-c*a,d=M*i-s*a-c*u-f*o;return e.rotateZ(t,n,r),a=t[0],u=t[1],o=t[2],i=t[3],t[4]=h*i+d*a+l*o-v*u,t[5]=l*i+d*u+v*a-h*o,t[6]=v*i+d*o+h*u-l*a,t[7]=d*i-h*a-l*u-v*o,t},n.rotateByQuatAppend=function(t,n,r){var a=r[0],e=r[1],u=r[2],o=r[3],i=n[0],s=n[1],c=n[2],f=n[3];return t[0]=i*o+f*a+s*u-c*e,t[1]=s*o+f*e+c*a-i*u,t[2]=c*o+f*u+i*e-s*a,t[3]=f*o-i*a-s*e-c*u,i=n[4],s=n[5],c=n[6],f=n[7],t[4]=i*o+f*a+s*u-c*e,t[5]=s*o+f*e+c*a-i*u,t[6]=c*o+f*u+i*e-s*a,t[7]=f*o-i*a-s*e-c*u,t},n.rotateByQuatPrepend=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=r[0],s=r[1],c=r[2],f=r[3];return t[0]=a*f+o*i+e*c-u*s,t[1]=e*f+o*s+u*i-a*c,t[2]=u*f+o*c+a*s-e*i,t[3]=o*f-a*i-e*s-u*c,i=r[4],s=r[5],c=r[6],f=r[7],t[4]=a*f+o*i+e*c-u*s,t[5]=e*f+o*s+u*i-a*c,t[6]=u*f+o*c+a*s-e*i,t[7]=o*f-a*i-e*s-u*c,t},n.rotateAroundAxis=function(t,n,r,e){if(Math.abs(e)<a.EPSILON)return s(t,n);var u=Math.sqrt(r[0]*r[0]+r[1]*r[1]+r[2]*r[2]);e*=.5;var o=Math.sin(e),i=o*r[0]/u,c=o*r[1]/u,f=o*r[2]/u,M=Math.cos(e),h=n[0],l=n[1],v=n[2],d=n[3];t[0]=h*M+d*i+l*f-v*c,t[1]=l*M+d*c+v*i-h*f,t[2]=v*M+d*f+h*c-l*i,t[3]=d*M-h*i-l*c-v*f;var b=n[4],m=n[5],p=n[6],P=n[7];return t[4]=b*M+P*i+m*f-p*c,t[5]=m*M+P*c+p*i-b*f,t[6]=p*M+P*f+b*c-m*i,t[7]=P*M-b*i-m*c-p*f,t},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t[3]=n[3]+r[3],t[4]=n[4]+r[4],t[5]=n[5]+r[5],t[6]=n[6]+r[6],t[7]=n[7]+r[7],t},n.multiply=c,n.scale=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t[3]=n[3]*r,t[4]=n[4]*r,t[5]=n[5]*r,t[6]=n[6]*r,t[7]=n[7]*r,t},n.lerp=function(t,n,r,a){var e=1-a;f(n,r)<0&&(a=-a);return t[0]=n[0]*e+r[0]*a,t[1]=n[1]*e+r[1]*a,t[2]=n[2]*e+r[2]*a,t[3]=n[3]*e+r[3]*a,t[4]=n[4]*e+r[4]*a,t[5]=n[5]*e+r[5]*a,t[6]=n[6]*e+r[6]*a,t[7]=n[7]*e+r[7]*a,t},n.invert=function(t,n){var r=h(n);return t[0]=-n[0]/r,t[1]=-n[1]/r,t[2]=-n[2]/r,t[3]=n[3]/r,t[4]=-n[4]/r,t[5]=-n[5]/r,t[6]=-n[6]/r,t[7]=n[7]/r,t},n.conjugate=function(t,n){return t[0]=-n[0],t[1]=-n[1],t[2]=-n[2],t[3]=n[3],t[4]=-n[4],t[5]=-n[5],t[6]=-n[6],t[7]=n[7],t},n.normalize=function(t,n){var r=h(n);if(r>0){r=Math.sqrt(r);var a=n[0]/r,e=n[1]/r,u=n[2]/r,o=n[3]/r,i=n[4],s=n[5],c=n[6],f=n[7],M=a*i+e*s+u*c+o*f;t[0]=a,t[1]=e,t[2]=u,t[3]=o,t[4]=(i-a*M)/r,t[5]=(s-e*M)/r,t[6]=(c-u*M)/r,t[7]=(f-o*M)/r}return t},n.str=function(t){return"quat2("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+", "+t[4]+", "+t[5]+", "+t[6]+", "+t[7]+")"},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]&&t[4]===n[4]&&t[5]===n[5]&&t[6]===n[6]&&t[7]===n[7]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=t[3],i=t[4],s=t[5],c=t[6],f=t[7],M=n[0],h=n[1],l=n[2],v=n[3],d=n[4],b=n[5],m=n[6],p=n[7];return Math.abs(r-M)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(M))&&Math.abs(e-h)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(h))&&Math.abs(u-l)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(l))&&Math.abs(o-v)<=a.EPSILON*Math.max(1,Math.abs(o),Math.abs(v))&&Math.abs(i-d)<=a.EPSILON*Math.max(1,Math.abs(i),Math.abs(d))&&Math.abs(s-b)<=a.EPSILON*Math.max(1,Math.abs(s),Math.abs(b))&&Math.abs(c-m)<=a.EPSILON*Math.max(1,Math.abs(c),Math.abs(m))&&Math.abs(f-p)<=a.EPSILON*Math.max(1,Math.abs(f),Math.abs(p))};var a=o(r(0)),e=o(r(3)),u=o(r(4));function o(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}function i(t,n,r){var a=.5*r[0],e=.5*r[1],u=.5*r[2],o=n[0],i=n[1],s=n[2],c=n[3];return t[0]=o,t[1]=i,t[2]=s,t[3]=c,t[4]=a*c+e*s-u*i,t[5]=e*c+u*o-a*s,t[6]=u*c+a*i-e*o,t[7]=-a*o-e*i-u*s,t}function s(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t[4]=n[4],t[5]=n[5],t[6]=n[6],t[7]=n[7],t}n.getReal=e.copy;n.setReal=e.copy;function c(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=r[4],s=r[5],c=r[6],f=r[7],M=n[4],h=n[5],l=n[6],v=n[7],d=r[0],b=r[1],m=r[2],p=r[3];return t[0]=a*p+o*d+e*m-u*b,t[1]=e*p+o*b+u*d-a*m,t[2]=u*p+o*m+a*b-e*d,t[3]=o*p-a*d-e*b-u*m,t[4]=a*f+o*i+e*c-u*s+M*p+v*d+h*m-l*b,t[5]=e*f+o*s+u*i-a*c+h*p+v*b+l*d-M*m,t[6]=u*f+o*c+a*s-e*i+l*p+v*m+M*b-h*d,t[7]=o*f-a*i-e*s-u*c+v*p-M*d-h*b-l*m,t}n.mul=c;var f=n.dot=e.dot;var M=n.length=e.length,h=(n.len=M,n.squaredLength=e.squaredLength);n.sqrLen=h},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.sub=n.mul=void 0,n.create=function(){var t=new a.ARRAY_TYPE(6);a.ARRAY_TYPE!=Float32Array&&(t[1]=0,t[2]=0,t[4]=0,t[5]=0);return t[0]=1,t[3]=1,t},n.clone=function(t){var n=new a.ARRAY_TYPE(6);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n[3]=t[3],n[4]=t[4],n[5]=t[5],n},n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t[4]=n[4],t[5]=n[5],t},n.identity=function(t){return t[0]=1,t[1]=0,t[2]=0,t[3]=1,t[4]=0,t[5]=0,t},n.fromValues=function(t,n,r,e,u,o){var i=new a.ARRAY_TYPE(6);return i[0]=t,i[1]=n,i[2]=r,i[3]=e,i[4]=u,i[5]=o,i},n.set=function(t,n,r,a,e,u,o){return t[0]=n,t[1]=r,t[2]=a,t[3]=e,t[4]=u,t[5]=o,t},n.invert=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=n[4],i=n[5],s=r*u-a*e;if(!s)return null;return s=1/s,t[0]=u*s,t[1]=-a*s,t[2]=-e*s,t[3]=r*s,t[4]=(e*i-u*o)*s,t[5]=(a*o-r*i)*s,t},n.determinant=function(t){return t[0]*t[3]-t[1]*t[2]},n.multiply=e,n.rotate=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=Math.sin(r),f=Math.cos(r);return t[0]=a*f+u*c,t[1]=e*f+o*c,t[2]=a*-c+u*f,t[3]=e*-c+o*f,t[4]=i,t[5]=s,t},n.scale=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=r[0],f=r[1];return t[0]=a*c,t[1]=e*c,t[2]=u*f,t[3]=o*f,t[4]=i,t[5]=s,t},n.translate=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=r[0],f=r[1];return t[0]=a,t[1]=e,t[2]=u,t[3]=o,t[4]=a*c+u*f+i,t[5]=e*c+o*f+s,t},n.fromRotation=function(t,n){var r=Math.sin(n),a=Math.cos(n);return t[0]=a,t[1]=r,t[2]=-r,t[3]=a,t[4]=0,t[5]=0,t},n.fromScaling=function(t,n){return t[0]=n[0],t[1]=0,t[2]=0,t[3]=n[1],t[4]=0,t[5]=0,t},n.fromTranslation=function(t,n){return t[0]=1,t[1]=0,t[2]=0,t[3]=1,t[4]=n[0],t[5]=n[1],t},n.str=function(t){return"mat2d("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+", "+t[4]+", "+t[5]+")"},n.frob=function(t){return Math.sqrt(Math.pow(t[0],2)+Math.pow(t[1],2)+Math.pow(t[2],2)+Math.pow(t[3],2)+Math.pow(t[4],2)+Math.pow(t[5],2)+1)},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t[3]=n[3]+r[3],t[4]=n[4]+r[4],t[5]=n[5]+r[5],t},n.subtract=u,n.multiplyScalar=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t[3]=n[3]*r,t[4]=n[4]*r,t[5]=n[5]*r,t},n.multiplyScalarAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t[2]=n[2]+r[2]*a,t[3]=n[3]+r[3]*a,t[4]=n[4]+r[4]*a,t[5]=n[5]+r[5]*a,t},n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]&&t[4]===n[4]&&t[5]===n[5]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=t[3],i=t[4],s=t[5],c=n[0],f=n[1],M=n[2],h=n[3],l=n[4],v=n[5];return Math.abs(r-c)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(c))&&Math.abs(e-f)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(f))&&Math.abs(u-M)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(M))&&Math.abs(o-h)<=a.EPSILON*Math.max(1,Math.abs(o),Math.abs(h))&&Math.abs(i-l)<=a.EPSILON*Math.max(1,Math.abs(i),Math.abs(l))&&Math.abs(s-v)<=a.EPSILON*Math.max(1,Math.abs(s),Math.abs(v))};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=n[4],s=n[5],c=r[0],f=r[1],M=r[2],h=r[3],l=r[4],v=r[5];return t[0]=a*c+u*f,t[1]=e*c+o*f,t[2]=a*M+u*h,t[3]=e*M+o*h,t[4]=a*l+u*v+i,t[5]=e*l+o*v+s,t}function u(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t[2]=n[2]-r[2],t[3]=n[3]-r[3],t[4]=n[4]-r[4],t[5]=n[5]-r[5],t}n.mul=e,n.sub=u},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.sub=n.mul=void 0,n.create=function(){var t=new a.ARRAY_TYPE(4);a.ARRAY_TYPE!=Float32Array&&(t[1]=0,t[2]=0);return t[0]=1,t[3]=1,t},n.clone=function(t){var n=new a.ARRAY_TYPE(4);return n[0]=t[0],n[1]=t[1],n[2]=t[2],n[3]=t[3],n},n.copy=function(t,n){return t[0]=n[0],t[1]=n[1],t[2]=n[2],t[3]=n[3],t},n.identity=function(t){return t[0]=1,t[1]=0,t[2]=0,t[3]=1,t},n.fromValues=function(t,n,r,e){var u=new a.ARRAY_TYPE(4);return u[0]=t,u[1]=n,u[2]=r,u[3]=e,u},n.set=function(t,n,r,a,e){return t[0]=n,t[1]=r,t[2]=a,t[3]=e,t},n.transpose=function(t,n){if(t===n){var r=n[1];t[1]=n[2],t[2]=r}else t[0]=n[0],t[1]=n[2],t[2]=n[1],t[3]=n[3];return t},n.invert=function(t,n){var r=n[0],a=n[1],e=n[2],u=n[3],o=r*u-e*a;if(!o)return null;return o=1/o,t[0]=u*o,t[1]=-a*o,t[2]=-e*o,t[3]=r*o,t},n.adjoint=function(t,n){var r=n[0];return t[0]=n[3],t[1]=-n[1],t[2]=-n[2],t[3]=r,t},n.determinant=function(t){return t[0]*t[3]-t[2]*t[1]},n.multiply=e,n.rotate=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=Math.sin(r),s=Math.cos(r);return t[0]=a*s+u*i,t[1]=e*s+o*i,t[2]=a*-i+u*s,t[3]=e*-i+o*s,t},n.scale=function(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=r[0],s=r[1];return t[0]=a*i,t[1]=e*i,t[2]=u*s,t[3]=o*s,t},n.fromRotation=function(t,n){var r=Math.sin(n),a=Math.cos(n);return t[0]=a,t[1]=r,t[2]=-r,t[3]=a,t},n.fromScaling=function(t,n){return t[0]=n[0],t[1]=0,t[2]=0,t[3]=n[1],t},n.str=function(t){return"mat2("+t[0]+", "+t[1]+", "+t[2]+", "+t[3]+")"},n.frob=function(t){return Math.sqrt(Math.pow(t[0],2)+Math.pow(t[1],2)+Math.pow(t[2],2)+Math.pow(t[3],2))},n.LDU=function(t,n,r,a){return t[2]=a[2]/a[0],r[0]=a[0],r[1]=a[1],r[3]=a[3]-t[2]*r[1],[t,n,r]},n.add=function(t,n,r){return t[0]=n[0]+r[0],t[1]=n[1]+r[1],t[2]=n[2]+r[2],t[3]=n[3]+r[3],t},n.subtract=u,n.exactEquals=function(t,n){return t[0]===n[0]&&t[1]===n[1]&&t[2]===n[2]&&t[3]===n[3]},n.equals=function(t,n){var r=t[0],e=t[1],u=t[2],o=t[3],i=n[0],s=n[1],c=n[2],f=n[3];return Math.abs(r-i)<=a.EPSILON*Math.max(1,Math.abs(r),Math.abs(i))&&Math.abs(e-s)<=a.EPSILON*Math.max(1,Math.abs(e),Math.abs(s))&&Math.abs(u-c)<=a.EPSILON*Math.max(1,Math.abs(u),Math.abs(c))&&Math.abs(o-f)<=a.EPSILON*Math.max(1,Math.abs(o),Math.abs(f))},n.multiplyScalar=function(t,n,r){return t[0]=n[0]*r,t[1]=n[1]*r,t[2]=n[2]*r,t[3]=n[3]*r,t},n.multiplyScalarAndAdd=function(t,n,r,a){return t[0]=n[0]+r[0]*a,t[1]=n[1]+r[1]*a,t[2]=n[2]+r[2]*a,t[3]=n[3]+r[3]*a,t};var a=function(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}(r(0));function e(t,n,r){var a=n[0],e=n[1],u=n[2],o=n[3],i=r[0],s=r[1],c=r[2],f=r[3];return t[0]=a*i+u*s,t[1]=e*i+o*s,t[2]=a*c+u*f,t[3]=e*c+o*f,t}function u(t,n,r){return t[0]=n[0]-r[0],t[1]=n[1]-r[1],t[2]=n[2]-r[2],t[3]=n[3]-r[3],t}n.mul=e,n.sub=u},function(t,n,r){"use strict";Object.defineProperty(n,"__esModule",{value:!0}),n.vec4=n.vec3=n.vec2=n.quat2=n.quat=n.mat4=n.mat3=n.mat2d=n.mat2=n.glMatrix=void 0;var a=l(r(0)),e=l(r(9)),u=l(r(8)),o=l(r(5)),i=l(r(4)),s=l(r(3)),c=l(r(7)),f=l(r(6)),M=l(r(2)),h=l(r(1));function l(t){if(t&&t.__esModule)return t;var n={};if(null!=t)for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&(n[r]=t[r]);return n.default=t,n}n.glMatrix=a,n.mat2=e,n.mat2d=u,n.mat3=o,n.mat4=i,n.quat=s,n.quat2=c,n.vec2=f,n.vec3=M,n.vec4=h}])});
-},{}],74:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 "use strict"
 
 function compileSearch(funcName, predicate, reversed, extraArgs, useNdarray, earlyOut) {
@@ -17965,7 +18473,7 @@ module.exports = {
   eq: compileBoundsSearch("-", true, "EQ", true)
 }
 
-},{}],75:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var inherits = require('inherits')
 
 module.exports = function(url, cb) {
@@ -17993,7 +18501,7 @@ function BinaryXHR(url, cb) {
   xhr.send(null)
 }
 
-},{"inherits":76}],76:[function(require,module,exports){
+},{"inherits":85}],85:[function(require,module,exports){
 module.exports = inherits
 
 function inherits (c, p, proto) {
@@ -18024,7 +18532,7 @@ function inherits (c, p, proto) {
 //inherits(Child, Parent)
 //new Child
 
-},{}],77:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 /**
  * Bit twiddling hacks for JavaScript.
  *
@@ -18230,7 +18738,7 @@ exports.nextCombination = function(v) {
 }
 
 
-},{}],78:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 
 // get all coordinates for a cube ranging from vertex a to b
@@ -18376,7 +18884,7 @@ var parseBlockModel = function(elements, getTextureUV, x, y, z) {
 module.exports = parseBlockModel;
 
 
-},{}],79:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 var proto = {}
 module.exports = proto
 
@@ -18397,7 +18905,7 @@ function mix(from, into) {
   }
 }
 
-},{"./copy.js":81,"./create.js":82,"./from.js":83,"./is.js":84,"./join.js":85,"./read.js":87,"./subarray.js":88,"./to.js":89,"./write.js":90}],80:[function(require,module,exports){
+},{"./copy.js":90,"./create.js":91,"./from.js":92,"./is.js":93,"./join.js":94,"./read.js":96,"./subarray.js":97,"./to.js":98,"./write.js":99}],89:[function(require,module,exports){
 (function (exports) {
 	'use strict';
 
@@ -18483,7 +18991,7 @@ function mix(from, into) {
 	module.exports.fromByteArray = uint8ToBase64;
 }());
 
-},{}],81:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = copy
 
 var slice = [].slice
@@ -18537,12 +19045,12 @@ function slow_copy(from, to, j, i, jend) {
   }
 }
 
-},{}],82:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = function(size) {
   return new Uint8Array(size)
 }
 
-},{}],83:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = from
 
 var base64 = require('base64-js')
@@ -18678,13 +19186,13 @@ function from_base64(str) {
   return new Uint8Array(base64.toByteArray(str)) 
 }
 
-},{"base64-js":80}],84:[function(require,module,exports){
+},{"base64-js":89}],93:[function(require,module,exports){
 
 module.exports = function(buffer) {
   return buffer instanceof Uint8Array;
 }
 
-},{}],85:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports = join
 
 function join(targets, hint) {
@@ -18722,7 +19230,7 @@ function get_length(targets) {
   return size
 }
 
-},{}],86:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 var proto
   , map
 
@@ -18744,7 +19252,7 @@ function get(target) {
   return out
 }
 
-},{}],87:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 module.exports = {
     readUInt8:      read_uint8
   , readInt8:       read_int8
@@ -18833,14 +19341,14 @@ function read_double_be(target, at) {
   return dv.getFloat64(at + target.byteOffset, false)
 }
 
-},{"./mapped.js":86}],88:[function(require,module,exports){
+},{"./mapped.js":95}],97:[function(require,module,exports){
 module.exports = subarray
 
 function subarray(buf, from, to) {
   return buf.subarray(from || 0, to || buf.length)
 }
 
-},{}],89:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 module.exports = to
 
 var base64 = require('base64-js')
@@ -18878,7 +19386,7 @@ function to_base64(buf) {
 }
 
 
-},{"base64-js":80,"to-utf8":298}],90:[function(require,module,exports){
+},{"base64-js":89,"to-utf8":341}],99:[function(require,module,exports){
 module.exports = {
     writeUInt8:      write_uint8
   , writeInt8:       write_int8
@@ -18966,11 +19474,103 @@ function write_double_be(target, value, at) {
   return dv.setFloat64(at + target.byteOffset, value, false)
 }
 
-},{"./mapped.js":86}],91:[function(require,module,exports){
+},{"./mapped.js":95}],100:[function(require,module,exports){
 arguments[4][12][0].apply(exports,arguments)
-},{"./":92,"dup":12,"get-intrinsic":121}],92:[function(require,module,exports){
+},{"./":101,"dup":12,"get-intrinsic":140}],101:[function(require,module,exports){
 arguments[4][13][0].apply(exports,arguments)
-},{"dup":13,"function-bind":112,"get-intrinsic":121}],93:[function(require,module,exports){
+},{"dup":13,"function-bind":131,"get-intrinsic":140}],102:[function(require,module,exports){
+'use strict';
+
+var createDatgui = require('dat-gui');
+
+module.exports = function(game, opts) {
+  return new CameraDebug(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-plugins-ui', 'voxel-shader', 'game-shell-fps-camera']
+};
+
+function CameraDebug(game, opts) {
+  this.game = game;
+  this.gui = opts.gui || (game.plugins && game.plugins.get('voxel-plugins-ui') ? game.plugins.get('voxel-plugins-ui').gui : new createDatgui.GUI());
+
+  this.shader = game.plugins.get('voxel-shader');
+  if (!this.shader) throw new Error('camera-debug requires voxel-shader');
+
+  this.enable();
+}
+
+CameraDebug.prototype.enable = function() {
+  this.folder = this.gui.addFolder('camera');
+
+  var updateProjectionMatrix = this.shader.updateProjectionMatrix.bind(this.shader);
+
+  this.folder.add(this.shader, 'cameraFOV', 45, 110).onChange(updateProjectionMatrix);
+  this.folder.add(this.shader, 'cameraNear', 0.1, 10, 0.1).onChange(updateProjectionMatrix);
+  this.folder.add(this.shader, 'cameraFar', 10, 1000).onChange(updateProjectionMatrix);
+
+  this.updateables = [];
+  this.addVectorFolder('position', game.controls.target().avatar, 'position');
+  this.addVectorFolder('rotation', game.controls.target().avatar, 'rotation');
+  this.addVectorFolder('game.cameraPosition()', game, 'cameraPosition');
+  this.addVectorFolder('game.cameraVector()', game, 'cameraVector');
+
+  this.game.on('tick', this.onTick = this.tick.bind(this));
+};
+
+CameraDebug.prototype.disable = function() {
+  // TODO: remove folder. but, https://code.google.com/p/dat-gui/issues/detail?id=21
+
+  this.game.removeListener('tick', this.onTick);
+};
+
+var VectorProxy = function(obj, prop, gui) {
+  this.obj = obj;
+  this.prop = prop;
+  this.gui = gui;
+
+  this.x = this.y = this.z = 0.01
+};
+
+VectorProxy.prototype.update = function() {
+  var value = this.obj[this.prop];
+  if (typeof value === 'function') {
+    // function returning vec3 array
+    var vector = value.call(this.obj);
+    this.x = vector[0];
+    this.y = vector[1];
+    this.z = vector[2];
+  } else {
+    // property with .x .y .z
+    this.x = value.x;
+    this.y = value.y;
+    this.z = value.z;
+  }
+
+  // http://workshop.chromeexperiments.com/examples/gui/#10--Updating-the-Display-Manually
+  for (var i in this.gui.__controllers) {
+    this.gui.__controllers[i].updateDisplay();
+  }
+};
+
+CameraDebug.prototype.addVectorFolder = function(name, obj, prop) {
+  var folder = this.folder.addFolder(name);
+  var proxy = new VectorProxy(obj, prop, folder);
+  folder.add(proxy, 'x');
+  folder.add(proxy, 'y');
+  folder.add(proxy, 'z');
+  this.updateables.push(proxy);
+};
+
+CameraDebug.prototype.tick = function() {
+  for (var i = 0; i < this.updateables.length; i += 1) {
+    // update method pattern, http://gameprogrammingpatterns.com/update-method.html
+    this.updateables[i].update();
+  }
+};
+
+
+},{"dat-gui":117}],103:[function(require,module,exports){
 (function (Buffer){(function (){
 var clone = (function() {
 'use strict';
@@ -19140,7 +19740,7 @@ if (typeof module === 'object' && module.exports) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":11}],94:[function(require,module,exports){
+},{"buffer":11}],104:[function(require,module,exports){
 module.exports = function(field, tilesize, dimensions, offset) {
   dimensions = dimensions || [ 
     Math.sqrt(field.length) >> 0
@@ -19229,7 +19829,349 @@ module.exports = function(field, tilesize, dimensions, offset) {
   }  
 }
 
-},{}],95:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
+'use strict';
+
+const EventEmitter = require('events').EventEmitter;
+const vkey = require('vkey');
+
+const MAX_LINES = 999;
+
+class ConsoleWidget extends EventEmitter {
+  constructor(opts) {
+    super();
+
+    this.opts = opts; 
+    if (!this.opts) this.opts = {};
+    if (this.opts.widthPx === undefined) this.opts.widthPx = 500;
+    if (this.opts.rows === undefined) this.opts.rows = 10;
+    if (this.opts.lineHeightPx === undefined) this.opts.lineHeightPx = 20;
+    if (this.opts.font === undefined) this.opts.font = '12pt Menlo, Courier, \'Courier New\', monospace';
+    if (this.opts.backgroundImage === undefined) this.opts.backgroundImage = 'linear-gradient(rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.6) 100%)';
+    if (this.opts.closeKeys === undefined) this.opts.closeKeys = ['<escape>'];
+    if (this.opts.hideTimeout === undefined) this.opts.hideTimeout = 5000; // ms
+
+    this.history = [];
+    this.historyCursor = this.history.length;
+
+    this.hideTimer = undefined;
+
+    this.createNodes();
+  }
+
+  show() {
+    this.containerNode.style.visibility = '';
+    this.containerNode.style.transition = '';
+    this.containerNode.style.opacity = 1.0;
+    if (this.hideTimer) {
+      clearTimeout(this.hideTimer);
+    }
+  }
+
+  hide() {
+    this.containerNode.style.visibility = 'hidden';
+  }
+
+  open(text) {
+    this.show();
+    if (text !== undefined) {
+      this.setInput(text);
+    }
+    this.registerEvents();
+    this.focusInput();
+  }
+
+  close() {
+    this.unregisterEvents();
+    this.hide();
+  }
+
+  isOpen() {
+    return this.isShown();
+  }
+
+  isShown() {
+    return this.containerNode.style.visibility !== 'hidden' && this.containerNode.style.opacity|0 !== 0;
+  }
+
+  log(text) {
+    this.logNode(document.createTextNode(text));
+  }
+
+  logNode(node) {
+    if (!this.isShown()) {
+      // if logged without shown, show then hide after a time interval
+      this.show();
+      this.hideTimer = setTimeout(this.fadeOut.bind(this), this.opts.hideTimeout);
+    }
+
+    this.outputNode.appendChild(node);
+    this.outputNode.appendChild(document.createElement('br'));
+    this.scrollOutput();
+    // TODO: discard last lines
+  }
+
+  fadeOut() {
+    this.containerNode.style.transition = 'opacity linear 1s'; // TODO: add/remove CSS class instead of adding/removing style directly
+    this.containerNode.style.opacity = 0.0;
+  }
+ 
+  focusInput() {
+    this.inputNode.focus();
+  }
+
+  setInput(text) {
+    this.inputNode.value = text;
+    this.inputNode.setSelectionRange(text.length, text.length);
+  }
+
+  scrollOutput() {
+    //this.outputNode.scrollByLines?(MAX_LINES + 1); // nonstandard
+    // Scroll to very end (scrollHeight will be greater than scrollTop)
+    this.outputNode.scrollTop = this.outputNode.scrollHeight;
+  }
+
+  createNodes() {
+    this.containerNode = document.createElement('div');
+    this.containerNode.setAttribute('style', `
+    width: ${this.opts.widthPx}px;
+    height: ${this.opts.lineHeightPx * this.opts.rows}px;
+    border: 1px solid white;
+    color: white;
+    visibility: hidden;
+    bottom: 0px;
+    position: absolute;
+    font: ${this.opts.font};
+    background-image: ${this.opts.backgroundImage};
+    `);
+
+    this.outputNode = document.createElement('div');
+    this.outputNode.setAttribute('style', `
+    overflow-y: scroll; 
+    width: 100%;
+    height: ${this.opts.lineHeightPx * (this.opts.rows - 1)}px;
+    `);
+    // TODO: scrollbar styles for better visibility 
+
+    this.inputNode = document.createElement('input');
+    this.inputNode.setAttribute('style', `
+    width: 100%;
+    height: ${this.opts.lineHeightPx}px;
+    padding: 0px;
+    border: 1px dashed white;
+    background-color: transparent;
+    color: white;
+    font: ${this.opts.font};
+    `);
+
+    this.containerNode.appendChild(this.outputNode);
+    this.containerNode.appendChild(this.inputNode);
+
+    document.body.appendChild(this.containerNode);  // note: starts off hidden
+  }
+
+  registerEvents() {
+    document.body.addEventListener('keydown', this.onKeydown = (ev) => {
+      const key = vkey[ev.keyCode];
+
+      let preventDefault = true;
+
+      if (key === '<enter>') {
+        if (this.inputNode.value.length === 0) return;
+
+        this.history.push(this.inputNode.value);
+        this.historyCursor = this.history.length - 1;
+        this.emit('input', this.inputNode.value);
+        this.inputNode.value = '';
+      } else if (key === '<up>') {
+        if (ev.shiftKey) {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByLines(-1);
+        } else {
+          if (this.history[this.historyCursor] !== undefined) this.inputNode.value = this.history[this.historyCursor];
+          this.historyCursor -= 1;
+          if (this.historyCursor < 0) this.historyCursor = 0;
+        }
+      } else if (key === '<down>') {
+        if (ev.shiftKey) {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByLines(1);
+        } else {
+          if (this.history[this.historyCursor] !== undefined) this.inputNode.value = this.history[this.historyCursor];
+          this.historyCursor += 1;
+          if (this.historyCursor > this.history.length - 1) this.historyCursor = this.history.length - 1;
+        }
+      } else if (key === '<page-up>') {
+        if (ev.shiftKey) {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByLines(-1);
+        } else if (ev.ctrlKey || ev.metaKey) {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByLines(-MAX_LINES);
+        } else {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByPages(-1);
+        }
+      } else if (key === '<page-down>') {
+        if (ev.shiftKey) {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByLines(1);
+        } else if (ev.ctrlKey || ev.metaKey) {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByLines(MAX_LINES);
+        } else {
+          if (this.outputNode.scrollByLines) this.outputNode.scrollByPages(1);
+        }
+      } else if (this.opts.closeKeys.indexOf(key) !== -1) {
+        this.close();
+      } else {
+        // let unrecognized keys pass through
+        preventDefault = false;
+      }
+
+      if (preventDefault) ev.preventDefault();
+    });
+  }
+
+  unregisterEvents() {
+    document.body.removeEventListener('keydown', this.onKeydown);
+  }
+}
+
+module.exports = (opts) => new ConsoleWidget(opts);
+
+},{"events":15,"vkey":106}],106:[function(require,module,exports){
+var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
+  , isOSX = /OS X/.test(ua)
+  , isOpera = /Opera/.test(ua)
+  , maybeFirefox = !/like Gecko/.test(ua) && !isOpera
+
+var i, output = module.exports = {
+  0:  isOSX ? '<menu>' : '<UNK>'
+, 1:  '<mouse 1>'
+, 2:  '<mouse 2>'
+, 3:  '<break>'
+, 4:  '<mouse 3>'
+, 5:  '<mouse 4>'
+, 6:  '<mouse 5>'
+, 8:  '<backspace>'
+, 9:  '<tab>'
+, 12: '<clear>'
+, 13: '<enter>'
+, 16: '<shift>'
+, 17: '<control>'
+, 18: '<alt>'
+, 19: '<pause>'
+, 20: '<caps-lock>'
+, 21: '<ime-hangul>'
+, 23: '<ime-junja>'
+, 24: '<ime-final>'
+, 25: '<ime-kanji>'
+, 27: '<escape>'
+, 28: '<ime-convert>'
+, 29: '<ime-nonconvert>'
+, 30: '<ime-accept>'
+, 31: '<ime-mode-change>'
+, 27: '<escape>'
+, 32: '<space>'
+, 33: '<page-up>'
+, 34: '<page-down>'
+, 35: '<end>'
+, 36: '<home>'
+, 37: '<left>'
+, 38: '<up>'
+, 39: '<right>'
+, 40: '<down>'
+, 41: '<select>'
+, 42: '<print>'
+, 43: '<execute>'
+, 44: '<snapshot>'
+, 45: '<insert>'
+, 46: '<delete>'
+, 47: '<help>'
+, 91: '<meta>'  // meta-left -- no one handles left and right properly, so we coerce into one.
+, 92: '<meta>'  // meta-right
+, 93: isOSX ? '<meta>' : '<menu>'      // chrome,opera,safari all report this for meta-right (osx mbp).
+, 95: '<sleep>'
+, 106: '<num-*>'
+, 107: '<num-+>'
+, 108: '<num-enter>'
+, 109: '<num-->'
+, 110: '<num-.>'
+, 111: '<num-/>'
+, 144: '<num-lock>'
+, 145: '<scroll-lock>'
+, 160: '<shift-left>'
+, 161: '<shift-right>'
+, 162: '<control-left>'
+, 163: '<control-right>'
+, 164: '<alt-left>'
+, 165: '<alt-right>'
+, 166: '<browser-back>'
+, 167: '<browser-forward>'
+, 168: '<browser-refresh>'
+, 169: '<browser-stop>'
+, 170: '<browser-search>'
+, 171: '<browser-favorites>'
+, 172: '<browser-home>'
+
+  // ff/osx reports '<volume-mute>' for '-'
+, 173: isOSX && maybeFirefox ? '-' : '<volume-mute>'
+, 174: '<volume-down>'
+, 175: '<volume-up>'
+, 176: '<next-track>'
+, 177: '<prev-track>'
+, 178: '<stop>'
+, 179: '<play-pause>'
+, 180: '<launch-mail>'
+, 181: '<launch-media-select>'
+, 182: '<launch-app 1>'
+, 183: '<launch-app 2>'
+, 186: ';'
+, 187: '='
+, 188: ','
+, 189: '-'
+, 190: '.'
+, 191: '/'
+, 192: '`'
+, 219: '['
+, 220: '\\'
+, 221: ']'
+, 222: "'"
+, 223: '<meta>'
+, 224: '<meta>'       // firefox reports meta here.
+, 226: '<alt-gr>'
+, 229: '<ime-process>'
+, 231: isOpera ? '`' : '<unicode>'
+, 246: '<attention>'
+, 247: '<crsel>'
+, 248: '<exsel>'
+, 249: '<erase-eof>'
+, 250: '<play>'
+, 251: '<zoom>'
+, 252: '<no-name>'
+, 253: '<pa-1>'
+, 254: '<clear>'
+}
+
+for(i = 58; i < 65; ++i) {
+  output[i] = String.fromCharCode(i)
+}
+
+// 0-9
+for(i = 48; i < 58; ++i) {
+  output[i] = (i - 48)+''
+}
+
+// A-Z
+for(i = 65; i < 91; ++i) {
+  output[i] = String.fromCharCode(i)
+}
+
+// num0-9
+for(i = 96; i < 106; ++i) {
+  output[i] = '<num-'+(i - 96)+'>'
+}
+
+// F1-F24
+for(i = 112; i < 136; ++i) {
+  output[i] = 'F'+(i-111)
+}
+
+},{}],107:[function(require,module,exports){
 (function (global){(function (){
 'use strict';
 
@@ -19536,7 +20478,114 @@ module.exports.RecipeList = RecipeList;
 
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],96:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
+'use strict';
+
+const expandName = require('cube-side-array');
+
+module.exports = (opts) => new CubeIcon(opts);
+
+class CubeIcon {
+  constructor(opts) {
+
+    if (!opts) opts = {};
+
+    const showFaces = opts.showFaces !== undefined ? opts.showFaces :
+      //faces = ['back', 'right', 'left', 'top', 'bottom', 'front']
+      //           0        1        2       3       4        5
+      [                   'left', 'top',          'front'];
+
+    if (opts.images !== undefined) {
+      // expand from scalar or array or object to each face image
+      const xn = expandName(opts.images, 'KRLTBF');
+      opts.back = xn[0];
+      opts.right = xn[1];
+      opts.left = xn[2];
+      opts.top = xn[3];
+      opts.bottom = xn[4];
+      opts.front = xn[5];
+    }
+
+    if (opts.side !== undefined) {
+      opts.left = opts.front = opts.side;
+    }
+
+    const rotateX = opts.rotateX !== undefined ? opts.rotateX : -30;
+    const rotateY = opts.rotateY !== undefined ? opts.rotateY : 45;
+    const scale = opts.scale !== undefined ? opts.scale : 3.55;
+
+    const s = opts.size !== undefined ? opts.size : 16;
+
+    this.container = document.createElement('div');
+
+    //cw = Math.ceil(s * (1 - Math.sin(rotateX * Math.PI/180))) * scale
+    //ch = Math.ceil(s * (1 + Math.cos(rotateY * Math.PI/180))) * scale
+  
+    const cw = 90;
+    const ch = 90;
+
+    const cubeW = Math.floor(ch / ((1 - Math.sin(rotateX * Math.PI/180))) - 2);
+    const cubeH = Math.ceil(cw / ((1 + Math.cos(rotateY * Math.PI/180))) + 1);
+
+    const shiftX = cw - s * scale   - 5;
+    const shiftY = ch - s * scale   + 5;
+
+    //console.log(cw,s,cubeW,shiftX)
+    //console.log(ch,s,cubeH,shiftY)
+
+    this.container.setAttribute('style', `
+-webkit-transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateX(${shiftX}px) translateY(${shiftY}px) scale3d(${scale},${scale},${scale});
+        transform: rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateX(${shiftX}px) translateY(${shiftY}px) scale3d(${scale},${scale},${scale});
+-webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+position: relative;
+-webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+`);
+
+    const dz = s / 2
+    const faceTransforms = { // http://desandro.github.io/3dtransforms/docs/cube.html
+      front:  `rotateY(   0deg ) translateZ( ${dz}px )`,
+      back:   `rotateX( 180deg ) translateZ( ${dz}px )`,
+      right:  `rotateY(  90deg ) translateZ( ${dz}px )`,
+      left:   `rotateY( -90deg ) translateZ( ${dz}px )`,
+      top:    `rotateX(  90deg ) translateZ( ${dz}px )`,
+      bottom: `rotateX( -90deg ) translateZ( ${dz}px )`,
+    };
+
+    const faceFilters = opts.faceFilters !== undefined ? opts.faceFilters : {
+      front: 'brightness(60%)',
+      left: 'brightness(100%)',
+      top: 'brightness(150%)',
+    };
+
+    for (let i = 0; i < showFaces.length; ++i) {
+      const faceName = showFaces[i];
+
+      const face = document.createElement('div');
+      face.setAttribute('style', `
+-webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+-webkit-transform: ${faceTransforms[faceName]};
+        transform: ${faceTransforms[faceName]};
+position: absolute;
+border: 0.5px solid black;
+width: ${s}px;
+height: ${s}px;`);
+      face.style.backgroundImage = 'url(' + opts[faceName] + ')';
+      if (faceFilters[faceName]) {
+        face.style.webkitFilter = faceFilters[faceName];
+        face.style.      filter = faceFilters[faceName];  // for future support (note: unsupported in Firefox 27; see https://developer.mozilla.org/en-US/docs/Web/CSS/filter#Gecko_notes)
+      }
+
+      this.container.style.webkitTransition = '-webkit-transform 1s';
+      this.container.style.      transition = '        transform 1s';
+      this.container.appendChild(face);
+    }
+  }
+}
+
+},{"cube-side-array":109}],109:[function(require,module,exports){
 'use strict';
 
 var expandName = function(name, order) {
@@ -19611,7 +20660,7 @@ var expandName = function(name, order) {
 module.exports = expandName;
 
 
-},{}],97:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 "use strict"
 
 var createThunk = require("./lib/thunk.js")
@@ -19722,7 +20771,7 @@ function compileCwise(user_args) {
 
 module.exports = compileCwise
 
-},{"./lib/thunk.js":99}],98:[function(require,module,exports){
+},{"./lib/thunk.js":112}],111:[function(require,module,exports){
 "use strict"
 
 var uniq = require("uniq")
@@ -20078,7 +21127,7 @@ function generateCWiseOp(proc, typesig) {
 }
 module.exports = generateCWiseOp
 
-},{"uniq":303}],99:[function(require,module,exports){
+},{"uniq":347}],112:[function(require,module,exports){
 "use strict"
 
 // The function below is called when constructing a cwise function object, and does the following:
@@ -20151,11 +21200,11 @@ function createThunk(proc) {
 
 module.exports = createThunk
 
-},{"./compile.js":98}],100:[function(require,module,exports){
+},{"./compile.js":111}],113:[function(require,module,exports){
 module.exports = require("cwise-compiler")
-},{"cwise-compiler":101}],101:[function(require,module,exports){
-arguments[4][97][0].apply(exports,arguments)
-},{"./lib/thunk.js":103,"dup":97}],102:[function(require,module,exports){
+},{"cwise-compiler":114}],114:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./lib/thunk.js":116,"dup":110}],115:[function(require,module,exports){
 "use strict"
 
 var uniq = require("uniq")
@@ -20515,7 +21564,7 @@ function generateCWiseOp(proc, typesig) {
 }
 module.exports = generateCWiseOp
 
-},{"uniq":303}],103:[function(require,module,exports){
+},{"uniq":347}],116:[function(require,module,exports){
 "use strict"
 
 // The function below is called when constructing a cwise function object, and does the following:
@@ -20603,7 +21652,4427 @@ function createThunk(proc) {
 
 module.exports = createThunk
 
-},{"./compile.js":102}],104:[function(require,module,exports){
+},{"./compile.js":115}],117:[function(require,module,exports){
+module.exports = require('./vendor/dat.gui')
+module.exports.color = require('./vendor/dat.color')
+},{"./vendor/dat.color":118,"./vendor/dat.gui":119}],118:[function(require,module,exports){
+/**
+ * dat-gui JavaScript Controller Library
+ * http://code.google.com/p/dat-gui
+ *
+ * Copyright 2011 Data Arts Team, Google Creative Lab
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+/** @namespace */
+var dat = module.exports = dat || {};
+
+/** @namespace */
+dat.color = dat.color || {};
+
+/** @namespace */
+dat.utils = dat.utils || {};
+
+dat.utils.common = (function () {
+  
+  var ARR_EACH = Array.prototype.forEach;
+  var ARR_SLICE = Array.prototype.slice;
+
+  /**
+   * Band-aid methods for things that should be a lot easier in JavaScript.
+   * Implementation and structure inspired by underscore.js
+   * http://documentcloud.github.com/underscore/
+   */
+
+  return { 
+    
+    BREAK: {},
+  
+    extend: function(target) {
+      
+      this.each(ARR_SLICE.call(arguments, 1), function(obj) {
+        
+        for (var key in obj)
+          if (!this.isUndefined(obj[key])) 
+            target[key] = obj[key];
+        
+      }, this);
+      
+      return target;
+      
+    },
+    
+    defaults: function(target) {
+      
+      this.each(ARR_SLICE.call(arguments, 1), function(obj) {
+        
+        for (var key in obj)
+          if (this.isUndefined(target[key])) 
+            target[key] = obj[key];
+        
+      }, this);
+      
+      return target;
+    
+    },
+    
+    compose: function() {
+      var toCall = ARR_SLICE.call(arguments);
+            return function() {
+              var args = ARR_SLICE.call(arguments);
+              for (var i = toCall.length -1; i >= 0; i--) {
+                args = [toCall[i].apply(this, args)];
+              }
+              return args[0];
+            }
+    },
+    
+    each: function(obj, itr, scope) {
+
+      
+      if (ARR_EACH && obj.forEach === ARR_EACH) { 
+        
+        obj.forEach(itr, scope);
+        
+      } else if (obj.length === obj.length + 0) { // Is number but not NaN
+        
+        for (var key = 0, l = obj.length; key < l; key++)
+          if (key in obj && itr.call(scope, obj[key], key) === this.BREAK) 
+            return;
+            
+      } else {
+
+        for (var key in obj) 
+          if (itr.call(scope, obj[key], key) === this.BREAK)
+            return;
+            
+      }
+            
+    },
+    
+    defer: function(fnc) {
+      setTimeout(fnc, 0);
+    },
+    
+    toArray: function(obj) {
+      if (obj.toArray) return obj.toArray();
+      return ARR_SLICE.call(obj);
+    },
+
+    isUndefined: function(obj) {
+      return obj === undefined;
+    },
+    
+    isNull: function(obj) {
+      return obj === null;
+    },
+    
+    isNaN: function(obj) {
+      return obj !== obj;
+    },
+    
+    isArray: Array.isArray || function(obj) {
+      return obj.constructor === Array;
+    },
+    
+    isObject: function(obj) {
+      return obj === Object(obj);
+    },
+    
+    isNumber: function(obj) {
+      return obj === obj+0;
+    },
+    
+    isString: function(obj) {
+      return obj === obj+'';
+    },
+    
+    isBoolean: function(obj) {
+      return obj === false || obj === true;
+    },
+    
+    isFunction: function(obj) {
+      return Object.prototype.toString.call(obj) === '[object Function]';
+    }
+  
+  };
+    
+})();
+
+
+dat.color.toString = (function (common) {
+
+  return function(color) {
+
+    if (color.a == 1 || common.isUndefined(color.a)) {
+
+      var s = color.hex.toString(16);
+      while (s.length < 6) {
+        s = '0' + s;
+      }
+
+      return '#' + s;
+
+    } else {
+
+      return 'rgba(' + Math.round(color.r) + ',' + Math.round(color.g) + ',' + Math.round(color.b) + ',' + color.a + ')';
+
+    }
+
+  }
+
+})(dat.utils.common);
+
+
+dat.Color = dat.color.Color = (function (interpret, math, toString, common) {
+
+  var Color = function() {
+
+    this.__state = interpret.apply(this, arguments);
+
+    if (this.__state === false) {
+      throw 'Failed to interpret color arguments';
+    }
+
+    this.__state.a = this.__state.a || 1;
+
+
+  };
+
+  Color.COMPONENTS = ['r','g','b','h','s','v','hex','a'];
+
+  common.extend(Color.prototype, {
+
+    toString: function() {
+      return toString(this);
+    },
+
+    toOriginal: function() {
+      return this.__state.conversion.write(this);
+    }
+
+  });
+
+  defineRGBComponent(Color.prototype, 'r', 2);
+  defineRGBComponent(Color.prototype, 'g', 1);
+  defineRGBComponent(Color.prototype, 'b', 0);
+
+  defineHSVComponent(Color.prototype, 'h');
+  defineHSVComponent(Color.prototype, 's');
+  defineHSVComponent(Color.prototype, 'v');
+
+  Object.defineProperty(Color.prototype, 'a', {
+
+    get: function() {
+      return this.__state.a;
+    },
+
+    set: function(v) {
+      this.__state.a = v;
+    }
+
+  });
+
+  Object.defineProperty(Color.prototype, 'hex', {
+
+    get: function() {
+
+      if (!this.__state.space !== 'HEX') {
+        this.__state.hex = math.rgb_to_hex(this.r, this.g, this.b);
+      }
+
+      return this.__state.hex;
+
+    },
+
+    set: function(v) {
+
+      this.__state.space = 'HEX';
+      this.__state.hex = v;
+
+    }
+
+  });
+
+  function defineRGBComponent(target, component, componentHexIndex) {
+
+    Object.defineProperty(target, component, {
+
+      get: function() {
+
+        if (this.__state.space === 'RGB') {
+          return this.__state[component];
+        }
+
+        recalculateRGB(this, component, componentHexIndex);
+
+        return this.__state[component];
+
+      },
+
+      set: function(v) {
+
+        if (this.__state.space !== 'RGB') {
+          recalculateRGB(this, component, componentHexIndex);
+          this.__state.space = 'RGB';
+        }
+
+        this.__state[component] = v;
+
+      }
+
+    });
+
+  }
+
+  function defineHSVComponent(target, component) {
+
+    Object.defineProperty(target, component, {
+
+      get: function() {
+
+        if (this.__state.space === 'HSV')
+          return this.__state[component];
+
+        recalculateHSV(this);
+
+        return this.__state[component];
+
+      },
+
+      set: function(v) {
+
+        if (this.__state.space !== 'HSV') {
+          recalculateHSV(this);
+          this.__state.space = 'HSV';
+        }
+
+        this.__state[component] = v;
+
+      }
+
+    });
+
+  }
+
+  function recalculateRGB(color, component, componentHexIndex) {
+
+    if (color.__state.space === 'HEX') {
+
+      color.__state[component] = math.component_from_hex(color.__state.hex, componentHexIndex);
+
+    } else if (color.__state.space === 'HSV') {
+
+      common.extend(color.__state, math.hsv_to_rgb(color.__state.h, color.__state.s, color.__state.v));
+
+    } else {
+
+      throw 'Corrupted color state';
+
+    }
+
+  }
+
+  function recalculateHSV(color) {
+
+    var result = math.rgb_to_hsv(color.r, color.g, color.b);
+
+    common.extend(color.__state,
+        {
+          s: result.s,
+          v: result.v
+        }
+    );
+
+    if (!common.isNaN(result.h)) {
+      color.__state.h = result.h;
+    } else if (common.isUndefined(color.__state.h)) {
+      color.__state.h = 0;
+    }
+
+  }
+
+  return Color;
+
+})(dat.color.interpret = (function (toString, common) {
+
+  var result, toReturn;
+
+  var interpret = function() {
+
+    toReturn = false;
+
+    var original = arguments.length > 1 ? common.toArray(arguments) : arguments[0];
+
+    common.each(INTERPRETATIONS, function(family) {
+
+      if (family.litmus(original)) {
+
+        common.each(family.conversions, function(conversion, conversionName) {
+
+          result = conversion.read(original);
+
+          if (toReturn === false && result !== false) {
+            toReturn = result;
+            result.conversionName = conversionName;
+            result.conversion = conversion;
+            return common.BREAK;
+
+          }
+
+        });
+
+        return common.BREAK;
+
+      }
+
+    });
+
+    return toReturn;
+
+  };
+
+  var INTERPRETATIONS = [
+
+    // Strings
+    {
+
+      litmus: common.isString,
+
+      conversions: {
+
+        THREE_CHAR_HEX: {
+
+          read: function(original) {
+
+            var test = original.match(/^#([A-F0-9])([A-F0-9])([A-F0-9])$/i);
+            if (test === null) return false;
+
+            return {
+              space: 'HEX',
+              hex: parseInt(
+                  '0x' +
+                      test[1].toString() + test[1].toString() +
+                      test[2].toString() + test[2].toString() +
+                      test[3].toString() + test[3].toString())
+            };
+
+          },
+
+          write: toString
+
+        },
+
+        SIX_CHAR_HEX: {
+
+          read: function(original) {
+
+            var test = original.match(/^#([A-F0-9]{6})$/i);
+            if (test === null) return false;
+
+            return {
+              space: 'HEX',
+              hex: parseInt('0x' + test[1].toString())
+            };
+
+          },
+
+          write: toString
+
+        },
+
+        CSS_RGB: {
+
+          read: function(original) {
+
+            var test = original.match(/^rgb\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\)/);
+            if (test === null) return false;
+
+            return {
+              space: 'RGB',
+              r: parseFloat(test[1]),
+              g: parseFloat(test[2]),
+              b: parseFloat(test[3])
+            };
+
+          },
+
+          write: toString
+
+        },
+
+        CSS_RGBA: {
+
+          read: function(original) {
+
+            var test = original.match(/^rgba\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\,\s*(.+)\s*\)/);
+            if (test === null) return false;
+
+            return {
+              space: 'RGB',
+              r: parseFloat(test[1]),
+              g: parseFloat(test[2]),
+              b: parseFloat(test[3]),
+              a: parseFloat(test[4])
+            };
+
+          },
+
+          write: toString
+
+        }
+
+      }
+
+    },
+
+    // Numbers
+    {
+
+      litmus: common.isNumber,
+
+      conversions: {
+
+        HEX: {
+          read: function(original) {
+            return {
+              space: 'HEX',
+              hex: original,
+              conversionName: 'HEX'
+            }
+          },
+
+          write: function(color) {
+            return color.hex;
+          }
+        }
+
+      }
+
+    },
+
+    // Arrays
+    {
+
+      litmus: common.isArray,
+
+      conversions: {
+
+        RGB_ARRAY: {
+          read: function(original) {
+            if (original.length != 3) return false;
+            return {
+              space: 'RGB',
+              r: original[0],
+              g: original[1],
+              b: original[2]
+            };
+          },
+
+          write: function(color) {
+            return [color.r, color.g, color.b];
+          }
+
+        },
+
+        RGBA_ARRAY: {
+          read: function(original) {
+            if (original.length != 4) return false;
+            return {
+              space: 'RGB',
+              r: original[0],
+              g: original[1],
+              b: original[2],
+              a: original[3]
+            };
+          },
+
+          write: function(color) {
+            return [color.r, color.g, color.b, color.a];
+          }
+
+        }
+
+      }
+
+    },
+
+    // Objects
+    {
+
+      litmus: common.isObject,
+
+      conversions: {
+
+        RGBA_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.r) &&
+                common.isNumber(original.g) &&
+                common.isNumber(original.b) &&
+                common.isNumber(original.a)) {
+              return {
+                space: 'RGB',
+                r: original.r,
+                g: original.g,
+                b: original.b,
+                a: original.a
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              r: color.r,
+              g: color.g,
+              b: color.b,
+              a: color.a
+            }
+          }
+        },
+
+        RGB_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.r) &&
+                common.isNumber(original.g) &&
+                common.isNumber(original.b)) {
+              return {
+                space: 'RGB',
+                r: original.r,
+                g: original.g,
+                b: original.b
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              r: color.r,
+              g: color.g,
+              b: color.b
+            }
+          }
+        },
+
+        HSVA_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.h) &&
+                common.isNumber(original.s) &&
+                common.isNumber(original.v) &&
+                common.isNumber(original.a)) {
+              return {
+                space: 'HSV',
+                h: original.h,
+                s: original.s,
+                v: original.v,
+                a: original.a
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              h: color.h,
+              s: color.s,
+              v: color.v,
+              a: color.a
+            }
+          }
+        },
+
+        HSV_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.h) &&
+                common.isNumber(original.s) &&
+                common.isNumber(original.v)) {
+              return {
+                space: 'HSV',
+                h: original.h,
+                s: original.s,
+                v: original.v
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              h: color.h,
+              s: color.s,
+              v: color.v
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+
+  ];
+
+  return interpret;
+
+
+})(dat.color.toString,
+dat.utils.common),
+dat.color.math = (function () {
+
+  var tmpComponent;
+
+  return {
+
+    hsv_to_rgb: function(h, s, v) {
+
+      var hi = Math.floor(h / 60) % 6;
+
+      var f = h / 60 - Math.floor(h / 60);
+      var p = v * (1.0 - s);
+      var q = v * (1.0 - (f * s));
+      var t = v * (1.0 - ((1.0 - f) * s));
+      var c = [
+        [v, t, p],
+        [q, v, p],
+        [p, v, t],
+        [p, q, v],
+        [t, p, v],
+        [v, p, q]
+      ][hi];
+
+      return {
+        r: c[0] * 255,
+        g: c[1] * 255,
+        b: c[2] * 255
+      };
+
+    },
+
+    rgb_to_hsv: function(r, g, b) {
+
+      var min = Math.min(r, g, b),
+          max = Math.max(r, g, b),
+          delta = max - min,
+          h, s;
+
+      if (max != 0) {
+        s = delta / max;
+      } else {
+        return {
+          h: NaN,
+          s: 0,
+          v: 0
+        };
+      }
+
+      if (r == max) {
+        h = (g - b) / delta;
+      } else if (g == max) {
+        h = 2 + (b - r) / delta;
+      } else {
+        h = 4 + (r - g) / delta;
+      }
+      h /= 6;
+      if (h < 0) {
+        h += 1;
+      }
+
+      return {
+        h: h * 360,
+        s: s,
+        v: max / 255
+      };
+    },
+
+    rgb_to_hex: function(r, g, b) {
+      var hex = this.hex_with_component(0, 2, r);
+      hex = this.hex_with_component(hex, 1, g);
+      hex = this.hex_with_component(hex, 0, b);
+      return hex;
+    },
+
+    component_from_hex: function(hex, componentIndex) {
+      return (hex >> (componentIndex * 8)) & 0xFF;
+    },
+
+    hex_with_component: function(hex, componentIndex, value) {
+      return value << (tmpComponent = componentIndex * 8) | (hex & ~ (0xFF << tmpComponent));
+    }
+
+  }
+
+})(),
+dat.color.toString,
+dat.utils.common);
+},{}],119:[function(require,module,exports){
+/**
+ * dat-gui JavaScript Controller Library
+ * http://code.google.com/p/dat-gui
+ *
+ * Copyright 2011 Data Arts Team, Google Creative Lab
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+/** @namespace */
+var dat = module.exports = dat || {};
+
+/** @namespace */
+dat.gui = dat.gui || {};
+
+/** @namespace */
+dat.utils = dat.utils || {};
+
+/** @namespace */
+dat.controllers = dat.controllers || {};
+
+/** @namespace */
+dat.dom = dat.dom || {};
+
+/** @namespace */
+dat.color = dat.color || {};
+
+dat.utils.css = (function () {
+  return {
+    load: function (url, doc) {
+      doc = doc || document;
+      var link = doc.createElement('link');
+      link.type = 'text/css';
+      link.rel = 'stylesheet';
+      link.href = url;
+      doc.getElementsByTagName('head')[0].appendChild(link);
+    },
+    inject: function(css, doc) {
+      doc = doc || document;
+      var injected = document.createElement('style');
+      injected.type = 'text/css';
+      injected.innerHTML = css;
+      doc.getElementsByTagName('head')[0].appendChild(injected);
+    }
+  }
+})();
+
+
+dat.utils.common = (function () {
+  
+  var ARR_EACH = Array.prototype.forEach;
+  var ARR_SLICE = Array.prototype.slice;
+
+  /**
+   * Band-aid methods for things that should be a lot easier in JavaScript.
+   * Implementation and structure inspired by underscore.js
+   * http://documentcloud.github.com/underscore/
+   */
+
+  return { 
+    
+    BREAK: {},
+  
+    extend: function(target) {
+      
+      this.each(ARR_SLICE.call(arguments, 1), function(obj) {
+        
+        for (var key in obj)
+          if (!this.isUndefined(obj[key])) 
+            target[key] = obj[key];
+        
+      }, this);
+      
+      return target;
+      
+    },
+    
+    defaults: function(target) {
+      
+      this.each(ARR_SLICE.call(arguments, 1), function(obj) {
+        
+        for (var key in obj)
+          if (this.isUndefined(target[key])) 
+            target[key] = obj[key];
+        
+      }, this);
+      
+      return target;
+    
+    },
+    
+    compose: function() {
+      var toCall = ARR_SLICE.call(arguments);
+            return function() {
+              var args = ARR_SLICE.call(arguments);
+              for (var i = toCall.length -1; i >= 0; i--) {
+                args = [toCall[i].apply(this, args)];
+              }
+              return args[0];
+            }
+    },
+    
+    each: function(obj, itr, scope) {
+
+      
+      if (ARR_EACH && obj.forEach === ARR_EACH) { 
+        
+        obj.forEach(itr, scope);
+        
+      } else if (obj.length === obj.length + 0) { // Is number but not NaN
+        
+        for (var key = 0, l = obj.length; key < l; key++)
+          if (key in obj && itr.call(scope, obj[key], key) === this.BREAK) 
+            return;
+            
+      } else {
+
+        for (var key in obj) 
+          if (itr.call(scope, obj[key], key) === this.BREAK)
+            return;
+            
+      }
+            
+    },
+    
+    defer: function(fnc) {
+      setTimeout(fnc, 0);
+    },
+    
+    toArray: function(obj) {
+      if (obj.toArray) return obj.toArray();
+      return ARR_SLICE.call(obj);
+    },
+
+    isUndefined: function(obj) {
+      return obj === undefined;
+    },
+    
+    isNull: function(obj) {
+      return obj === null;
+    },
+    
+    isNaN: function(obj) {
+      return obj !== obj;
+    },
+    
+    isArray: Array.isArray || function(obj) {
+      return obj.constructor === Array;
+    },
+    
+    isObject: function(obj) {
+      return obj === Object(obj);
+    },
+    
+    isNumber: function(obj) {
+      return obj === obj+0;
+    },
+    
+    isString: function(obj) {
+      return obj === obj+'';
+    },
+    
+    isBoolean: function(obj) {
+      return obj === false || obj === true;
+    },
+    
+    isFunction: function(obj) {
+      return Object.prototype.toString.call(obj) === '[object Function]';
+    }
+  
+  };
+    
+})();
+
+
+dat.controllers.Controller = (function (common) {
+
+  /**
+   * @class An "abstract" class that represents a given property of an object.
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   *
+   * @member dat.controllers
+   */
+  var Controller = function(object, property) {
+
+    this.initialValue = object[property];
+
+    /**
+     * Those who extend this class will put their DOM elements in here.
+     * @type {DOMElement}
+     */
+    this.domElement = document.createElement('div');
+
+    /**
+     * The object to manipulate
+     * @type {Object}
+     */
+    this.object = object;
+
+    /**
+     * The name of the property to manipulate
+     * @type {String}
+     */
+    this.property = property;
+
+    /**
+     * The function to be called on change.
+     * @type {Function}
+     * @ignore
+     */
+    this.__onChange = undefined;
+
+    /**
+     * The function to be called on finishing change.
+     * @type {Function}
+     * @ignore
+     */
+    this.__onFinishChange = undefined;
+
+  };
+
+  common.extend(
+
+      Controller.prototype,
+
+      /** @lends dat.controllers.Controller.prototype */
+      {
+
+        /**
+         * Specify that a function fire every time someone changes the value with
+         * this Controller.
+         *
+         * @param {Function} fnc This function will be called whenever the value
+         * is modified via this Controller.
+         * @returns {dat.controllers.Controller} this
+         */
+        onChange: function(fnc) {
+          this.__onChange = fnc;
+          return this;
+        },
+
+        /**
+         * Specify that a function fire every time someone "finishes" changing
+         * the value wih this Controller. Useful for values that change
+         * incrementally like numbers or strings.
+         *
+         * @param {Function} fnc This function will be called whenever
+         * someone "finishes" changing the value via this Controller.
+         * @returns {dat.controllers.Controller} this
+         */
+        onFinishChange: function(fnc) {
+          this.__onFinishChange = fnc;
+          return this;
+        },
+
+        /**
+         * Change the value of <code>object[property]</code>
+         *
+         * @param {Object} newValue The new value of <code>object[property]</code>
+         */
+        setValue: function(newValue) {
+          this.object[this.property] = newValue;
+          if (this.__onChange) {
+            this.__onChange.call(this, newValue);
+          }
+          this.updateDisplay();
+          return this;
+        },
+
+        /**
+         * Gets the value of <code>object[property]</code>
+         *
+         * @returns {Object} The current value of <code>object[property]</code>
+         */
+        getValue: function() {
+          return this.object[this.property];
+        },
+
+        /**
+         * Refreshes the visual display of a Controller in order to keep sync
+         * with the object's current value.
+         * @returns {dat.controllers.Controller} this
+         */
+        updateDisplay: function() {
+          return this;
+        },
+
+        /**
+         * @returns {Boolean} true if the value has deviated from initialValue
+         */
+        isModified: function() {
+          return this.initialValue !== this.getValue()
+        }
+
+      }
+
+  );
+
+  return Controller;
+
+
+})(dat.utils.common);
+
+
+dat.dom.dom = (function (common) {
+
+  var EVENT_MAP = {
+    'HTMLEvents': ['change'],
+    'MouseEvents': ['click','mousemove','mousedown','mouseup', 'mouseover'],
+    'KeyboardEvents': ['keydown']
+  };
+
+  var EVENT_MAP_INV = {};
+  common.each(EVENT_MAP, function(v, k) {
+    common.each(v, function(e) {
+      EVENT_MAP_INV[e] = k;
+    });
+  });
+
+  var CSS_VALUE_PIXELS = /(\d+(\.\d+)?)px/;
+
+  function cssValueToPixels(val) {
+
+    if (val === '0' || common.isUndefined(val)) return 0;
+
+    var match = val.match(CSS_VALUE_PIXELS);
+
+    if (!common.isNull(match)) {
+      return parseFloat(match[1]);
+    }
+
+    // TODO ...ems? %?
+
+    return 0;
+
+  }
+
+  /**
+   * @namespace
+   * @member dat.dom
+   */
+  var dom = {
+
+    /**
+     * 
+     * @param elem
+     * @param selectable
+     */
+    makeSelectable: function(elem, selectable) {
+
+      if (elem === undefined || elem.style === undefined) return;
+
+      elem.onselectstart = selectable ? function() {
+        return false;
+      } : function() {
+      };
+
+      elem.style.MozUserSelect = selectable ? 'auto' : 'none';
+      elem.style.KhtmlUserSelect = selectable ? 'auto' : 'none';
+      elem.unselectable = selectable ? 'on' : 'off';
+
+    },
+
+    /**
+     *
+     * @param elem
+     * @param horizontal
+     * @param vertical
+     */
+    makeFullscreen: function(elem, horizontal, vertical) {
+
+      if (common.isUndefined(horizontal)) horizontal = true;
+      if (common.isUndefined(vertical)) vertical = true;
+
+      elem.style.position = 'absolute';
+
+      if (horizontal) {
+        elem.style.left = 0;
+        elem.style.right = 0;
+      }
+      if (vertical) {
+        elem.style.top = 0;
+        elem.style.bottom = 0;
+      }
+
+    },
+
+    /**
+     *
+     * @param elem
+     * @param eventType
+     * @param params
+     */
+    fakeEvent: function(elem, eventType, params, aux) {
+      params = params || {};
+      var className = EVENT_MAP_INV[eventType];
+      if (!className) {
+        throw new Error('Event type ' + eventType + ' not supported.');
+      }
+      var evt = document.createEvent(className);
+      switch (className) {
+        case 'MouseEvents':
+          var clientX = params.x || params.clientX || 0;
+          var clientY = params.y || params.clientY || 0;
+          evt.initMouseEvent(eventType, params.bubbles || false,
+              params.cancelable || true, window, params.clickCount || 1,
+              0, //screen X
+              0, //screen Y
+              clientX, //client X
+              clientY, //client Y
+              false, false, false, false, 0, null);
+          break;
+        case 'KeyboardEvents':
+          var init = evt.initKeyboardEvent || evt.initKeyEvent; // webkit || moz
+          common.defaults(params, {
+            cancelable: true,
+            ctrlKey: false,
+            altKey: false,
+            shiftKey: false,
+            metaKey: false,
+            keyCode: undefined,
+            charCode: undefined
+          });
+          init(eventType, params.bubbles || false,
+              params.cancelable, window,
+              params.ctrlKey, params.altKey,
+              params.shiftKey, params.metaKey,
+              params.keyCode, params.charCode);
+          break;
+        default:
+          evt.initEvent(eventType, params.bubbles || false,
+              params.cancelable || true);
+          break;
+      }
+      common.defaults(evt, aux);
+      elem.dispatchEvent(evt);
+    },
+
+    /**
+     *
+     * @param elem
+     * @param event
+     * @param func
+     * @param bool
+     */
+    bind: function(elem, event, func, bool) {
+      bool = bool || false;
+      if (elem.addEventListener)
+        elem.addEventListener(event, func, bool);
+      else if (elem.attachEvent)
+        elem.attachEvent('on' + event, func);
+      return dom;
+    },
+
+    /**
+     *
+     * @param elem
+     * @param event
+     * @param func
+     * @param bool
+     */
+    unbind: function(elem, event, func, bool) {
+      bool = bool || false;
+      if (elem.removeEventListener)
+        elem.removeEventListener(event, func, bool);
+      else if (elem.detachEvent)
+        elem.detachEvent('on' + event, func);
+      return dom;
+    },
+
+    /**
+     *
+     * @param elem
+     * @param className
+     */
+    addClass: function(elem, className) {
+      if (elem.className === undefined) {
+        elem.className = className;
+      } else if (elem.className !== className) {
+        var classes = elem.className.split(/ +/);
+        if (classes.indexOf(className) == -1) {
+          classes.push(className);
+          elem.className = classes.join(' ').replace(/^\s+/, '').replace(/\s+$/, '');
+        }
+      }
+      return dom;
+    },
+
+    /**
+     *
+     * @param elem
+     * @param className
+     */
+    removeClass: function(elem, className) {
+      if (className) {
+        if (elem.className === undefined) {
+          // elem.className = className;
+        } else if (elem.className === className) {
+          elem.removeAttribute('class');
+        } else {
+          var classes = elem.className.split(/ +/);
+          var index = classes.indexOf(className);
+          if (index != -1) {
+            classes.splice(index, 1);
+            elem.className = classes.join(' ');
+          }
+        }
+      } else {
+        elem.className = undefined;
+      }
+      return dom;
+    },
+
+    hasClass: function(elem, className) {
+      return new RegExp('(?:^|\\s+)' + className + '(?:\\s+|$)').test(elem.className) || false;
+    },
+
+    /**
+     *
+     * @param elem
+     */
+    getWidth: function(elem) {
+
+      var style = getComputedStyle(elem);
+
+      return cssValueToPixels(style['border-left-width']) +
+          cssValueToPixels(style['border-right-width']) +
+          cssValueToPixels(style['padding-left']) +
+          cssValueToPixels(style['padding-right']) +
+          cssValueToPixels(style['width']);
+    },
+
+    /**
+     *
+     * @param elem
+     */
+    getHeight: function(elem) {
+
+      var style = getComputedStyle(elem);
+
+      return cssValueToPixels(style['border-top-width']) +
+          cssValueToPixels(style['border-bottom-width']) +
+          cssValueToPixels(style['padding-top']) +
+          cssValueToPixels(style['padding-bottom']) +
+          cssValueToPixels(style['height']);
+    },
+
+    /**
+     *
+     * @param elem
+     */
+    getOffset: function(elem) {
+      var offset = {left: 0, top:0};
+      if (elem.offsetParent) {
+        do {
+          offset.left += elem.offsetLeft;
+          offset.top += elem.offsetTop;
+        } while (elem = elem.offsetParent);
+      }
+      return offset;
+    },
+
+    // http://stackoverflow.com/posts/2684561/revisions
+    /**
+     * 
+     * @param elem
+     */
+    isActive: function(elem) {
+      return elem === document.activeElement && ( elem.type || elem.href );
+    }
+
+  };
+
+  return dom;
+
+})(dat.utils.common);
+
+
+dat.controllers.OptionController = (function (Controller, dom, common) {
+
+  /**
+   * @class Provides a select input to alter the property of an object, using a
+   * list of accepted values.
+   *
+   * @extends dat.controllers.Controller
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   * @param {Object|string[]} options A map of labels to acceptable values, or
+   * a list of acceptable string values.
+   *
+   * @member dat.controllers
+   */
+  var OptionController = function(object, property, options) {
+
+    OptionController.superclass.call(this, object, property);
+
+    var _this = this;
+
+    /**
+     * The drop down menu
+     * @ignore
+     */
+    this.__select = document.createElement('select');
+
+    if (common.isArray(options)) {
+      var map = {};
+      common.each(options, function(element) {
+        map[element] = element;
+      });
+      options = map;
+    }
+
+    common.each(options, function(value, key) {
+
+      var opt = document.createElement('option');
+      opt.innerHTML = key;
+      opt.setAttribute('value', value);
+      _this.__select.appendChild(opt);
+
+    });
+
+    // Acknowledge original value
+    this.updateDisplay();
+
+    dom.bind(this.__select, 'change', function() {
+      var desiredValue = this.options[this.selectedIndex].value;
+      _this.setValue(desiredValue);
+    });
+
+    this.domElement.appendChild(this.__select);
+
+  };
+
+  OptionController.superclass = Controller;
+
+  common.extend(
+
+      OptionController.prototype,
+      Controller.prototype,
+
+      {
+
+        setValue: function(v) {
+          var toReturn = OptionController.superclass.prototype.setValue.call(this, v);
+          if (this.__onFinishChange) {
+            this.__onFinishChange.call(this, this.getValue());
+          }
+          return toReturn;
+        },
+
+        updateDisplay: function() {
+          this.__select.value = this.getValue();
+          return OptionController.superclass.prototype.updateDisplay.call(this);
+        }
+
+      }
+
+  );
+
+  return OptionController;
+
+})(dat.controllers.Controller,
+dat.dom.dom,
+dat.utils.common);
+
+
+dat.controllers.NumberController = (function (Controller, common) {
+
+  /**
+   * @class Represents a given property of an object that is a number.
+   *
+   * @extends dat.controllers.Controller
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   * @param {Object} [params] Optional parameters
+   * @param {Number} [params.min] Minimum allowed value
+   * @param {Number} [params.max] Maximum allowed value
+   * @param {Number} [params.step] Increment by which to change value
+   *
+   * @member dat.controllers
+   */
+  var NumberController = function(object, property, params) {
+
+    NumberController.superclass.call(this, object, property);
+
+    params = params || {};
+
+    this.__min = params.min;
+    this.__max = params.max;
+    this.__step = params.step;
+
+    if (common.isUndefined(this.__step)) {
+
+      if (this.initialValue == 0) {
+        this.__impliedStep = 1; // What are we, psychics?
+      } else {
+        // Hey Doug, check this out.
+        this.__impliedStep = Math.pow(10, Math.floor(Math.log(this.initialValue)/Math.LN10))/10;
+      }
+
+    } else {
+
+      this.__impliedStep = this.__step;
+
+    }
+
+    this.__precision = numDecimals(this.__impliedStep);
+
+
+  };
+
+  NumberController.superclass = Controller;
+
+  common.extend(
+
+      NumberController.prototype,
+      Controller.prototype,
+
+      /** @lends dat.controllers.NumberController.prototype */
+      {
+
+        setValue: function(v) {
+
+          if (this.__min !== undefined && v < this.__min) {
+            v = this.__min;
+          } else if (this.__max !== undefined && v > this.__max) {
+            v = this.__max;
+          }
+
+          if (this.__step !== undefined && v % this.__step != 0) {
+            v = Math.round(v / this.__step) * this.__step;
+          }
+
+          return NumberController.superclass.prototype.setValue.call(this, v);
+
+        },
+
+        /**
+         * Specify a minimum value for <code>object[property]</code>.
+         *
+         * @param {Number} minValue The minimum value for
+         * <code>object[property]</code>
+         * @returns {dat.controllers.NumberController} this
+         */
+        min: function(v) {
+          this.__min = v;
+          return this;
+        },
+
+        /**
+         * Specify a maximum value for <code>object[property]</code>.
+         *
+         * @param {Number} maxValue The maximum value for
+         * <code>object[property]</code>
+         * @returns {dat.controllers.NumberController} this
+         */
+        max: function(v) {
+          this.__max = v;
+          return this;
+        },
+
+        /**
+         * Specify a step value that dat.controllers.NumberController
+         * increments by.
+         *
+         * @param {Number} stepValue The step value for
+         * dat.controllers.NumberController
+         * @default if minimum and maximum specified increment is 1% of the
+         * difference otherwise stepValue is 1
+         * @returns {dat.controllers.NumberController} this
+         */
+        step: function(v) {
+          this.__step = v;
+          return this;
+        }
+
+      }
+
+  );
+
+  function numDecimals(x) {
+    x = x.toString();
+    if (x.indexOf('.') > -1) {
+      return x.length - x.indexOf('.') - 1;
+    } else {
+      return 0;
+    }
+  }
+
+  return NumberController;
+
+})(dat.controllers.Controller,
+dat.utils.common);
+
+
+dat.controllers.NumberControllerBox = (function (NumberController, dom, common) {
+
+  /**
+   * @class Represents a given property of an object that is a number and
+   * provides an input element with which to manipulate it.
+   *
+   * @extends dat.controllers.Controller
+   * @extends dat.controllers.NumberController
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   * @param {Object} [params] Optional parameters
+   * @param {Number} [params.min] Minimum allowed value
+   * @param {Number} [params.max] Maximum allowed value
+   * @param {Number} [params.step] Increment by which to change value
+   *
+   * @member dat.controllers
+   */
+  var NumberControllerBox = function(object, property, params) {
+
+    this.__truncationSuspended = false;
+
+    NumberControllerBox.superclass.call(this, object, property, params);
+
+    var _this = this;
+
+    /**
+     * {Number} Previous mouse y position
+     * @ignore
+     */
+    var prev_y;
+
+    this.__input = document.createElement('input');
+    this.__input.setAttribute('type', 'text');
+
+    // Makes it so manually specified values are not truncated.
+
+    dom.bind(this.__input, 'change', onChange);
+    dom.bind(this.__input, 'blur', onBlur);
+    dom.bind(this.__input, 'mousedown', onMouseDown);
+    dom.bind(this.__input, 'keydown', function(e) {
+
+      // When pressing entire, you can be as precise as you want.
+      if (e.keyCode === 13) {
+        _this.__truncationSuspended = true;
+        this.blur();
+        _this.__truncationSuspended = false;
+      }
+
+    });
+
+    function onChange() {
+      var attempted = parseFloat(_this.__input.value);
+      if (!common.isNaN(attempted)) _this.setValue(attempted);
+    }
+
+    function onBlur() {
+      onChange();
+      if (_this.__onFinishChange) {
+        _this.__onFinishChange.call(_this, _this.getValue());
+      }
+    }
+
+    function onMouseDown(e) {
+      dom.bind(window, 'mousemove', onMouseDrag);
+      dom.bind(window, 'mouseup', onMouseUp);
+      prev_y = e.clientY;
+    }
+
+    function onMouseDrag(e) {
+
+      var diff = prev_y - e.clientY;
+      _this.setValue(_this.getValue() + diff * _this.__impliedStep);
+
+      prev_y = e.clientY;
+
+    }
+
+    function onMouseUp() {
+      dom.unbind(window, 'mousemove', onMouseDrag);
+      dom.unbind(window, 'mouseup', onMouseUp);
+    }
+
+    this.updateDisplay();
+
+    this.domElement.appendChild(this.__input);
+
+  };
+
+  NumberControllerBox.superclass = NumberController;
+
+  common.extend(
+
+      NumberControllerBox.prototype,
+      NumberController.prototype,
+
+      {
+
+        updateDisplay: function() {
+
+          this.__input.value = this.__truncationSuspended ? this.getValue() : roundToDecimal(this.getValue(), this.__precision);
+          return NumberControllerBox.superclass.prototype.updateDisplay.call(this);
+        }
+
+      }
+
+  );
+
+  function roundToDecimal(value, decimals) {
+    var tenTo = Math.pow(10, decimals);
+    return Math.round(value * tenTo) / tenTo;
+  }
+
+  return NumberControllerBox;
+
+})(dat.controllers.NumberController,
+dat.dom.dom,
+dat.utils.common);
+
+
+dat.controllers.NumberControllerSlider = (function (NumberController, dom, css, common, styleSheet) {
+
+  /**
+   * @class Represents a given property of an object that is a number, contains
+   * a minimum and maximum, and provides a slider element with which to
+   * manipulate it. It should be noted that the slider element is made up of
+   * <code>&lt;div&gt;</code> tags, <strong>not</strong> the html5
+   * <code>&lt;slider&gt;</code> element.
+   *
+   * @extends dat.controllers.Controller
+   * @extends dat.controllers.NumberController
+   * 
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   * @param {Number} minValue Minimum allowed value
+   * @param {Number} maxValue Maximum allowed value
+   * @param {Number} stepValue Increment by which to change value
+   *
+   * @member dat.controllers
+   */
+  var NumberControllerSlider = function(object, property, min, max, step) {
+
+    NumberControllerSlider.superclass.call(this, object, property, { min: min, max: max, step: step });
+
+    var _this = this;
+
+    this.__background = document.createElement('div');
+    this.__foreground = document.createElement('div');
+    
+
+
+    dom.bind(this.__background, 'mousedown', onMouseDown);
+    
+    dom.addClass(this.__background, 'slider');
+    dom.addClass(this.__foreground, 'slider-fg');
+
+    function onMouseDown(e) {
+
+      dom.bind(window, 'mousemove', onMouseDrag);
+      dom.bind(window, 'mouseup', onMouseUp);
+
+      onMouseDrag(e);
+    }
+
+    function onMouseDrag(e) {
+
+      e.preventDefault();
+
+      var offset = dom.getOffset(_this.__background);
+      var width = dom.getWidth(_this.__background);
+      
+      _this.setValue(
+        map(e.clientX, offset.left, offset.left + width, _this.__min, _this.__max)
+      );
+
+      return false;
+
+    }
+
+    function onMouseUp() {
+      dom.unbind(window, 'mousemove', onMouseDrag);
+      dom.unbind(window, 'mouseup', onMouseUp);
+      if (_this.__onFinishChange) {
+        _this.__onFinishChange.call(_this, _this.getValue());
+      }
+    }
+
+    this.updateDisplay();
+
+    this.__background.appendChild(this.__foreground);
+    this.domElement.appendChild(this.__background);
+
+  };
+
+  NumberControllerSlider.superclass = NumberController;
+
+  /**
+   * Injects default stylesheet for slider elements.
+   */
+  NumberControllerSlider.useDefaultStyles = function() {
+    css.inject(styleSheet);
+  };
+
+  common.extend(
+
+      NumberControllerSlider.prototype,
+      NumberController.prototype,
+
+      {
+
+        updateDisplay: function() {
+          var pct = (this.getValue() - this.__min)/(this.__max - this.__min);
+          this.__foreground.style.width = pct*100+'%';
+          return NumberControllerSlider.superclass.prototype.updateDisplay.call(this);
+        }
+
+      }
+
+
+
+  );
+
+  function map(v, i1, i2, o1, o2) {
+    return o1 + (o2 - o1) * ((v - i1) / (i2 - i1));
+  }
+
+  return NumberControllerSlider;
+  
+})(dat.controllers.NumberController,
+dat.dom.dom,
+dat.utils.css,
+dat.utils.common,
+".slider {\n  box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);\n  height: 1em;\n  border-radius: 1em;\n  background-color: #eee;\n  padding: 0 0.5em;\n  overflow: hidden;\n}\n\n.slider-fg {\n  padding: 1px 0 2px 0;\n  background-color: #aaa;\n  height: 1em;\n  margin-left: -0.5em;\n  padding-right: 0.5em;\n  border-radius: 1em 0 0 1em;\n}\n\n.slider-fg:after {\n  display: inline-block;\n  border-radius: 1em;\n  background-color: #fff;\n  border:  1px solid #aaa;\n  content: '';\n  float: right;\n  margin-right: -1em;\n  margin-top: -1px;\n  height: 0.9em;\n  width: 0.9em;\n}");
+
+
+dat.controllers.FunctionController = (function (Controller, dom, common) {
+
+  /**
+   * @class Provides a GUI interface to fire a specified method, a property of an object.
+   *
+   * @extends dat.controllers.Controller
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   *
+   * @member dat.controllers
+   */
+  var FunctionController = function(object, property, text) {
+
+    FunctionController.superclass.call(this, object, property);
+
+    var _this = this;
+
+    this.__button = document.createElement('div');
+    this.__button.innerHTML = text === undefined ? 'Fire' : text;
+    dom.bind(this.__button, 'click', function(e) {
+      e.preventDefault();
+      _this.fire();
+      return false;
+    });
+
+    dom.addClass(this.__button, 'button');
+
+    this.domElement.appendChild(this.__button);
+
+
+  };
+
+  FunctionController.superclass = Controller;
+
+  common.extend(
+
+      FunctionController.prototype,
+      Controller.prototype,
+      {
+        
+        fire: function() {
+          if (this.__onChange) {
+            this.__onChange.call(this);
+          }
+          if (this.__onFinishChange) {
+            this.__onFinishChange.call(this, this.getValue());
+          }
+          this.getValue().call(this.object);
+        }
+      }
+
+  );
+
+  return FunctionController;
+
+})(dat.controllers.Controller,
+dat.dom.dom,
+dat.utils.common);
+
+
+dat.controllers.BooleanController = (function (Controller, dom, common) {
+
+  /**
+   * @class Provides a checkbox input to alter the boolean property of an object.
+   * @extends dat.controllers.Controller
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   *
+   * @member dat.controllers
+   */
+  var BooleanController = function(object, property) {
+
+    BooleanController.superclass.call(this, object, property);
+
+    var _this = this;
+    this.__prev = this.getValue();
+
+    this.__checkbox = document.createElement('input');
+    this.__checkbox.setAttribute('type', 'checkbox');
+
+
+    dom.bind(this.__checkbox, 'change', onChange, false);
+
+    this.domElement.appendChild(this.__checkbox);
+
+    // Match original value
+    this.updateDisplay();
+
+    function onChange() {
+      _this.setValue(!_this.__prev);
+    }
+
+  };
+
+  BooleanController.superclass = Controller;
+
+  common.extend(
+
+      BooleanController.prototype,
+      Controller.prototype,
+
+      {
+
+        setValue: function(v) {
+          var toReturn = BooleanController.superclass.prototype.setValue.call(this, v);
+          if (this.__onFinishChange) {
+            this.__onFinishChange.call(this, this.getValue());
+          }
+          this.__prev = this.getValue();
+          return toReturn;
+        },
+
+        updateDisplay: function() {
+          
+          if (this.getValue() === true) {
+            this.__checkbox.setAttribute('checked', 'checked');
+            this.__checkbox.checked = true;    
+          } else {
+              this.__checkbox.checked = false;
+          }
+
+          return BooleanController.superclass.prototype.updateDisplay.call(this);
+
+        }
+
+
+      }
+
+  );
+
+  return BooleanController;
+
+})(dat.controllers.Controller,
+dat.dom.dom,
+dat.utils.common);
+
+
+dat.color.toString = (function (common) {
+
+  return function(color) {
+
+    if (color.a == 1 || common.isUndefined(color.a)) {
+
+      var s = color.hex.toString(16);
+      while (s.length < 6) {
+        s = '0' + s;
+      }
+
+      return '#' + s;
+
+    } else {
+
+      return 'rgba(' + Math.round(color.r) + ',' + Math.round(color.g) + ',' + Math.round(color.b) + ',' + color.a + ')';
+
+    }
+
+  }
+
+})(dat.utils.common);
+
+
+dat.color.interpret = (function (toString, common) {
+
+  var result, toReturn;
+
+  var interpret = function() {
+
+    toReturn = false;
+
+    var original = arguments.length > 1 ? common.toArray(arguments) : arguments[0];
+
+    common.each(INTERPRETATIONS, function(family) {
+
+      if (family.litmus(original)) {
+
+        common.each(family.conversions, function(conversion, conversionName) {
+
+          result = conversion.read(original);
+
+          if (toReturn === false && result !== false) {
+            toReturn = result;
+            result.conversionName = conversionName;
+            result.conversion = conversion;
+            return common.BREAK;
+
+          }
+
+        });
+
+        return common.BREAK;
+
+      }
+
+    });
+
+    return toReturn;
+
+  };
+
+  var INTERPRETATIONS = [
+
+    // Strings
+    {
+
+      litmus: common.isString,
+
+      conversions: {
+
+        THREE_CHAR_HEX: {
+
+          read: function(original) {
+
+            var test = original.match(/^#([A-F0-9])([A-F0-9])([A-F0-9])$/i);
+            if (test === null) return false;
+
+            return {
+              space: 'HEX',
+              hex: parseInt(
+                  '0x' +
+                      test[1].toString() + test[1].toString() +
+                      test[2].toString() + test[2].toString() +
+                      test[3].toString() + test[3].toString())
+            };
+
+          },
+
+          write: toString
+
+        },
+
+        SIX_CHAR_HEX: {
+
+          read: function(original) {
+
+            var test = original.match(/^#([A-F0-9]{6})$/i);
+            if (test === null) return false;
+
+            return {
+              space: 'HEX',
+              hex: parseInt('0x' + test[1].toString())
+            };
+
+          },
+
+          write: toString
+
+        },
+
+        CSS_RGB: {
+
+          read: function(original) {
+
+            var test = original.match(/^rgb\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\)/);
+            if (test === null) return false;
+
+            return {
+              space: 'RGB',
+              r: parseFloat(test[1]),
+              g: parseFloat(test[2]),
+              b: parseFloat(test[3])
+            };
+
+          },
+
+          write: toString
+
+        },
+
+        CSS_RGBA: {
+
+          read: function(original) {
+
+            var test = original.match(/^rgba\(\s*(.+)\s*,\s*(.+)\s*,\s*(.+)\s*\,\s*(.+)\s*\)/);
+            if (test === null) return false;
+
+            return {
+              space: 'RGB',
+              r: parseFloat(test[1]),
+              g: parseFloat(test[2]),
+              b: parseFloat(test[3]),
+              a: parseFloat(test[4])
+            };
+
+          },
+
+          write: toString
+
+        }
+
+      }
+
+    },
+
+    // Numbers
+    {
+
+      litmus: common.isNumber,
+
+      conversions: {
+
+        HEX: {
+          read: function(original) {
+            return {
+              space: 'HEX',
+              hex: original,
+              conversionName: 'HEX'
+            }
+          },
+
+          write: function(color) {
+            return color.hex;
+          }
+        }
+
+      }
+
+    },
+
+    // Arrays
+    {
+
+      litmus: common.isArray,
+
+      conversions: {
+
+        RGB_ARRAY: {
+          read: function(original) {
+            if (original.length != 3) return false;
+            return {
+              space: 'RGB',
+              r: original[0],
+              g: original[1],
+              b: original[2]
+            };
+          },
+
+          write: function(color) {
+            return [color.r, color.g, color.b];
+          }
+
+        },
+
+        RGBA_ARRAY: {
+          read: function(original) {
+            if (original.length != 4) return false;
+            return {
+              space: 'RGB',
+              r: original[0],
+              g: original[1],
+              b: original[2],
+              a: original[3]
+            };
+          },
+
+          write: function(color) {
+            return [color.r, color.g, color.b, color.a];
+          }
+
+        }
+
+      }
+
+    },
+
+    // Objects
+    {
+
+      litmus: common.isObject,
+
+      conversions: {
+
+        RGBA_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.r) &&
+                common.isNumber(original.g) &&
+                common.isNumber(original.b) &&
+                common.isNumber(original.a)) {
+              return {
+                space: 'RGB',
+                r: original.r,
+                g: original.g,
+                b: original.b,
+                a: original.a
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              r: color.r,
+              g: color.g,
+              b: color.b,
+              a: color.a
+            }
+          }
+        },
+
+        RGB_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.r) &&
+                common.isNumber(original.g) &&
+                common.isNumber(original.b)) {
+              return {
+                space: 'RGB',
+                r: original.r,
+                g: original.g,
+                b: original.b
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              r: color.r,
+              g: color.g,
+              b: color.b
+            }
+          }
+        },
+
+        HSVA_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.h) &&
+                common.isNumber(original.s) &&
+                common.isNumber(original.v) &&
+                common.isNumber(original.a)) {
+              return {
+                space: 'HSV',
+                h: original.h,
+                s: original.s,
+                v: original.v,
+                a: original.a
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              h: color.h,
+              s: color.s,
+              v: color.v,
+              a: color.a
+            }
+          }
+        },
+
+        HSV_OBJ: {
+          read: function(original) {
+            if (common.isNumber(original.h) &&
+                common.isNumber(original.s) &&
+                common.isNumber(original.v)) {
+              return {
+                space: 'HSV',
+                h: original.h,
+                s: original.s,
+                v: original.v
+              }
+            }
+            return false;
+          },
+
+          write: function(color) {
+            return {
+              h: color.h,
+              s: color.s,
+              v: color.v
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+
+  ];
+
+  return interpret;
+
+
+})(dat.color.toString,
+dat.utils.common);
+
+
+dat.GUI = dat.gui.GUI = (function (css, saveDialogueContents, styleSheet, controllerFactory, Controller, BooleanController, FunctionController, NumberControllerBox, NumberControllerSlider, OptionController, ColorController, requestAnimationFrame, CenteredDiv, dom, common) {
+
+  css.inject(styleSheet);
+
+  /** Outer-most className for GUI's */
+  var CSS_NAMESPACE = 'dg';
+
+  var HIDE_KEY_CODE = 72;
+
+  /** The only value shared between the JS and SCSS. Use caution. */
+  var CLOSE_BUTTON_HEIGHT = 20;
+
+  var DEFAULT_DEFAULT_PRESET_NAME = 'Default';
+
+  var SUPPORTS_LOCAL_STORAGE = (function() {
+    try {
+      return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+      return false;
+    }
+  })();
+
+  var SAVE_DIALOGUE;
+
+  /** Have we yet to create an autoPlace GUI? */
+  var auto_place_virgin = true;
+
+  /** Fixed position div that auto place GUI's go inside */
+  var auto_place_container;
+
+  /** Are we hiding the GUI's ? */
+  var hide = false;
+
+  /** GUI's which should be hidden */
+  var hideable_guis = [];
+
+  /**
+   * A lightweight controller library for JavaScript. It allows you to easily
+   * manipulate variables and fire functions on the fly.
+   * @class
+   *
+   * @member dat.gui
+   *
+   * @param {Object} [params]
+   * @param {String} [params.name] The name of this GUI.
+   * @param {Object} [params.load] JSON object representing the saved state of
+   * this GUI.
+   * @param {Boolean} [params.auto=true]
+   * @param {dat.gui.GUI} [params.parent] The GUI I'm nested in.
+   * @param {Boolean} [params.closed] If true, starts closed
+   */
+  var GUI = function(params) {
+
+    var _this = this;
+
+    /**
+     * Outermost DOM Element
+     * @type DOMElement
+     */
+    this.domElement = document.createElement('div');
+    this.__ul = document.createElement('ul');
+    this.domElement.appendChild(this.__ul);
+
+    dom.addClass(this.domElement, CSS_NAMESPACE);
+
+    /**
+     * Nested GUI's by name
+     * @ignore
+     */
+    this.__folders = {};
+
+    this.__controllers = [];
+
+    /**
+     * List of objects I'm remembering for save, only used in top level GUI
+     * @ignore
+     */
+    this.__rememberedObjects = [];
+
+    /**
+     * Maps the index of remembered objects to a map of controllers, only used
+     * in top level GUI.
+     *
+     * @private
+     * @ignore
+     *
+     * @example
+     * [
+     *  {
+     *    propertyName: Controller,
+     *    anotherPropertyName: Controller
+     *  },
+     *  {
+     *    propertyName: Controller
+     *  }
+     * ]
+     */
+    this.__rememberedObjectIndecesToControllers = [];
+
+    this.__listening = [];
+
+    params = params || {};
+
+    // Default parameters
+    params = common.defaults(params, {
+      autoPlace: true,
+      width: GUI.DEFAULT_WIDTH
+    });
+
+    params = common.defaults(params, {
+      resizable: params.autoPlace,
+      hideable: params.autoPlace
+    });
+
+
+    if (!common.isUndefined(params.load)) {
+
+      // Explicit preset
+      if (params.preset) params.load.preset = params.preset;
+
+    } else {
+
+      params.load = { preset: DEFAULT_DEFAULT_PRESET_NAME };
+
+    }
+
+    if (common.isUndefined(params.parent) && params.hideable) {
+      hideable_guis.push(this);
+    }
+
+    // Only root level GUI's are resizable.
+    params.resizable = common.isUndefined(params.parent) && params.resizable;
+
+
+    if (params.autoPlace && common.isUndefined(params.scrollable)) {
+      params.scrollable = true;
+    }
+//    params.scrollable = common.isUndefined(params.parent) && params.scrollable === true;
+
+    // Not part of params because I don't want people passing this in via
+    // constructor. Should be a 'remembered' value.
+    var use_local_storage =
+        SUPPORTS_LOCAL_STORAGE &&
+            localStorage.getItem(getLocalStorageHash(this, 'isLocal')) === 'true';
+
+    Object.defineProperties(this,
+
+        /** @lends dat.gui.GUI.prototype */
+        {
+
+          /**
+           * The parent <code>GUI</code>
+           * @type dat.gui.GUI
+           */
+          parent: {
+            get: function() {
+              return params.parent;
+            }
+          },
+
+          scrollable: {
+            get: function() {
+              return params.scrollable;
+            }
+          },
+
+          /**
+           * Handles <code>GUI</code>'s element placement for you
+           * @type Boolean
+           */
+          autoPlace: {
+            get: function() {
+              return params.autoPlace;
+            }
+          },
+
+          /**
+           * The identifier for a set of saved values
+           * @type String
+           */
+          preset: {
+
+            get: function() {
+              if (_this.parent) {
+                return _this.getRoot().preset;
+              } else {
+                return params.load.preset;
+              }
+            },
+
+            set: function(v) {
+              if (_this.parent) {
+                _this.getRoot().preset = v;
+              } else {
+                params.load.preset = v;
+              }
+              setPresetSelectIndex(this);
+              _this.revert();
+            }
+
+          },
+
+          /**
+           * The width of <code>GUI</code> element
+           * @type Number
+           */
+          width: {
+            get: function() {
+              return params.width;
+            },
+            set: function(v) {
+              params.width = v;
+              setWidth(_this, v);
+            }
+          },
+
+          /**
+           * The name of <code>GUI</code>. Used for folders. i.e
+           * a folder's name
+           * @type String
+           */
+          name: {
+            get: function() {
+              return params.name;
+            },
+            set: function(v) {
+              // TODO Check for collisions among sibling folders
+              params.name = v;
+              if (title_row_name) {
+                title_row_name.innerHTML = params.name;
+              }
+            }
+          },
+
+          /**
+           * Whether the <code>GUI</code> is collapsed or not
+           * @type Boolean
+           */
+          closed: {
+            get: function() {
+              return params.closed;
+            },
+            set: function(v) {
+              params.closed = v;
+              if (params.closed) {
+                dom.addClass(_this.__ul, GUI.CLASS_CLOSED);
+              } else {
+                dom.removeClass(_this.__ul, GUI.CLASS_CLOSED);
+              }
+              // For browsers that aren't going to respect the CSS transition,
+              // Lets just check our height against the window height right off
+              // the bat.
+              this.onResize();
+
+              if (_this.__closeButton) {
+                _this.__closeButton.innerHTML = v ? GUI.TEXT_OPEN : GUI.TEXT_CLOSED;
+              }
+            }
+          },
+
+          /**
+           * Contains all presets
+           * @type Object
+           */
+          load: {
+            get: function() {
+              return params.load;
+            }
+          },
+
+          /**
+           * Determines whether or not to use <a href="https://developer.mozilla.org/en/DOM/Storage#localStorage">localStorage</a> as the means for
+           * <code>remember</code>ing
+           * @type Boolean
+           */
+          useLocalStorage: {
+
+            get: function() {
+              return use_local_storage;
+            },
+            set: function(bool) {
+              if (SUPPORTS_LOCAL_STORAGE) {
+                use_local_storage = bool;
+                if (bool) {
+                  dom.bind(window, 'unload', saveToLocalStorage);
+                } else {
+                  dom.unbind(window, 'unload', saveToLocalStorage);
+                }
+                localStorage.setItem(getLocalStorageHash(_this, 'isLocal'), bool);
+              }
+            }
+
+          }
+
+        });
+
+    // Are we a root level GUI?
+    if (common.isUndefined(params.parent)) {
+
+      params.closed = false;
+
+      dom.addClass(this.domElement, GUI.CLASS_MAIN);
+      dom.makeSelectable(this.domElement, false);
+
+      // Are we supposed to be loading locally?
+      if (SUPPORTS_LOCAL_STORAGE) {
+
+        if (use_local_storage) {
+
+          _this.useLocalStorage = true;
+
+          var saved_gui = localStorage.getItem(getLocalStorageHash(this, 'gui'));
+
+          if (saved_gui) {
+            params.load = JSON.parse(saved_gui);
+          }
+
+        }
+
+      }
+
+      this.__closeButton = document.createElement('div');
+      this.__closeButton.innerHTML = GUI.TEXT_CLOSED;
+      dom.addClass(this.__closeButton, GUI.CLASS_CLOSE_BUTTON);
+      this.domElement.appendChild(this.__closeButton);
+
+      dom.bind(this.__closeButton, 'click', function() {
+
+        _this.closed = !_this.closed;
+
+
+      });
+
+
+      // Oh, you're a nested GUI!
+    } else {
+
+      if (params.closed === undefined) {
+        params.closed = true;
+      }
+
+      var title_row_name = document.createTextNode(params.name);
+      dom.addClass(title_row_name, 'controller-name');
+
+      var title_row = addRow(_this, title_row_name);
+
+      var on_click_title = function(e) {
+        e.preventDefault();
+        _this.closed = !_this.closed;
+        return false;
+      };
+
+      dom.addClass(this.__ul, GUI.CLASS_CLOSED);
+
+      dom.addClass(title_row, 'title');
+      dom.bind(title_row, 'click', on_click_title);
+
+      if (!params.closed) {
+        this.closed = false;
+      }
+
+    }
+
+    if (params.autoPlace) {
+
+      if (common.isUndefined(params.parent)) {
+
+        if (auto_place_virgin) {
+          auto_place_container = document.createElement('div');
+          dom.addClass(auto_place_container, CSS_NAMESPACE);
+          dom.addClass(auto_place_container, GUI.CLASS_AUTO_PLACE_CONTAINER);
+          document.body.appendChild(auto_place_container);
+          auto_place_virgin = false;
+        }
+
+        // Put it in the dom for you.
+        auto_place_container.appendChild(this.domElement);
+
+        // Apply the auto styles
+        dom.addClass(this.domElement, GUI.CLASS_AUTO_PLACE);
+
+      }
+
+
+      // Make it not elastic.
+      if (!this.parent) setWidth(_this, params.width);
+
+    }
+
+    dom.bind(window, 'resize', function() { _this.onResize() });
+    dom.bind(this.__ul, 'webkitTransitionEnd', function() { _this.onResize(); });
+    dom.bind(this.__ul, 'transitionend', function() { _this.onResize() });
+    dom.bind(this.__ul, 'oTransitionEnd', function() { _this.onResize() });
+    this.onResize();
+
+
+    if (params.resizable) {
+      addResizeHandle(this);
+    }
+
+    function saveToLocalStorage() {
+      localStorage.setItem(getLocalStorageHash(_this, 'gui'), JSON.stringify(_this.getSaveObject()));
+    }
+
+    var root = _this.getRoot();
+    function resetWidth() {
+        var root = _this.getRoot();
+        root.width += 1;
+        common.defer(function() {
+          root.width -= 1;
+        });
+      }
+
+      if (!params.parent) {
+        resetWidth();
+      }
+
+  };
+
+  GUI.toggleHide = function() {
+
+    hide = !hide;
+    common.each(hideable_guis, function(gui) {
+      gui.domElement.style.zIndex = hide ? -999 : 999;
+      gui.domElement.style.opacity = hide ? 0 : 1;
+    });
+  };
+
+  GUI.CLASS_AUTO_PLACE = 'a';
+  GUI.CLASS_AUTO_PLACE_CONTAINER = 'ac';
+  GUI.CLASS_MAIN = 'main';
+  GUI.CLASS_CONTROLLER_ROW = 'cr';
+  GUI.CLASS_TOO_TALL = 'taller-than-window';
+  GUI.CLASS_CLOSED = 'closed';
+  GUI.CLASS_CLOSE_BUTTON = 'close-button';
+  GUI.CLASS_DRAG = 'drag';
+
+  GUI.DEFAULT_WIDTH = 245;
+  GUI.TEXT_CLOSED = 'Close Controls';
+  GUI.TEXT_OPEN = 'Open Controls';
+
+  dom.bind(window, 'keydown', function(e) {
+
+    if (document.activeElement.type !== 'text' &&
+        (e.which === HIDE_KEY_CODE || e.keyCode == HIDE_KEY_CODE)) {
+      GUI.toggleHide();
+    }
+
+  }, false);
+
+  common.extend(
+
+      GUI.prototype,
+
+      /** @lends dat.gui.GUI */
+      {
+
+        /**
+         * @param object
+         * @param property
+         * @returns {dat.controllers.Controller} The new controller that was added.
+         * @instance
+         */
+        add: function(object, property) {
+
+          return add(
+              this,
+              object,
+              property,
+              {
+                factoryArgs: Array.prototype.slice.call(arguments, 2)
+              }
+          );
+
+        },
+
+        /**
+         * @param object
+         * @param property
+         * @returns {dat.controllers.ColorController} The new controller that was added.
+         * @instance
+         */
+        addColor: function(object, property) {
+
+          return add(
+              this,
+              object,
+              property,
+              {
+                color: true
+              }
+          );
+
+        },
+
+        /**
+         * @param controller
+         * @instance
+         */
+        remove: function(controller) {
+
+          // TODO listening?
+          this.__ul.removeChild(controller.__li);
+          this.__controllers.slice(this.__controllers.indexOf(controller), 1);
+          var _this = this;
+          common.defer(function() {
+            _this.onResize();
+          });
+
+        },
+
+        destroy: function() {
+
+          if (this.autoPlace) {
+            auto_place_container.removeChild(this.domElement);
+          }
+
+        },
+
+        /**
+         * @param name
+         * @returns {dat.gui.GUI} The new folder.
+         * @throws {Error} if this GUI already has a folder by the specified
+         * name
+         * @instance
+         */
+        addFolder: function(name) {
+
+          // We have to prevent collisions on names in order to have a key
+          // by which to remember saved values
+          if (this.__folders[name] !== undefined) {
+            throw new Error('You already have a folder in this GUI by the' +
+                ' name "' + name + '"');
+          }
+
+          var new_gui_params = { name: name, parent: this };
+
+          // We need to pass down the autoPlace trait so that we can
+          // attach event listeners to open/close folder actions to
+          // ensure that a scrollbar appears if the window is too short.
+          new_gui_params.autoPlace = this.autoPlace;
+
+          // Do we have saved appearance data for this folder?
+
+          if (this.load && // Anything loaded?
+              this.load.folders && // Was my parent a dead-end?
+              this.load.folders[name]) { // Did daddy remember me?
+
+            // Start me closed if I was closed
+            new_gui_params.closed = this.load.folders[name].closed;
+
+            // Pass down the loaded data
+            new_gui_params.load = this.load.folders[name];
+
+          }
+
+          var gui = new GUI(new_gui_params);
+          this.__folders[name] = gui;
+
+          var li = addRow(this, gui.domElement);
+          dom.addClass(li, 'folder');
+          return gui;
+
+        },
+
+        open: function() {
+          this.closed = false;
+        },
+
+        close: function() {
+          this.closed = true;
+        },
+
+        onResize: function() {
+
+          var root = this.getRoot();
+
+          if (root.scrollable) {
+
+            var top = dom.getOffset(root.__ul).top;
+            var h = 0;
+
+            common.each(root.__ul.childNodes, function(node) {
+              if (! (root.autoPlace && node === root.__save_row))
+                h += dom.getHeight(node);
+            });
+
+            if (window.innerHeight - top - CLOSE_BUTTON_HEIGHT < h) {
+              dom.addClass(root.domElement, GUI.CLASS_TOO_TALL);
+              root.__ul.style.height = window.innerHeight - top - CLOSE_BUTTON_HEIGHT + 'px';
+            } else {
+              dom.removeClass(root.domElement, GUI.CLASS_TOO_TALL);
+              root.__ul.style.height = 'auto';
+            }
+
+          }
+
+          if (root.__resize_handle) {
+            common.defer(function() {
+              root.__resize_handle.style.height = root.__ul.offsetHeight + 'px';
+            });
+          }
+
+          if (root.__closeButton) {
+            root.__closeButton.style.width = root.width + 'px';
+          }
+
+        },
+
+        /**
+         * Mark objects for saving. The order of these objects cannot change as
+         * the GUI grows. When remembering new objects, append them to the end
+         * of the list.
+         *
+         * @param {Object...} objects
+         * @throws {Error} if not called on a top level GUI.
+         * @instance
+         */
+        remember: function() {
+
+          if (common.isUndefined(SAVE_DIALOGUE)) {
+            SAVE_DIALOGUE = new CenteredDiv();
+            SAVE_DIALOGUE.domElement.innerHTML = saveDialogueContents;
+          }
+
+          if (this.parent) {
+            throw new Error("You can only call remember on a top level GUI.");
+          }
+
+          var _this = this;
+
+          common.each(Array.prototype.slice.call(arguments), function(object) {
+            if (_this.__rememberedObjects.length == 0) {
+              addSaveMenu(_this);
+            }
+            if (_this.__rememberedObjects.indexOf(object) == -1) {
+              _this.__rememberedObjects.push(object);
+            }
+          });
+
+          if (this.autoPlace) {
+            // Set save row width
+            setWidth(this, this.width);
+          }
+
+        },
+
+        /**
+         * @returns {dat.gui.GUI} the topmost parent GUI of a nested GUI.
+         * @instance
+         */
+        getRoot: function() {
+          var gui = this;
+          while (gui.parent) {
+            gui = gui.parent;
+          }
+          return gui;
+        },
+
+        /**
+         * @returns {Object} a JSON object representing the current state of
+         * this GUI as well as its remembered properties.
+         * @instance
+         */
+        getSaveObject: function() {
+
+          var toReturn = this.load;
+
+          toReturn.closed = this.closed;
+
+          // Am I remembering any values?
+          if (this.__rememberedObjects.length > 0) {
+
+            toReturn.preset = this.preset;
+
+            if (!toReturn.remembered) {
+              toReturn.remembered = {};
+            }
+
+            toReturn.remembered[this.preset] = getCurrentPreset(this);
+
+          }
+
+          toReturn.folders = {};
+          common.each(this.__folders, function(element, key) {
+            toReturn.folders[key] = element.getSaveObject();
+          });
+
+          return toReturn;
+
+        },
+
+        save: function() {
+
+          if (!this.load.remembered) {
+            this.load.remembered = {};
+          }
+
+          this.load.remembered[this.preset] = getCurrentPreset(this);
+          markPresetModified(this, false);
+
+        },
+
+        saveAs: function(presetName) {
+
+          if (!this.load.remembered) {
+
+            // Retain default values upon first save
+            this.load.remembered = {};
+            this.load.remembered[DEFAULT_DEFAULT_PRESET_NAME] = getCurrentPreset(this, true);
+
+          }
+
+          this.load.remembered[presetName] = getCurrentPreset(this);
+          this.preset = presetName;
+          addPresetOption(this, presetName, true);
+
+        },
+
+        revert: function(gui) {
+
+          common.each(this.__controllers, function(controller) {
+            // Make revert work on Default.
+            if (!this.getRoot().load.remembered) {
+              controller.setValue(controller.initialValue);
+            } else {
+              recallSavedValue(gui || this.getRoot(), controller);
+            }
+          }, this);
+
+          common.each(this.__folders, function(folder) {
+            folder.revert(folder);
+          });
+
+          if (!gui) {
+            markPresetModified(this.getRoot(), false);
+          }
+
+
+        },
+
+        listen: function(controller) {
+
+          var init = this.__listening.length == 0;
+          this.__listening.push(controller);
+          if (init) updateDisplays(this.__listening);
+
+        }
+
+      }
+
+  );
+
+  function add(gui, object, property, params) {
+
+    if (object[property] === undefined) {
+      throw new Error("Object " + object + " has no property \"" + property + "\"");
+    }
+
+    var controller;
+
+    if (params.color) {
+
+      controller = new ColorController(object, property);
+
+    } else {
+
+      var factoryArgs = [object,property].concat(params.factoryArgs);
+      controller = controllerFactory.apply(gui, factoryArgs);
+
+    }
+
+    if (params.before instanceof Controller) {
+      params.before = params.before.__li;
+    }
+
+    recallSavedValue(gui, controller);
+
+    dom.addClass(controller.domElement, 'c');
+
+    var name = document.createElement('span');
+    dom.addClass(name, 'property-name');
+    name.innerHTML = controller.property;
+
+    var container = document.createElement('div');
+    container.appendChild(name);
+    container.appendChild(controller.domElement);
+
+    var li = addRow(gui, container, params.before);
+
+    dom.addClass(li, GUI.CLASS_CONTROLLER_ROW);
+    dom.addClass(li, typeof controller.getValue());
+
+    augmentController(gui, li, controller);
+
+    gui.__controllers.push(controller);
+
+    return controller;
+
+  }
+
+  /**
+   * Add a row to the end of the GUI or before another row.
+   *
+   * @param gui
+   * @param [dom] If specified, inserts the dom content in the new row
+   * @param [liBefore] If specified, places the new row before another row
+   */
+  function addRow(gui, dom, liBefore) {
+    var li = document.createElement('li');
+    if (dom) li.appendChild(dom);
+    if (liBefore) {
+      gui.__ul.insertBefore(li, params.before);
+    } else {
+      gui.__ul.appendChild(li);
+    }
+    gui.onResize();
+    return li;
+  }
+
+  function augmentController(gui, li, controller) {
+
+    controller.__li = li;
+    controller.__gui = gui;
+
+    common.extend(controller, {
+
+      options: function(options) {
+
+        if (arguments.length > 1) {
+          controller.remove();
+
+          return add(
+              gui,
+              controller.object,
+              controller.property,
+              {
+                before: controller.__li.nextElementSibling,
+                factoryArgs: [common.toArray(arguments)]
+              }
+          );
+
+        }
+
+        if (common.isArray(options) || common.isObject(options)) {
+          controller.remove();
+
+          return add(
+              gui,
+              controller.object,
+              controller.property,
+              {
+                before: controller.__li.nextElementSibling,
+                factoryArgs: [options]
+              }
+          );
+
+        }
+
+      },
+
+      name: function(v) {
+        controller.__li.firstElementChild.firstElementChild.innerHTML = v;
+        return controller;
+      },
+
+      listen: function() {
+        controller.__gui.listen(controller);
+        return controller;
+      },
+
+      remove: function() {
+        controller.__gui.remove(controller);
+        return controller;
+      }
+
+    });
+
+    // All sliders should be accompanied by a box.
+    if (controller instanceof NumberControllerSlider) {
+
+      var box = new NumberControllerBox(controller.object, controller.property,
+          { min: controller.__min, max: controller.__max, step: controller.__step });
+
+      common.each(['updateDisplay', 'onChange', 'onFinishChange'], function(method) {
+        var pc = controller[method];
+        var pb = box[method];
+        controller[method] = box[method] = function() {
+          var args = Array.prototype.slice.call(arguments);
+          pc.apply(controller, args);
+          return pb.apply(box, args);
+        }
+      });
+
+      dom.addClass(li, 'has-slider');
+      controller.domElement.insertBefore(box.domElement, controller.domElement.firstElementChild);
+
+    }
+    else if (controller instanceof NumberControllerBox) {
+
+      var r = function(returned) {
+
+        // Have we defined both boundaries?
+        if (common.isNumber(controller.__min) && common.isNumber(controller.__max)) {
+
+          // Well, then lets just replace this with a slider.
+          controller.remove();
+          return add(
+              gui,
+              controller.object,
+              controller.property,
+              {
+                before: controller.__li.nextElementSibling,
+                factoryArgs: [controller.__min, controller.__max, controller.__step]
+              });
+
+        }
+
+        return returned;
+
+      };
+
+      controller.min = common.compose(r, controller.min);
+      controller.max = common.compose(r, controller.max);
+
+    }
+    else if (controller instanceof BooleanController) {
+
+      dom.bind(li, 'click', function() {
+        dom.fakeEvent(controller.__checkbox, 'click');
+      });
+
+      dom.bind(controller.__checkbox, 'click', function(e) {
+        e.stopPropagation(); // Prevents double-toggle
+      })
+
+    }
+    else if (controller instanceof FunctionController) {
+
+      dom.bind(li, 'click', function() {
+        dom.fakeEvent(controller.__button, 'click');
+      });
+
+      dom.bind(li, 'mouseover', function() {
+        dom.addClass(controller.__button, 'hover');
+      });
+
+      dom.bind(li, 'mouseout', function() {
+        dom.removeClass(controller.__button, 'hover');
+      });
+
+    }
+    else if (controller instanceof ColorController) {
+
+      dom.addClass(li, 'color');
+      controller.updateDisplay = common.compose(function(r) {
+        li.style.borderLeftColor = controller.__color.toString();
+        return r;
+      }, controller.updateDisplay);
+
+      controller.updateDisplay();
+
+    }
+
+    controller.setValue = common.compose(function(r) {
+      if (gui.getRoot().__preset_select && controller.isModified()) {
+        markPresetModified(gui.getRoot(), true);
+      }
+      return r;
+    }, controller.setValue);
+
+  }
+
+  function recallSavedValue(gui, controller) {
+
+    // Find the topmost GUI, that's where remembered objects live.
+    var root = gui.getRoot();
+
+    // Does the object we're controlling match anything we've been told to
+    // remember?
+    var matched_index = root.__rememberedObjects.indexOf(controller.object);
+
+    // Why yes, it does!
+    if (matched_index != -1) {
+
+      // Let me fetch a map of controllers for thcommon.isObject.
+      var controller_map =
+          root.__rememberedObjectIndecesToControllers[matched_index];
+
+      // Ohp, I believe this is the first controller we've created for this
+      // object. Lets make the map fresh.
+      if (controller_map === undefined) {
+        controller_map = {};
+        root.__rememberedObjectIndecesToControllers[matched_index] =
+            controller_map;
+      }
+
+      // Keep track of this controller
+      controller_map[controller.property] = controller;
+
+      // Okay, now have we saved any values for this controller?
+      if (root.load && root.load.remembered) {
+
+        var preset_map = root.load.remembered;
+
+        // Which preset are we trying to load?
+        var preset;
+
+        if (preset_map[gui.preset]) {
+
+          preset = preset_map[gui.preset];
+
+        } else if (preset_map[DEFAULT_DEFAULT_PRESET_NAME]) {
+
+          // Uhh, you can have the default instead?
+          preset = preset_map[DEFAULT_DEFAULT_PRESET_NAME];
+
+        } else {
+
+          // Nada.
+
+          return;
+
+        }
+
+
+        // Did the loaded object remember thcommon.isObject?
+        if (preset[matched_index] &&
+
+          // Did we remember this particular property?
+            preset[matched_index][controller.property] !== undefined) {
+
+          // We did remember something for this guy ...
+          var value = preset[matched_index][controller.property];
+
+          // And that's what it is.
+          controller.initialValue = value;
+          controller.setValue(value);
+
+        }
+
+      }
+
+    }
+
+  }
+
+  function getLocalStorageHash(gui, key) {
+    // TODO how does this deal with multiple GUI's?
+    return document.location.href + '.' + key;
+
+  }
+
+  function addSaveMenu(gui) {
+
+    var div = gui.__save_row = document.createElement('li');
+
+    dom.addClass(gui.domElement, 'has-save');
+
+    gui.__ul.insertBefore(div, gui.__ul.firstChild);
+
+    dom.addClass(div, 'save-row');
+
+    var gears = document.createElement('span');
+    gears.innerHTML = '&nbsp;';
+    dom.addClass(gears, 'button gears');
+
+    // TODO replace with FunctionController
+    var button = document.createElement('span');
+    button.innerHTML = 'Save';
+    dom.addClass(button, 'button');
+    dom.addClass(button, 'save');
+
+    var button2 = document.createElement('span');
+    button2.innerHTML = 'New';
+    dom.addClass(button2, 'button');
+    dom.addClass(button2, 'save-as');
+
+    var button3 = document.createElement('span');
+    button3.innerHTML = 'Revert';
+    dom.addClass(button3, 'button');
+    dom.addClass(button3, 'revert');
+
+    var select = gui.__preset_select = document.createElement('select');
+
+    if (gui.load && gui.load.remembered) {
+
+      common.each(gui.load.remembered, function(value, key) {
+        addPresetOption(gui, key, key == gui.preset);
+      });
+
+    } else {
+      addPresetOption(gui, DEFAULT_DEFAULT_PRESET_NAME, false);
+    }
+
+    dom.bind(select, 'change', function() {
+
+
+      for (var index = 0; index < gui.__preset_select.length; index++) {
+        gui.__preset_select[index].innerHTML = gui.__preset_select[index].value;
+      }
+
+      gui.preset = this.value;
+
+    });
+
+    div.appendChild(select);
+    div.appendChild(gears);
+    div.appendChild(button);
+    div.appendChild(button2);
+    div.appendChild(button3);
+
+    if (SUPPORTS_LOCAL_STORAGE) {
+
+      var saveLocally = document.getElementById('dg-save-locally');
+      var explain = document.getElementById('dg-local-explain');
+
+      saveLocally.style.display = 'block';
+
+      var localStorageCheckBox = document.getElementById('dg-local-storage');
+
+      if (localStorage.getItem(getLocalStorageHash(gui, 'isLocal')) === 'true') {
+        localStorageCheckBox.setAttribute('checked', 'checked');
+      }
+
+      function showHideExplain() {
+        explain.style.display = gui.useLocalStorage ? 'block' : 'none';
+      }
+
+      showHideExplain();
+
+      // TODO: Use a boolean controller, fool!
+      dom.bind(localStorageCheckBox, 'change', function() {
+        gui.useLocalStorage = !gui.useLocalStorage;
+        showHideExplain();
+      });
+
+    }
+
+    var newConstructorTextArea = document.getElementById('dg-new-constructor');
+
+    dom.bind(newConstructorTextArea, 'keydown', function(e) {
+      if (e.metaKey && (e.which === 67 || e.keyCode == 67)) {
+        SAVE_DIALOGUE.hide();
+      }
+    });
+
+    dom.bind(gears, 'click', function() {
+      newConstructorTextArea.innerHTML = JSON.stringify(gui.getSaveObject(), undefined, 2);
+      SAVE_DIALOGUE.show();
+      newConstructorTextArea.focus();
+      newConstructorTextArea.select();
+    });
+
+    dom.bind(button, 'click', function() {
+      gui.save();
+    });
+
+    dom.bind(button2, 'click', function() {
+      var presetName = prompt('Enter a new preset name.');
+      if (presetName) gui.saveAs(presetName);
+    });
+
+    dom.bind(button3, 'click', function() {
+      gui.revert();
+    });
+
+//    div.appendChild(button2);
+
+  }
+
+  function addResizeHandle(gui) {
+
+    gui.__resize_handle = document.createElement('div');
+
+    common.extend(gui.__resize_handle.style, {
+
+      width: '6px',
+      marginLeft: '-3px',
+      height: '200px',
+      cursor: 'ew-resize',
+      position: 'absolute'
+//      border: '1px solid blue'
+
+    });
+
+    var pmouseX;
+
+    dom.bind(gui.__resize_handle, 'mousedown', dragStart);
+    dom.bind(gui.__closeButton, 'mousedown', dragStart);
+
+    gui.domElement.insertBefore(gui.__resize_handle, gui.domElement.firstElementChild);
+
+    function dragStart(e) {
+
+      e.preventDefault();
+
+      pmouseX = e.clientX;
+
+      dom.addClass(gui.__closeButton, GUI.CLASS_DRAG);
+      dom.bind(window, 'mousemove', drag);
+      dom.bind(window, 'mouseup', dragStop);
+
+      return false;
+
+    }
+
+    function drag(e) {
+
+      e.preventDefault();
+
+      gui.width += pmouseX - e.clientX;
+      gui.onResize();
+      pmouseX = e.clientX;
+
+      return false;
+
+    }
+
+    function dragStop() {
+
+      dom.removeClass(gui.__closeButton, GUI.CLASS_DRAG);
+      dom.unbind(window, 'mousemove', drag);
+      dom.unbind(window, 'mouseup', dragStop);
+
+    }
+
+  }
+
+  function setWidth(gui, w) {
+    gui.domElement.style.width = w + 'px';
+    // Auto placed save-rows are position fixed, so we have to
+    // set the width manually if we want it to bleed to the edge
+    if (gui.__save_row && gui.autoPlace) {
+      gui.__save_row.style.width = w + 'px';
+    }if (gui.__closeButton) {
+      gui.__closeButton.style.width = w + 'px';
+    }
+  }
+
+  function getCurrentPreset(gui, useInitialValues) {
+
+    var toReturn = {};
+
+    // For each object I'm remembering
+    common.each(gui.__rememberedObjects, function(val, index) {
+
+      var saved_values = {};
+
+      // The controllers I've made for thcommon.isObject by property
+      var controller_map =
+          gui.__rememberedObjectIndecesToControllers[index];
+
+      // Remember each value for each property
+      common.each(controller_map, function(controller, property) {
+        saved_values[property] = useInitialValues ? controller.initialValue : controller.getValue();
+      });
+
+      // Save the values for thcommon.isObject
+      toReturn[index] = saved_values;
+
+    });
+
+    return toReturn;
+
+  }
+
+  function addPresetOption(gui, name, setSelected) {
+    var opt = document.createElement('option');
+    opt.innerHTML = name;
+    opt.value = name;
+    gui.__preset_select.appendChild(opt);
+    if (setSelected) {
+      gui.__preset_select.selectedIndex = gui.__preset_select.length - 1;
+    }
+  }
+
+  function setPresetSelectIndex(gui) {
+    for (var index = 0; index < gui.__preset_select.length; index++) {
+      if (gui.__preset_select[index].value == gui.preset) {
+        gui.__preset_select.selectedIndex = index;
+      }
+    }
+  }
+
+  function markPresetModified(gui, modified) {
+    var opt = gui.__preset_select[gui.__preset_select.selectedIndex];
+//    console.log('mark', modified, opt);
+    if (modified) {
+      opt.innerHTML = opt.value + "*";
+    } else {
+      opt.innerHTML = opt.value;
+    }
+  }
+
+  function updateDisplays(controllerArray) {
+
+
+    if (controllerArray.length != 0) {
+
+      requestAnimationFrame(function() {
+        updateDisplays(controllerArray);
+      });
+
+    }
+
+    common.each(controllerArray, function(c) {
+      c.updateDisplay();
+    });
+
+  }
+
+  return GUI;
+
+})(dat.utils.css,
+"<div id=\"dg-save\" class=\"dg dialogue\">\n\n  Here's the new load parameter for your <code>GUI</code>'s constructor:\n\n  <textarea id=\"dg-new-constructor\"></textarea>\n\n  <div id=\"dg-save-locally\">\n\n    <input id=\"dg-local-storage\" type=\"checkbox\"/> Automatically save\n    values to <code>localStorage</code> on exit.\n\n    <div id=\"dg-local-explain\">The values saved to <code>localStorage</code> will\n      override those passed to <code>dat.GUI</code>'s constructor. This makes it\n      easier to work incrementally, but <code>localStorage</code> is fragile,\n      and your friends may not see the same values you do.\n      \n    </div>\n    \n  </div>\n\n</div>",
+".dg ul{list-style:none;margin:0;padding:0;width:100%;clear:both}.dg.ac{position:fixed;top:0;left:0;right:0;height:0;z-index:0}.dg:not(.ac) .main{overflow:hidden}.dg.main{-webkit-transition:opacity 0.1s linear;-o-transition:opacity 0.1s linear;-moz-transition:opacity 0.1s linear;transition:opacity 0.1s linear}.dg.main.taller-than-window{overflow-y:auto}.dg.main.taller-than-window .close-button{opacity:1;margin-top:-1px;border-top:1px solid #2c2c2c}.dg.main ul.closed .close-button{opacity:1 !important}.dg.main:hover .close-button,.dg.main .close-button.drag{opacity:1}.dg.main .close-button{-webkit-transition:opacity 0.1s linear;-o-transition:opacity 0.1s linear;-moz-transition:opacity 0.1s linear;transition:opacity 0.1s linear;border:0;position:absolute;line-height:19px;height:20px;cursor:pointer;text-align:center;background-color:#000}.dg.main .close-button:hover{background-color:#111}.dg.a{float:right;margin-right:15px;overflow-x:hidden}.dg.a.has-save ul{margin-top:27px}.dg.a.has-save ul.closed{margin-top:0}.dg.a .save-row{position:fixed;top:0;z-index:1002}.dg li{-webkit-transition:height 0.1s ease-out;-o-transition:height 0.1s ease-out;-moz-transition:height 0.1s ease-out;transition:height 0.1s ease-out}.dg li:not(.folder){cursor:auto;height:27px;line-height:27px;overflow:hidden;padding:0 4px 0 5px}.dg li.folder{padding:0;border-left:4px solid rgba(0,0,0,0)}.dg li.title{cursor:pointer;margin-left:-4px}.dg .closed li:not(.title),.dg .closed ul li,.dg .closed ul li > *{height:0;overflow:hidden;border:0}.dg .cr{clear:both;padding-left:3px;height:27px}.dg .property-name{cursor:default;float:left;clear:left;width:40%;overflow:hidden;text-overflow:ellipsis}.dg .c{float:left;width:60%}.dg .c input[type=text]{border:0;margin-top:4px;padding:3px;width:100%;float:right}.dg .has-slider input[type=text]{width:30%;margin-left:0}.dg .slider{float:left;width:66%;margin-left:-5px;margin-right:0;height:19px;margin-top:4px}.dg .slider-fg{height:100%}.dg .c input[type=checkbox]{margin-top:9px}.dg .c select{margin-top:5px}.dg .cr.function,.dg .cr.function .property-name,.dg .cr.function *,.dg .cr.boolean,.dg .cr.boolean *{cursor:pointer}.dg .selector{display:none;position:absolute;margin-left:-9px;margin-top:23px;z-index:10}.dg .c:hover .selector,.dg .selector.drag{display:block}.dg li.save-row{padding:0}.dg li.save-row .button{display:inline-block;padding:0px 6px}.dg.dialogue{background-color:#222;width:460px;padding:15px;font-size:13px;line-height:15px}#dg-new-constructor{padding:10px;color:#222;font-family:Monaco, monospace;font-size:10px;border:0;resize:none;box-shadow:inset 1px 1px 1px #888;word-wrap:break-word;margin:12px 0;display:block;width:440px;overflow-y:scroll;height:100px;position:relative}#dg-local-explain{display:none;font-size:11px;line-height:17px;border-radius:3px;background-color:#333;padding:8px;margin-top:10px}#dg-local-explain code{font-size:10px}#dat-gui-save-locally{display:none}.dg{color:#eee;font:11px 'Lucida Grande', sans-serif;text-shadow:0 -1px 0 #111}.dg.main::-webkit-scrollbar{width:5px;background:#1a1a1a}.dg.main::-webkit-scrollbar-corner{height:0;display:none}.dg.main::-webkit-scrollbar-thumb{border-radius:5px;background:#676767}.dg li:not(.folder){background:#1a1a1a;border-bottom:1px solid #2c2c2c}.dg li.save-row{line-height:25px;background:#dad5cb;border:0}.dg li.save-row select{margin-left:5px;width:108px}.dg li.save-row .button{margin-left:5px;margin-top:1px;border-radius:2px;font-size:9px;line-height:7px;padding:4px 4px 5px 4px;background:#c5bdad;color:#fff;text-shadow:0 1px 0 #b0a58f;box-shadow:0 -1px 0 #b0a58f;cursor:pointer}.dg li.save-row .button.gears{background:#c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;height:7px;width:8px}.dg li.save-row .button:hover{background-color:#bab19e;box-shadow:0 -1px 0 #b0a58f}.dg li.folder{border-bottom:0}.dg li.title{padding-left:16px;background:#000 url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==) 6px 10px no-repeat;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.2)}.dg .closed li.title{background-image:url(data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==)}.dg .cr.boolean{border-left:3px solid #806787}.dg .cr.function{border-left:3px solid #e61d5f}.dg .cr.number{border-left:3px solid #2fa1d6}.dg .cr.number input[type=text]{color:#2fa1d6}.dg .cr.string{border-left:3px solid #1ed36f}.dg .cr.string input[type=text]{color:#1ed36f}.dg .cr.function:hover,.dg .cr.boolean:hover{background:#111}.dg .c input[type=text]{background:#303030;outline:none}.dg .c input[type=text]:hover{background:#3c3c3c}.dg .c input[type=text]:focus{background:#494949;color:#fff}.dg .c .slider{background:#303030;cursor:ew-resize}.dg .c .slider-fg{background:#2fa1d6}.dg .c .slider:hover{background:#3c3c3c}.dg .c .slider:hover .slider-fg{background:#44abda}\n",
+dat.controllers.factory = (function (OptionController, NumberControllerBox, NumberControllerSlider, StringController, FunctionController, BooleanController, common) {
+
+      return function(object, property) {
+
+        var initialValue = object[property];
+
+        // Providing options?
+        if (common.isArray(arguments[2]) || common.isObject(arguments[2])) {
+          return new OptionController(object, property, arguments[2]);
+        }
+
+        // Providing a map?
+
+        if (common.isNumber(initialValue)) {
+
+          if (common.isNumber(arguments[2]) && common.isNumber(arguments[3])) {
+
+            // Has min and max.
+            return new NumberControllerSlider(object, property, arguments[2], arguments[3]);
+
+          } else {
+
+            return new NumberControllerBox(object, property, { min: arguments[2], max: arguments[3] });
+
+          }
+
+        }
+
+        if (common.isString(initialValue)) {
+          return new StringController(object, property);
+        }
+
+        if (common.isFunction(initialValue)) {
+          return new FunctionController(object, property, '');
+        }
+
+        if (common.isBoolean(initialValue)) {
+          return new BooleanController(object, property);
+        }
+
+      }
+
+    })(dat.controllers.OptionController,
+dat.controllers.NumberControllerBox,
+dat.controllers.NumberControllerSlider,
+dat.controllers.StringController = (function (Controller, dom, common) {
+
+  /**
+   * @class Provides a text input to alter the string property of an object.
+   *
+   * @extends dat.controllers.Controller
+   *
+   * @param {Object} object The object to be manipulated
+   * @param {string} property The name of the property to be manipulated
+   *
+   * @member dat.controllers
+   */
+  var StringController = function(object, property) {
+
+    StringController.superclass.call(this, object, property);
+
+    var _this = this;
+
+    this.__input = document.createElement('input');
+    this.__input.setAttribute('type', 'text');
+
+    dom.bind(this.__input, 'keyup', onChange);
+    dom.bind(this.__input, 'change', onChange);
+    dom.bind(this.__input, 'blur', onBlur);
+    dom.bind(this.__input, 'keydown', function(e) {
+      if (e.keyCode === 13) {
+        this.blur();
+      }
+    });
+    
+
+    function onChange() {
+      _this.setValue(_this.__input.value);
+    }
+
+    function onBlur() {
+      if (_this.__onFinishChange) {
+        _this.__onFinishChange.call(_this, _this.getValue());
+      }
+    }
+
+    this.updateDisplay();
+
+    this.domElement.appendChild(this.__input);
+
+  };
+
+  StringController.superclass = Controller;
+
+  common.extend(
+
+      StringController.prototype,
+      Controller.prototype,
+
+      {
+
+        updateDisplay: function() {
+          // Stops the caret from moving on account of:
+          // keyup -> setValue -> updateDisplay
+          if (!dom.isActive(this.__input)) {
+            this.__input.value = this.getValue();
+          }
+          return StringController.superclass.prototype.updateDisplay.call(this);
+        }
+
+      }
+
+  );
+
+  return StringController;
+
+})(dat.controllers.Controller,
+dat.dom.dom,
+dat.utils.common),
+dat.controllers.FunctionController,
+dat.controllers.BooleanController,
+dat.utils.common),
+dat.controllers.Controller,
+dat.controllers.BooleanController,
+dat.controllers.FunctionController,
+dat.controllers.NumberControllerBox,
+dat.controllers.NumberControllerSlider,
+dat.controllers.OptionController,
+dat.controllers.ColorController = (function (Controller, dom, Color, interpret, common) {
+
+  var ColorController = function(object, property) {
+
+    ColorController.superclass.call(this, object, property);
+
+    this.__color = new Color(this.getValue());
+    this.__temp = new Color(0);
+
+    var _this = this;
+
+    this.domElement = document.createElement('div');
+
+    dom.makeSelectable(this.domElement, false);
+
+    this.__selector = document.createElement('div');
+    this.__selector.className = 'selector';
+
+    this.__saturation_field = document.createElement('div');
+    this.__saturation_field.className = 'saturation-field';
+
+    this.__field_knob = document.createElement('div');
+    this.__field_knob.className = 'field-knob';
+    this.__field_knob_border = '2px solid ';
+
+    this.__hue_knob = document.createElement('div');
+    this.__hue_knob.className = 'hue-knob';
+
+    this.__hue_field = document.createElement('div');
+    this.__hue_field.className = 'hue-field';
+
+    this.__input = document.createElement('input');
+    this.__input.type = 'text';
+    this.__input_textShadow = '0 1px 1px ';
+
+    dom.bind(this.__input, 'keydown', function(e) {
+      if (e.keyCode === 13) { // on enter
+        onBlur.call(this);
+      }
+    });
+
+    dom.bind(this.__input, 'blur', onBlur);
+
+    dom.bind(this.__selector, 'mousedown', function(e) {
+
+      dom
+        .addClass(this, 'drag')
+        .bind(window, 'mouseup', function(e) {
+          dom.removeClass(_this.__selector, 'drag');
+        });
+
+    });
+
+    var value_field = document.createElement('div');
+
+    common.extend(this.__selector.style, {
+      width: '122px',
+      height: '102px',
+      padding: '3px',
+      backgroundColor: '#222',
+      boxShadow: '0px 1px 3px rgba(0,0,0,0.3)'
+    });
+
+    common.extend(this.__field_knob.style, {
+      position: 'absolute',
+      width: '12px',
+      height: '12px',
+      border: this.__field_knob_border + (this.__color.v < .5 ? '#fff' : '#000'),
+      boxShadow: '0px 1px 3px rgba(0,0,0,0.5)',
+      borderRadius: '12px',
+      zIndex: 1
+    });
+    
+    common.extend(this.__hue_knob.style, {
+      position: 'absolute',
+      width: '15px',
+      height: '2px',
+      borderRight: '4px solid #fff',
+      zIndex: 1
+    });
+
+    common.extend(this.__saturation_field.style, {
+      width: '100px',
+      height: '100px',
+      border: '1px solid #555',
+      marginRight: '3px',
+      display: 'inline-block',
+      cursor: 'pointer'
+    });
+
+    common.extend(value_field.style, {
+      width: '100%',
+      height: '100%',
+      background: 'none'
+    });
+    
+    linearGradient(value_field, 'top', 'rgba(0,0,0,0)', '#000');
+
+    common.extend(this.__hue_field.style, {
+      width: '15px',
+      height: '100px',
+      display: 'inline-block',
+      border: '1px solid #555',
+      cursor: 'ns-resize'
+    });
+
+    hueGradient(this.__hue_field);
+
+    common.extend(this.__input.style, {
+      outline: 'none',
+//      width: '120px',
+      textAlign: 'center',
+//      padding: '4px',
+//      marginBottom: '6px',
+      color: '#fff',
+      border: 0,
+      fontWeight: 'bold',
+      textShadow: this.__input_textShadow + 'rgba(0,0,0,0.7)'
+    });
+
+    dom.bind(this.__saturation_field, 'mousedown', fieldDown);
+    dom.bind(this.__field_knob, 'mousedown', fieldDown);
+
+    dom.bind(this.__hue_field, 'mousedown', function(e) {
+      setH(e);
+      dom.bind(window, 'mousemove', setH);
+      dom.bind(window, 'mouseup', unbindH);
+    });
+
+    function fieldDown(e) {
+      setSV(e);
+      // document.body.style.cursor = 'none';
+      dom.bind(window, 'mousemove', setSV);
+      dom.bind(window, 'mouseup', unbindSV);
+    }
+
+    function unbindSV() {
+      dom.unbind(window, 'mousemove', setSV);
+      dom.unbind(window, 'mouseup', unbindSV);
+      // document.body.style.cursor = 'default';
+    }
+
+    function onBlur() {
+      var i = interpret(this.value);
+      if (i !== false) {
+        _this.__color.__state = i;
+        _this.setValue(_this.__color.toOriginal());
+      } else {
+        this.value = _this.__color.toString();
+      }
+    }
+
+    function unbindH() {
+      dom.unbind(window, 'mousemove', setH);
+      dom.unbind(window, 'mouseup', unbindH);
+    }
+
+    this.__saturation_field.appendChild(value_field);
+    this.__selector.appendChild(this.__field_knob);
+    this.__selector.appendChild(this.__saturation_field);
+    this.__selector.appendChild(this.__hue_field);
+    this.__hue_field.appendChild(this.__hue_knob);
+
+    this.domElement.appendChild(this.__input);
+    this.domElement.appendChild(this.__selector);
+
+    this.updateDisplay();
+
+    function setSV(e) {
+
+      e.preventDefault();
+
+      var w = dom.getWidth(_this.__saturation_field);
+      var o = dom.getOffset(_this.__saturation_field);
+      var s = (e.clientX - o.left + document.body.scrollLeft) / w;
+      var v = 1 - (e.clientY - o.top + document.body.scrollTop) / w;
+
+      if (v > 1) v = 1;
+      else if (v < 0) v = 0;
+
+      if (s > 1) s = 1;
+      else if (s < 0) s = 0;
+
+      _this.__color.v = v;
+      _this.__color.s = s;
+
+      _this.setValue(_this.__color.toOriginal());
+
+
+      return false;
+
+    }
+
+    function setH(e) {
+
+      e.preventDefault();
+
+      var s = dom.getHeight(_this.__hue_field);
+      var o = dom.getOffset(_this.__hue_field);
+      var h = 1 - (e.clientY - o.top + document.body.scrollTop) / s;
+
+      if (h > 1) h = 1;
+      else if (h < 0) h = 0;
+
+      _this.__color.h = h * 360;
+
+      _this.setValue(_this.__color.toOriginal());
+
+      return false;
+
+    }
+
+  };
+
+  ColorController.superclass = Controller;
+
+  common.extend(
+
+      ColorController.prototype,
+      Controller.prototype,
+
+      {
+
+        updateDisplay: function() {
+
+          var i = interpret(this.getValue());
+
+          if (i !== false) {
+
+            var mismatch = false;
+
+            // Check for mismatch on the interpreted value.
+
+            common.each(Color.COMPONENTS, function(component) {
+              if (!common.isUndefined(i[component]) &&
+                  !common.isUndefined(this.__color.__state[component]) &&
+                  i[component] !== this.__color.__state[component]) {
+                mismatch = true;
+                return {}; // break
+              }
+            }, this);
+
+            // If nothing diverges, we keep our previous values
+            // for statefulness, otherwise we recalculate fresh
+            if (mismatch) {
+              common.extend(this.__color.__state, i);
+            }
+
+          }
+
+          common.extend(this.__temp.__state, this.__color.__state);
+
+          this.__temp.a = 1;
+
+          var flip = (this.__color.v < .5 || this.__color.s > .5) ? 255 : 0;
+          var _flip = 255 - flip;
+
+          common.extend(this.__field_knob.style, {
+            marginLeft: 100 * this.__color.s - 7 + 'px',
+            marginTop: 100 * (1 - this.__color.v) - 7 + 'px',
+            backgroundColor: this.__temp.toString(),
+            border: this.__field_knob_border + 'rgb(' + flip + ',' + flip + ',' + flip +')'
+          });
+
+          this.__hue_knob.style.marginTop = (1 - this.__color.h / 360) * 100 + 'px'
+
+          this.__temp.s = 1;
+          this.__temp.v = 1;
+
+          linearGradient(this.__saturation_field, 'left', '#fff', this.__temp.toString());
+
+          common.extend(this.__input.style, {
+            backgroundColor: this.__input.value = this.__color.toString(),
+            color: 'rgb(' + flip + ',' + flip + ',' + flip +')',
+            textShadow: this.__input_textShadow + 'rgba(' + _flip + ',' + _flip + ',' + _flip +',.7)'
+          });
+
+        }
+
+      }
+
+  );
+  
+  var vendors = ['-moz-','-o-','-webkit-','-ms-',''];
+  
+  function linearGradient(elem, x, a, b) {
+    elem.style.background = '';
+    common.each(vendors, function(vendor) {
+      elem.style.cssText += 'background: ' + vendor + 'linear-gradient('+x+', '+a+' 0%, ' + b + ' 100%); ';
+    });
+  }
+  
+  function hueGradient(elem) {
+    elem.style.background = '';
+    elem.style.cssText += 'background: -moz-linear-gradient(top,  #ff0000 0%, #ff00ff 17%, #0000ff 34%, #00ffff 50%, #00ff00 67%, #ffff00 84%, #ff0000 100%);'
+    elem.style.cssText += 'background: -webkit-linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);'
+    elem.style.cssText += 'background: -o-linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);'
+    elem.style.cssText += 'background: -ms-linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);'
+    elem.style.cssText += 'background: linear-gradient(top,  #ff0000 0%,#ff00ff 17%,#0000ff 34%,#00ffff 50%,#00ff00 67%,#ffff00 84%,#ff0000 100%);'
+  }
+
+
+  return ColorController;
+
+})(dat.controllers.Controller,
+dat.dom.dom,
+dat.color.Color = (function (interpret, math, toString, common) {
+
+  var Color = function() {
+
+    this.__state = interpret.apply(this, arguments);
+
+    if (this.__state === false) {
+      throw 'Failed to interpret color arguments';
+    }
+
+    this.__state.a = this.__state.a || 1;
+
+
+  };
+
+  Color.COMPONENTS = ['r','g','b','h','s','v','hex','a'];
+
+  common.extend(Color.prototype, {
+
+    toString: function() {
+      return toString(this);
+    },
+
+    toOriginal: function() {
+      return this.__state.conversion.write(this);
+    }
+
+  });
+
+  defineRGBComponent(Color.prototype, 'r', 2);
+  defineRGBComponent(Color.prototype, 'g', 1);
+  defineRGBComponent(Color.prototype, 'b', 0);
+
+  defineHSVComponent(Color.prototype, 'h');
+  defineHSVComponent(Color.prototype, 's');
+  defineHSVComponent(Color.prototype, 'v');
+
+  Object.defineProperty(Color.prototype, 'a', {
+
+    get: function() {
+      return this.__state.a;
+    },
+
+    set: function(v) {
+      this.__state.a = v;
+    }
+
+  });
+
+  Object.defineProperty(Color.prototype, 'hex', {
+
+    get: function() {
+
+      if (!this.__state.space !== 'HEX') {
+        this.__state.hex = math.rgb_to_hex(this.r, this.g, this.b);
+      }
+
+      return this.__state.hex;
+
+    },
+
+    set: function(v) {
+
+      this.__state.space = 'HEX';
+      this.__state.hex = v;
+
+    }
+
+  });
+
+  function defineRGBComponent(target, component, componentHexIndex) {
+
+    Object.defineProperty(target, component, {
+
+      get: function() {
+
+        if (this.__state.space === 'RGB') {
+          return this.__state[component];
+        }
+
+        recalculateRGB(this, component, componentHexIndex);
+
+        return this.__state[component];
+
+      },
+
+      set: function(v) {
+
+        if (this.__state.space !== 'RGB') {
+          recalculateRGB(this, component, componentHexIndex);
+          this.__state.space = 'RGB';
+        }
+
+        this.__state[component] = v;
+
+      }
+
+    });
+
+  }
+
+  function defineHSVComponent(target, component) {
+
+    Object.defineProperty(target, component, {
+
+      get: function() {
+
+        if (this.__state.space === 'HSV')
+          return this.__state[component];
+
+        recalculateHSV(this);
+
+        return this.__state[component];
+
+      },
+
+      set: function(v) {
+
+        if (this.__state.space !== 'HSV') {
+          recalculateHSV(this);
+          this.__state.space = 'HSV';
+        }
+
+        this.__state[component] = v;
+
+      }
+
+    });
+
+  }
+
+  function recalculateRGB(color, component, componentHexIndex) {
+
+    if (color.__state.space === 'HEX') {
+
+      color.__state[component] = math.component_from_hex(color.__state.hex, componentHexIndex);
+
+    } else if (color.__state.space === 'HSV') {
+
+      common.extend(color.__state, math.hsv_to_rgb(color.__state.h, color.__state.s, color.__state.v));
+
+    } else {
+
+      throw 'Corrupted color state';
+
+    }
+
+  }
+
+  function recalculateHSV(color) {
+
+    var result = math.rgb_to_hsv(color.r, color.g, color.b);
+
+    common.extend(color.__state,
+        {
+          s: result.s,
+          v: result.v
+        }
+    );
+
+    if (!common.isNaN(result.h)) {
+      color.__state.h = result.h;
+    } else if (common.isUndefined(color.__state.h)) {
+      color.__state.h = 0;
+    }
+
+  }
+
+  return Color;
+
+})(dat.color.interpret,
+dat.color.math = (function () {
+
+  var tmpComponent;
+
+  return {
+
+    hsv_to_rgb: function(h, s, v) {
+
+      var hi = Math.floor(h / 60) % 6;
+
+      var f = h / 60 - Math.floor(h / 60);
+      var p = v * (1.0 - s);
+      var q = v * (1.0 - (f * s));
+      var t = v * (1.0 - ((1.0 - f) * s));
+      var c = [
+        [v, t, p],
+        [q, v, p],
+        [p, v, t],
+        [p, q, v],
+        [t, p, v],
+        [v, p, q]
+      ][hi];
+
+      return {
+        r: c[0] * 255,
+        g: c[1] * 255,
+        b: c[2] * 255
+      };
+
+    },
+
+    rgb_to_hsv: function(r, g, b) {
+
+      var min = Math.min(r, g, b),
+          max = Math.max(r, g, b),
+          delta = max - min,
+          h, s;
+
+      if (max != 0) {
+        s = delta / max;
+      } else {
+        return {
+          h: NaN,
+          s: 0,
+          v: 0
+        };
+      }
+
+      if (r == max) {
+        h = (g - b) / delta;
+      } else if (g == max) {
+        h = 2 + (b - r) / delta;
+      } else {
+        h = 4 + (r - g) / delta;
+      }
+      h /= 6;
+      if (h < 0) {
+        h += 1;
+      }
+
+      return {
+        h: h * 360,
+        s: s,
+        v: max / 255
+      };
+    },
+
+    rgb_to_hex: function(r, g, b) {
+      var hex = this.hex_with_component(0, 2, r);
+      hex = this.hex_with_component(hex, 1, g);
+      hex = this.hex_with_component(hex, 0, b);
+      return hex;
+    },
+
+    component_from_hex: function(hex, componentIndex) {
+      return (hex >> (componentIndex * 8)) & 0xFF;
+    },
+
+    hex_with_component: function(hex, componentIndex, value) {
+      return value << (tmpComponent = componentIndex * 8) | (hex & ~ (0xFF << tmpComponent));
+    }
+
+  }
+
+})(),
+dat.color.toString,
+dat.utils.common),
+dat.color.interpret,
+dat.utils.common),
+dat.utils.requestAnimationFrame = (function () {
+
+  /**
+   * requirejs version of Paul Irish's RequestAnimationFrame
+   * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+   */
+
+  return window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function(callback, element) {
+
+        window.setTimeout(callback, 1000 / 60);
+
+      };
+})(),
+dat.dom.CenteredDiv = (function (dom, common) {
+
+
+  var CenteredDiv = function() {
+
+    this.backgroundElement = document.createElement('div');
+    common.extend(this.backgroundElement.style, {
+      backgroundColor: 'rgba(0,0,0,0.8)',
+      top: 0,
+      left: 0,
+      display: 'none',
+      zIndex: '1000',
+      opacity: 0,
+      WebkitTransition: 'opacity 0.2s linear'
+    });
+
+    dom.makeFullscreen(this.backgroundElement);
+    this.backgroundElement.style.position = 'fixed';
+
+    this.domElement = document.createElement('div');
+    common.extend(this.domElement.style, {
+      position: 'fixed',
+      display: 'none',
+      zIndex: '1001',
+      opacity: 0,
+      WebkitTransition: '-webkit-transform 0.2s ease-out, opacity 0.2s linear'
+    });
+
+
+    document.body.appendChild(this.backgroundElement);
+    document.body.appendChild(this.domElement);
+
+    var _this = this;
+    dom.bind(this.backgroundElement, 'click', function() {
+      _this.hide();
+    });
+
+
+  };
+
+  CenteredDiv.prototype.show = function() {
+
+    var _this = this;
+    
+
+
+    this.backgroundElement.style.display = 'block';
+
+    this.domElement.style.display = 'block';
+    this.domElement.style.opacity = 0;
+//    this.domElement.style.top = '52%';
+    this.domElement.style.webkitTransform = 'scale(1.1)';
+
+    this.layout();
+
+    common.defer(function() {
+      _this.backgroundElement.style.opacity = 1;
+      _this.domElement.style.opacity = 1;
+      _this.domElement.style.webkitTransform = 'scale(1)';
+    });
+
+  };
+
+  CenteredDiv.prototype.hide = function() {
+
+    var _this = this;
+
+    var hide = function() {
+
+      _this.domElement.style.display = 'none';
+      _this.backgroundElement.style.display = 'none';
+
+      dom.unbind(_this.domElement, 'webkitTransitionEnd', hide);
+      dom.unbind(_this.domElement, 'transitionend', hide);
+      dom.unbind(_this.domElement, 'oTransitionEnd', hide);
+
+    };
+
+    dom.bind(this.domElement, 'webkitTransitionEnd', hide);
+    dom.bind(this.domElement, 'transitionend', hide);
+    dom.bind(this.domElement, 'oTransitionEnd', hide);
+
+    this.backgroundElement.style.opacity = 0;
+//    this.domElement.style.top = '48%';
+    this.domElement.style.opacity = 0;
+    this.domElement.style.webkitTransform = 'scale(1.1)';
+
+  };
+
+  CenteredDiv.prototype.layout = function() {
+    this.domElement.style.left = window.innerWidth/2 - dom.getWidth(this.domElement) / 2 + 'px';
+    this.domElement.style.top = window.innerHeight/2 - dom.getHeight(this.domElement) / 2 + 'px';
+  };
+  
+  function lockScroll(e) {
+    console.log(e);
+  }
+
+  return CenteredDiv;
+
+})(dat.dom.dom,
+dat.utils.common),
+dat.dom.dom,
+dat.utils.common);
+},{}],120:[function(require,module,exports){
 var objectKeys = require('object-keys');
 var isArguments = require('is-arguments');
 var is = require('object-is');
@@ -20717,7 +26186,7 @@ function objEquiv(a, b, opts) {
 
 module.exports = deepEqual;
 
-},{"is-arguments":247,"is-date-object":249,"is-regex":250,"object-is":268,"object-keys":272,"regexp.prototype.flags":289}],105:[function(require,module,exports){
+},{"is-arguments":277,"is-date-object":279,"is-regex":280,"object-is":305,"object-keys":309,"regexp.prototype.flags":327}],121:[function(require,module,exports){
 'use strict';
 
 var keys = require('object-keys');
@@ -20777,7 +26246,80 @@ defineProperties.supportsDescriptors = !!supportsDescriptors;
 
 module.exports = defineProperties;
 
-},{"object-keys":272}],106:[function(require,module,exports){
+},{"object-keys":309}],122:[function(require,module,exports){
+
+/**
+ * Expose `parse`.
+ */
+
+module.exports = parse;
+
+/**
+ * Wrap map from jquery.
+ */
+
+var map = {
+  option: [1, '<select multiple="multiple">', '</select>'],
+  optgroup: [1, '<select multiple="multiple">', '</select>'],
+  legend: [1, '<fieldset>', '</fieldset>'],
+  thead: [1, '<table>', '</table>'],
+  tbody: [1, '<table>', '</table>'],
+  tfoot: [1, '<table>', '</table>'],
+  colgroup: [1, '<table>', '</table>'],
+  caption: [1, '<table>', '</table>'],
+  tr: [2, '<table><tbody>', '</tbody></table>'],
+  td: [3, '<table><tbody><tr>', '</tr></tbody></table>'],
+  th: [3, '<table><tbody><tr>', '</tr></tbody></table>'],
+  col: [2, '<table><tbody></tbody><colgroup>', '</colgroup></table>'],
+  _default: [0, '', '']
+};
+
+/**
+ * Parse `html` and return the children.
+ *
+ * @param {String} html
+ * @return {Array}
+ * @api private
+ */
+
+function parse(html) {
+  if ('string' != typeof html) throw new TypeError('String expected');
+
+  // tag name
+  var m = /<([\w:]+)/.exec(html);
+  if (!m) throw new Error('No elements were generated.');
+  var tag = m[1];
+
+  // body support
+  if (tag == 'body') {
+    var el = document.createElement('html');
+    el.innerHTML = html;
+    return el.removeChild(el.lastChild);
+  }
+
+  // wrap map
+  var wrap = map[tag] || map._default;
+  var depth = wrap[0];
+  var prefix = wrap[1];
+  var suffix = wrap[2];
+  var el = document.createElement('div');
+  el.innerHTML = prefix + html + suffix;
+  while (depth--) el = el.lastChild;
+
+  var els = el.children;
+  if (1 == els.length) {
+    return el.removeChild(els[0]);
+  }
+
+  var fragment = document.createDocumentFragment();
+  while (els.length) {
+    fragment.appendChild(el.removeChild(els[0]));
+  }
+
+  return fragment;
+}
+
+},{}],123:[function(require,module,exports){
 /*!
   * domready (c) Dustin Diaz 2014 - License MIT
   */
@@ -20809,7 +26351,7 @@ module.exports = defineProperties;
 
 });
 
-},{}],107:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 "use strict"
 
 function dupe_array(count, value, i) {
@@ -20859,7 +26401,7 @@ function dupe(count, value) {
 }
 
 module.exports = dupe
-},{}],108:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 var EventEmitter = require('events').EventEmitter;
 
 module.exports = function (elem) {
@@ -20971,7 +26513,7 @@ Ever.typeOf = (function () {
     };
 })();;
 
-},{"./init.json":109,"./types.json":110,"events":15}],109:[function(require,module,exports){
+},{"./init.json":126,"./types.json":127,"events":15}],126:[function(require,module,exports){
 module.exports={
   "initEvent" : [
     "type",
@@ -21014,7 +26556,7 @@ module.exports={
   ]
 }
 
-},{}],110:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 module.exports={
   "MouseEvent" : [
     "click",
@@ -21059,11 +26601,125 @@ module.exports={
   ]
 }
 
-},{}],111:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
+'use strict';
+
+function fract(f) {
+  return Math.abs(f % 1);
+}
+
+module.exports = fract;
+
+},{}],129:[function(require,module,exports){
+(function (global){(function (){
+'use strict';
+
+var toarray = require('toarray');
+
+module.exports = function(node, opts) {
+  return new Tooltip(node, opts);
+};
+
+function Tooltip(node, opts) {
+  this.node = node;
+
+  if (typeof opts === 'string' || Array.isArray(opts) || opts instanceof Element || opts instanceof DocumentFragment || opts instanceof Text) {
+    // shortcut
+    opts = {info: opts};
+  }
+
+  this.info = toarray(opts.info) || [];
+  this.style = opts.style || [
+    'position: fixed;',
+    'background-color: black;',
+    'pointer-events: none;',
+    'color: white;',
+    'z-index: 20;',
+    'visibility: hidden;',
+    opts.extraStyle || '',
+    ].join('\n');
+
+  this.cachedDivHeights = [];
+
+  this.enable();
+}
+
+Tooltip.prototype.enable = function() {
+  this.create();
+  this.node.addEventListener('mouseenter', this.onMouseenter = this.show.bind(this));
+  this.node.addEventListener('mouseleave', this.onMouseleave = this.hide.bind(this));
+};
+
+Tooltip.prototype.disable = function() {
+  this.node.removeEventListener('mouseenter', this.onMouseenter);
+  this.node.removeEventListener('mouseleave', this.onMouseleave);
+
+  if (this.div) {
+    this.div.parentNode.removeChild(this.div);
+    delete this.div;
+  }
+};
+
+Tooltip.prototype.create = function() {
+  this.div = document.createElement('div');
+  this.div.setAttribute('style', this.style);
+  
+  var stringLines = 0;
+  for (var i = 0; i < this.info.length; i += 1) {
+    var line = this.info[i];
+    if (typeof line === 'string') {
+      this.div.appendChild(document.createTextNode(line));
+      stringLines += 1;
+    } else if (line instanceof Element || line instanceof DocumentFragment || line instanceof Text) {
+      this.div.appendChild(line);
+      if (line instanceof Text) stringLines += 1;
+    } else {
+      this.div.appendChild(document.createTextNode(''+line));
+    }
+  }
+  document.body.appendChild(this.div);
+
+  // cache clientHeight calculation because it is very slow
+  if (stringLines === this.info.length) {
+    // and cache string-only tooltip heights for even better performance (should be all the same)
+    if (!global.ftooltip_cachedDivHeights) global.ftooltip_cachedDivHeights = [];
+    this.divHeight = global.ftooltip_cachedDivHeights[stringLines] || this.div.clientHeight;
+    global.ftooltip_cachedDivHeights[stringLines] = this.divHeight;
+  } else {
+    this.divHeight = this.div.clientHeight;
+  }
+
+  this.div.style.display = 'none';
+}
+
+Tooltip.prototype.show = function(ev) {
+  this.div.style.display = 'block';
+  this.div.style.visibility = '';
+  this.move(ev.x, ev.y);
+  this.node.addEventListener('mousemove', this.onMousemove = this.track.bind(this));
+};
+
+Tooltip.prototype.track = function(ev) {
+  this.move(ev.x, ev.y);
+}
+
+Tooltip.prototype.move = function(x, y) {
+  this.div.style.left = x + 'px';
+  this.div.style.top = (y - this.divHeight) + 'px';
+};
+
+Tooltip.prototype.hide = function() {
+  this.div.style.display = 'none';
+  this.div.style.visibility = 'hidden';
+  this.node.removeEventListener('mousemove', this.onMousemove);
+};
+
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"toarray":342}],130:[function(require,module,exports){
 arguments[4][17][0].apply(exports,arguments)
-},{"dup":17}],112:[function(require,module,exports){
+},{"dup":17}],131:[function(require,module,exports){
 arguments[4][18][0].apply(exports,arguments)
-},{"./implementation":111,"dup":18}],113:[function(require,module,exports){
+},{"./implementation":130,"dup":18}],132:[function(require,module,exports){
 'use strict';
 
 var glm = require('gl-matrix');
@@ -21192,9 +26848,9 @@ CameraPlugin.prototype.getVector = function(out) {
   out[2] = -_scratch1[2];
 };
 
-},{"./pointer-stream.js":115,"basic-camera":72,"events":15,"gl-matrix":114,"inherits":243}],114:[function(require,module,exports){
-arguments[4][73][0].apply(exports,arguments)
-},{"dup":73}],115:[function(require,module,exports){
+},{"./pointer-stream.js":134,"basic-camera":81,"events":15,"gl-matrix":133,"inherits":272}],133:[function(require,module,exports){
+arguments[4][82][0].apply(exports,arguments)
+},{"dup":82}],134:[function(require,module,exports){
 'use strict';
 
 var Readable = require('stream').Readable;
@@ -21238,7 +26894,7 @@ PointerStream.prototype._read = function() {
 
 module.exports = PointerStream;
 
-},{"inherits":243,"stream":44}],116:[function(require,module,exports){
+},{"inherits":272,"stream":44}],135:[function(require,module,exports){
 if(typeof window.performance === "object") {
   if(window.performance.now) {
     module.exports = function() { return window.performance.now() }
@@ -21251,7 +26907,7 @@ if(typeof window.performance === "object") {
   module.exports = function() { return (new Date()).getTime() }
 }
 
-},{}],117:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 //Adapted from here: https://developer.mozilla.org/en-US/docs/Web/Reference/Events/wheel?redirectlocale=en-US&redirectslug=DOM%2FMozilla_event_reference%2Fwheel
 
 var prefix = "", _addEventListener, onwheel, support;
@@ -21311,7 +26967,7 @@ module.exports = function( elem, callback, useCapture ) {
     _addWheelListener( elem, "MozMousePixelScroll", callback, useCapture );
   }
 };
-},{}],118:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
  
@@ -21341,145 +26997,9 @@ if (!window.cancelAnimationFrame)
         clearTimeout(id);
     };
 
-},{}],119:[function(require,module,exports){
-var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
-  , isOSX = /OS X/.test(ua)
-  , isOpera = /Opera/.test(ua)
-  , maybeFirefox = !/like Gecko/.test(ua) && !isOpera
-
-var i, output = module.exports = {
-  0:  isOSX ? '<menu>' : '<UNK>'
-, 1:  '<mouse 1>'
-, 2:  '<mouse 2>'
-, 3:  '<break>'
-, 4:  '<mouse 3>'
-, 5:  '<mouse 4>'
-, 6:  '<mouse 5>'
-, 8:  '<backspace>'
-, 9:  '<tab>'
-, 12: '<clear>'
-, 13: '<enter>'
-, 16: '<shift>'
-, 17: '<control>'
-, 18: '<alt>'
-, 19: '<pause>'
-, 20: '<caps-lock>'
-, 21: '<ime-hangul>'
-, 23: '<ime-junja>'
-, 24: '<ime-final>'
-, 25: '<ime-kanji>'
-, 27: '<escape>'
-, 28: '<ime-convert>'
-, 29: '<ime-nonconvert>'
-, 30: '<ime-accept>'
-, 31: '<ime-mode-change>'
-, 27: '<escape>'
-, 32: '<space>'
-, 33: '<page-up>'
-, 34: '<page-down>'
-, 35: '<end>'
-, 36: '<home>'
-, 37: '<left>'
-, 38: '<up>'
-, 39: '<right>'
-, 40: '<down>'
-, 41: '<select>'
-, 42: '<print>'
-, 43: '<execute>'
-, 44: '<snapshot>'
-, 45: '<insert>'
-, 46: '<delete>'
-, 47: '<help>'
-, 91: '<meta>'  // meta-left -- no one handles left and right properly, so we coerce into one.
-, 92: '<meta>'  // meta-right
-, 93: isOSX ? '<meta>' : '<menu>'      // chrome,opera,safari all report this for meta-right (osx mbp).
-, 95: '<sleep>'
-, 106: '<num-*>'
-, 107: '<num-+>'
-, 108: '<num-enter>'
-, 109: '<num-->'
-, 110: '<num-.>'
-, 111: '<num-/>'
-, 144: '<num-lock>'
-, 145: '<scroll-lock>'
-, 160: '<shift-left>'
-, 161: '<shift-right>'
-, 162: '<control-left>'
-, 163: '<control-right>'
-, 164: '<alt-left>'
-, 165: '<alt-right>'
-, 166: '<browser-back>'
-, 167: '<browser-forward>'
-, 168: '<browser-refresh>'
-, 169: '<browser-stop>'
-, 170: '<browser-search>'
-, 171: '<browser-favorites>'
-, 172: '<browser-home>'
-
-  // ff/osx reports '<volume-mute>' for '-'
-, 173: isOSX && maybeFirefox ? '-' : '<volume-mute>'
-, 174: '<volume-down>'
-, 175: '<volume-up>'
-, 176: '<next-track>'
-, 177: '<prev-track>'
-, 178: '<stop>'
-, 179: '<play-pause>'
-, 180: '<launch-mail>'
-, 181: '<launch-media-select>'
-, 182: '<launch-app 1>'
-, 183: '<launch-app 2>'
-, 186: ';'
-, 187: '='
-, 188: ','
-, 189: '-'
-, 190: '.'
-, 191: '/'
-, 192: '`'
-, 219: '['
-, 220: '\\'
-, 221: ']'
-, 222: "'"
-, 223: '<meta>'
-, 224: '<meta>'       // firefox reports meta here.
-, 226: '<alt-gr>'
-, 229: '<ime-process>'
-, 231: isOpera ? '`' : '<unicode>'
-, 246: '<attention>'
-, 247: '<crsel>'
-, 248: '<exsel>'
-, 249: '<erase-eof>'
-, 250: '<play>'
-, 251: '<zoom>'
-, 252: '<no-name>'
-, 253: '<pa-1>'
-, 254: '<clear>'
-}
-
-for(i = 58; i < 65; ++i) {
-  output[i] = String.fromCharCode(i)
-}
-
-// 0-9
-for(i = 48; i < 58; ++i) {
-  output[i] = (i - 48)+''
-}
-
-// A-Z
-for(i = 65; i < 91; ++i) {
-  output[i] = String.fromCharCode(i)
-}
-
-// num0-9
-for(i = 96; i < 106; ++i) {
-  output[i] = '<num-'+(i - 96)+'>'
-}
-
-// F1-F24
-for(i = 112; i < 136; ++i) {
-  output[i] = 'F'+(i-111)
-}
-
-},{}],120:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
+arguments[4][106][0].apply(exports,arguments)
+},{"dup":106}],139:[function(require,module,exports){
 "use strict"
 
 var EventEmitter = require("events").EventEmitter
@@ -22218,9 +27738,9 @@ function createShell(options) {
 
 module.exports = createShell
 
-},{"./lib/hrtime-polyfill.js":116,"./lib/mousewheel-polyfill.js":117,"./lib/raf-polyfill.js":118,"binary-search-bounds":74,"domready":106,"events":15,"invert-hash":245,"iota-array":246,"uniq":303,"util":63,"vkey":119}],121:[function(require,module,exports){
+},{"./lib/hrtime-polyfill.js":135,"./lib/mousewheel-polyfill.js":136,"./lib/raf-polyfill.js":137,"binary-search-bounds":83,"domready":123,"events":15,"invert-hash":275,"iota-array":276,"uniq":347,"util":63,"vkey":138}],140:[function(require,module,exports){
 arguments[4][19][0].apply(exports,arguments)
-},{"dup":19,"function-bind":112,"has":242,"has-symbols":239}],122:[function(require,module,exports){
+},{"dup":19,"function-bind":131,"has":271,"has-symbols":268}],141:[function(require,module,exports){
 "use strict"
 
 var path = require("path")
@@ -22347,7 +27867,7 @@ module.exports = function getPixels(url, cb) {
   }
 }
 
-},{"ndarray":266,"ndarray-pack":259,"omggif":275,"path":41,"ppm":286,"through":296}],123:[function(require,module,exports){
+},{"ndarray":302,"ndarray-pack":295,"omggif":312,"path":41,"ppm":324,"through":339}],142:[function(require,module,exports){
 "use strict"
 
 var pool = require("typedarray-pool")
@@ -22501,7 +28021,7 @@ function createBuffer(gl, data, type, usage) {
 
 module.exports = createBuffer
 
-},{"ndarray":266,"ndarray-ops":258,"typedarray-pool":302}],124:[function(require,module,exports){
+},{"ndarray":302,"ndarray-ops":294,"typedarray-pool":345}],143:[function(require,module,exports){
 module.exports = {
   0: 'NONE',
   1: 'ONE',
@@ -22801,14 +28321,14 @@ module.exports = {
   37444: 'BROWSER_DEFAULT_WEBGL'
 }
 
-},{}],125:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 var gl10 = require('./1.0/numbers')
 
 module.exports = function lookupConstant (number) {
   return gl10[number]
 }
 
-},{"./1.0/numbers":124}],126:[function(require,module,exports){
+},{"./1.0/numbers":143}],145:[function(require,module,exports){
 'use strict';
 
 var matrixToCSS = require('matrix-to-css');
@@ -22957,7 +28477,7 @@ GLCSS3D.prototype.render = function(view, proj) {
   this.renderCutout(view, proj);
 };
 
-},{"gl-mat4":143,"gl-mesh":159,"gl-shader":171,"matrix-to-css":253}],127:[function(require,module,exports){
+},{"gl-mat4":162,"gl-mesh":178,"gl-shader":190,"matrix-to-css":287}],146:[function(require,module,exports){
 
 var sprintf = require('sprintf-js').sprintf;
 var glConstants = require('gl-constants/lookup');
@@ -23012,7 +28532,7 @@ function formatCompilerError(errLog, src, type) {
 }
 
 
-},{"add-line-numbers":67,"gl-constants/lookup":125,"glsl-shader-name":229,"sprintf-js":295}],128:[function(require,module,exports){
+},{"add-line-numbers":67,"gl-constants/lookup":144,"glsl-shader-name":258,"sprintf-js":338}],147:[function(require,module,exports){
 module.exports = adjoint;
 
 /**
@@ -23046,7 +28566,7 @@ function adjoint(out, a) {
     out[15] =  (a00 * (a11 * a22 - a12 * a21) - a10 * (a01 * a22 - a02 * a21) + a20 * (a01 * a12 - a02 * a11));
     return out;
 };
-},{}],129:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 module.exports = clone;
 
 /**
@@ -23075,7 +28595,7 @@ function clone(a) {
     out[15] = a[15];
     return out;
 };
-},{}],130:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 module.exports = copy;
 
 /**
@@ -23104,7 +28624,7 @@ function copy(out, a) {
     out[15] = a[15];
     return out;
 };
-},{}],131:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 module.exports = create;
 
 /**
@@ -23132,7 +28652,7 @@ function create() {
     out[15] = 1;
     return out;
 };
-},{}],132:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 module.exports = determinant;
 
 /**
@@ -23163,7 +28683,7 @@ function determinant(a) {
     // Calculate the determinant
     return b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
 };
-},{}],133:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 module.exports = fromQuat;
 
 /**
@@ -23211,7 +28731,7 @@ function fromQuat(out, q) {
 
     return out;
 };
-},{}],134:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 module.exports = fromRotation
 
 /**
@@ -23266,7 +28786,7 @@ function fromRotation(out, rad, axis) {
   return out
 }
 
-},{}],135:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 module.exports = fromRotationTranslation;
 
 /**
@@ -23320,7 +28840,7 @@ function fromRotationTranslation(out, q, v) {
     
     return out;
 };
-},{}],136:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 module.exports = fromScaling
 
 /**
@@ -23354,7 +28874,7 @@ function fromScaling(out, v) {
   return out
 }
 
-},{}],137:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 module.exports = fromTranslation
 
 /**
@@ -23388,7 +28908,7 @@ function fromTranslation(out, v) {
   return out
 }
 
-},{}],138:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = fromXRotation
 
 /**
@@ -23425,7 +28945,7 @@ function fromXRotation(out, rad) {
     out[15] = 1
     return out
 }
-},{}],139:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 module.exports = fromYRotation
 
 /**
@@ -23462,7 +28982,7 @@ function fromYRotation(out, rad) {
     out[15] = 1
     return out
 }
-},{}],140:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 module.exports = fromZRotation
 
 /**
@@ -23499,7 +29019,7 @@ function fromZRotation(out, rad) {
     out[15] = 1
     return out
 }
-},{}],141:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 module.exports = frustum;
 
 /**
@@ -23536,7 +29056,7 @@ function frustum(out, left, right, bottom, top, near, far) {
     out[15] = 0;
     return out;
 };
-},{}],142:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 module.exports = identity;
 
 /**
@@ -23564,7 +29084,7 @@ function identity(out) {
     out[15] = 1;
     return out;
 };
-},{}],143:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports = {
   create: require('./create')
   , clone: require('./clone')
@@ -23597,7 +29117,7 @@ module.exports = {
   , str: require('./str')
 }
 
-},{"./adjoint":128,"./clone":129,"./copy":130,"./create":131,"./determinant":132,"./fromQuat":133,"./fromRotation":134,"./fromRotationTranslation":135,"./fromScaling":136,"./fromTranslation":137,"./fromXRotation":138,"./fromYRotation":139,"./fromZRotation":140,"./frustum":141,"./identity":142,"./invert":144,"./lookAt":145,"./multiply":146,"./ortho":147,"./perspective":148,"./perspectiveFromFieldOfView":149,"./rotate":150,"./rotateX":151,"./rotateY":152,"./rotateZ":153,"./scale":154,"./str":155,"./translate":156,"./transpose":157}],144:[function(require,module,exports){
+},{"./adjoint":147,"./clone":148,"./copy":149,"./create":150,"./determinant":151,"./fromQuat":152,"./fromRotation":153,"./fromRotationTranslation":154,"./fromScaling":155,"./fromTranslation":156,"./fromXRotation":157,"./fromYRotation":158,"./fromZRotation":159,"./frustum":160,"./identity":161,"./invert":163,"./lookAt":164,"./multiply":165,"./ortho":166,"./perspective":167,"./perspectiveFromFieldOfView":168,"./rotate":169,"./rotateX":170,"./rotateY":171,"./rotateZ":172,"./scale":173,"./str":174,"./translate":175,"./transpose":176}],163:[function(require,module,exports){
 module.exports = invert;
 
 /**
@@ -23653,7 +29173,7 @@ function invert(out, a) {
 
     return out;
 };
-},{}],145:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 var identity = require('./identity');
 
 module.exports = lookAt;
@@ -23744,7 +29264,7 @@ function lookAt(out, eye, center, up) {
 
     return out;
 };
-},{"./identity":142}],146:[function(require,module,exports){
+},{"./identity":161}],165:[function(require,module,exports){
 module.exports = multiply;
 
 /**
@@ -23787,7 +29307,7 @@ function multiply(out, a, b) {
     out[15] = b0*a03 + b1*a13 + b2*a23 + b3*a33;
     return out;
 };
-},{}],147:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 module.exports = ortho;
 
 /**
@@ -23824,7 +29344,7 @@ function ortho(out, left, right, bottom, top, near, far) {
     out[15] = 1;
     return out;
 };
-},{}],148:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 module.exports = perspective;
 
 /**
@@ -23858,7 +29378,7 @@ function perspective(out, fovy, aspect, near, far) {
     out[15] = 0;
     return out;
 };
-},{}],149:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 module.exports = perspectiveFromFieldOfView;
 
 /**
@@ -23900,7 +29420,7 @@ function perspectiveFromFieldOfView(out, fov, near, far) {
 }
 
 
-},{}],150:[function(require,module,exports){
+},{}],169:[function(require,module,exports){
 module.exports = rotate;
 
 /**
@@ -23965,7 +29485,7 @@ function rotate(out, a, rad, axis) {
     }
     return out;
 };
-},{}],151:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 module.exports = rotateX;
 
 /**
@@ -24010,7 +29530,7 @@ function rotateX(out, a, rad) {
     out[11] = a23 * c - a13 * s;
     return out;
 };
-},{}],152:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 module.exports = rotateY;
 
 /**
@@ -24055,7 +29575,7 @@ function rotateY(out, a, rad) {
     out[11] = a03 * s + a23 * c;
     return out;
 };
-},{}],153:[function(require,module,exports){
+},{}],172:[function(require,module,exports){
 module.exports = rotateZ;
 
 /**
@@ -24100,7 +29620,7 @@ function rotateZ(out, a, rad) {
     out[7] = a13 * c - a03 * s;
     return out;
 };
-},{}],154:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 module.exports = scale;
 
 /**
@@ -24132,7 +29652,7 @@ function scale(out, a, v) {
     out[15] = a[15];
     return out;
 };
-},{}],155:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 module.exports = str;
 
 /**
@@ -24147,7 +29667,7 @@ function str(a) {
                     a[8] + ', ' + a[9] + ', ' + a[10] + ', ' + a[11] + ', ' + 
                     a[12] + ', ' + a[13] + ', ' + a[14] + ', ' + a[15] + ')';
 };
-},{}],156:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 module.exports = translate;
 
 /**
@@ -24186,7 +29706,7 @@ function translate(out, a, v) {
 
     return out;
 };
-},{}],157:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 module.exports = transpose;
 
 /**
@@ -24236,7 +29756,7 @@ function transpose(out, a) {
     
     return out;
 };
-},{}],158:[function(require,module,exports){
+},{}],177:[function(require,module,exports){
 /**
  * @fileoverview gl-matrix - High performance matrix and vector operations
  * @author Brandon Jones
@@ -27309,7 +32829,7 @@ if(typeof(exports) !== 'undefined') {
   })(shim.exports);
 })();
 
-},{}],159:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 "use strict"
 
 var webglew = require("webglew")
@@ -27773,7 +33293,7 @@ function createMesh(gl, elements, attributes) {
 }
 
 module.exports = createMesh
-},{"./lib/mesh.js":160,"gl-buffer":163,"gl-vao":167,"ndarray":266,"ndarray-ops":258,"typedarray-pool":168,"webglew":169}],160:[function(require,module,exports){
+},{"./lib/mesh.js":179,"gl-buffer":182,"gl-vao":186,"ndarray":302,"ndarray-ops":294,"typedarray-pool":187,"webglew":188}],179:[function(require,module,exports){
 "use strict"
 
 function Mesh(gl, mode, numElements, vao, elements, attributes, attributeNames) {
@@ -27827,11 +33347,11 @@ Mesh.prototype.draw = function() {
 }
 
 module.exports = Mesh
-},{}],161:[function(require,module,exports){
-arguments[4][77][0].apply(exports,arguments)
-},{"dup":77}],162:[function(require,module,exports){
-arguments[4][107][0].apply(exports,arguments)
-},{"dup":107}],163:[function(require,module,exports){
+},{}],180:[function(require,module,exports){
+arguments[4][86][0].apply(exports,arguments)
+},{"dup":86}],181:[function(require,module,exports){
+arguments[4][124][0].apply(exports,arguments)
+},{"dup":124}],182:[function(require,module,exports){
 "use strict"
 
 var pool = require("typedarray-pool")
@@ -27996,7 +33516,7 @@ function createBuffer(gl, type, data, usage) {
 }
 
 module.exports = createBuffer
-},{"ndarray":266,"ndarray-ops":258,"typedarray-pool":168}],164:[function(require,module,exports){
+},{"ndarray":302,"ndarray-ops":294,"typedarray-pool":187}],183:[function(require,module,exports){
 "use strict"
 
 function doBind(gl, elements, attributes) {
@@ -28051,7 +33571,7 @@ function doBind(gl, elements, attributes) {
 }
 
 module.exports = doBind
-},{}],165:[function(require,module,exports){
+},{}],184:[function(require,module,exports){
 "use strict"
 
 var bindAttribs = require("./do-bind.js")
@@ -28079,7 +33599,7 @@ function createVAOEmulated(gl) {
 }
 
 module.exports = createVAOEmulated
-},{"./do-bind.js":164}],166:[function(require,module,exports){
+},{"./do-bind.js":183}],185:[function(require,module,exports){
 "use strict"
 
 var bindAttribs = require("./do-bind.js")
@@ -28113,7 +33633,7 @@ function createVAONative(gl, ext) {
 }
 
 module.exports = createVAONative
-},{"./do-bind.js":164}],167:[function(require,module,exports){
+},{"./do-bind.js":183}],186:[function(require,module,exports){
 "use strict"
 
 var webglew = require("webglew")
@@ -28133,7 +33653,7 @@ function createVAO(gl, elements, attributes) {
 }
 
 module.exports = createVAO
-},{"./lib/vao-emulated.js":165,"./lib/vao-native.js":166,"webglew":169}],168:[function(require,module,exports){
+},{"./lib/vao-emulated.js":184,"./lib/vao-native.js":185,"webglew":188}],187:[function(require,module,exports){
 (function (global){(function (){
 "use strict"
 
@@ -28418,7 +33938,7 @@ exports.clearCache = function clearCache() {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"bit-twiddle":161,"dup":162}],169:[function(require,module,exports){
+},{"bit-twiddle":180,"dup":181}],188:[function(require,module,exports){
 "use strict";
 
 var VENDOR_PREFIX = [
@@ -28454,7 +33974,7 @@ function initWebGLEW(gl) {
   return extensions;
 }
 module.exports = initWebGLEW;
-},{}],170:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 "use strict"
 
 var makeGameShell = require("game-shell")
@@ -28597,7 +34117,7 @@ function createGLShell(options) {
 }
 
 module.exports = createGLShell
-},{"game-shell":120,"webglew":346}],171:[function(require,module,exports){
+},{"game-shell":139,"webglew":443}],190:[function(require,module,exports){
 'use strict'
 
 var createUniformWrapper   = require('./lib/create-uniforms')
@@ -28863,7 +34383,7 @@ function createShader(
 
 module.exports = createShader
 
-},{"./lib/GLError":172,"./lib/create-attributes":173,"./lib/create-uniforms":174,"./lib/reflect":175,"./lib/runtime-reflect":176,"./lib/shader-cache":177}],172:[function(require,module,exports){
+},{"./lib/GLError":191,"./lib/create-attributes":192,"./lib/create-uniforms":193,"./lib/reflect":194,"./lib/runtime-reflect":195,"./lib/shader-cache":196}],191:[function(require,module,exports){
 function GLError (rawError, shortMessage, longMessage) {
     this.shortMessage = shortMessage || ''
     this.longMessage = longMessage || ''
@@ -28878,7 +34398,7 @@ GLError.prototype.name = 'GLError'
 GLError.prototype.constructor = GLError
 module.exports = GLError
 
-},{}],173:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 'use strict'
 
 module.exports = createAttributeWrapper
@@ -29163,7 +34683,7 @@ function createAttributeWrapper(
   return obj
 }
 
-},{"./GLError":172}],174:[function(require,module,exports){
+},{"./GLError":191}],193:[function(require,module,exports){
 'use strict'
 
 var coallesceUniforms = require('./reflect')
@@ -29374,7 +34894,7 @@ function createUniformWrapper(gl, wrapper, uniforms, locations) {
   }
 }
 
-},{"./GLError":172,"./reflect":175}],175:[function(require,module,exports){
+},{"./GLError":191,"./reflect":194}],194:[function(require,module,exports){
 'use strict'
 
 module.exports = makeReflectTypes
@@ -29432,7 +34952,7 @@ function makeReflectTypes(uniforms, useIndex) {
   }
   return obj
 }
-},{}],176:[function(require,module,exports){
+},{}],195:[function(require,module,exports){
 'use strict'
 
 exports.uniforms    = runtimeUniforms
@@ -29512,7 +35032,7 @@ function runtimeAttributes(gl, program) {
   return result
 }
 
-},{}],177:[function(require,module,exports){
+},{}],196:[function(require,module,exports){
 'use strict'
 
 exports.shader   = getShaderReference
@@ -29650,7 +35170,7 @@ function createProgram(gl, vref, fref, attribs, locations) {
   return getCache(gl).getProgram(vref, fref, attribs, locations)
 }
 
-},{"./GLError":172,"gl-format-compiler-error":127,"weakmap-shim":345}],178:[function(require,module,exports){
+},{"./GLError":191,"gl-format-compiler-error":146,"weakmap-shim":442}],197:[function(require,module,exports){
 "use strict"
 
 var ndarray = require("ndarray")
@@ -30145,7 +35665,7 @@ function createTexture2D(gl) {
 }
 module.exports = createTexture2D
 
-},{"ndarray":266,"ndarray-ops":258,"typedarray-pool":302,"webglew":346}],179:[function(require,module,exports){
+},{"ndarray":302,"ndarray-ops":294,"typedarray-pool":345,"webglew":443}],198:[function(require,module,exports){
 "use strict"
 
 function doBind(gl, elements, attributes) {
@@ -30200,7 +35720,7 @@ function doBind(gl, elements, attributes) {
 }
 
 module.exports = doBind
-},{}],180:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 "use strict"
 
 var bindAttribs = require("./do-bind.js")
@@ -30240,7 +35760,7 @@ function createVAOEmulated(gl) {
 }
 
 module.exports = createVAOEmulated
-},{"./do-bind.js":179}],181:[function(require,module,exports){
+},{"./do-bind.js":198}],200:[function(require,module,exports){
 "use strict"
 
 var bindAttribs = require("./do-bind.js")
@@ -30328,7 +35848,7 @@ function createVAONative(gl, ext) {
 }
 
 module.exports = createVAONative
-},{"./do-bind.js":179}],182:[function(require,module,exports){
+},{"./do-bind.js":198}],201:[function(require,module,exports){
 "use strict"
 
 var createVAONative = require("./lib/vao-native.js")
@@ -30357,7 +35877,7 @@ function createVAO(gl, attributes, elements, elementsType) {
 
 module.exports = createVAO
 
-},{"./lib/vao-emulated.js":180,"./lib/vao-native.js":181}],183:[function(require,module,exports){
+},{"./lib/vao-emulated.js":199,"./lib/vao-native.js":200}],202:[function(require,module,exports){
 module.exports = add;
 
 /**
@@ -30374,7 +35894,7 @@ function add(out, a, b) {
     out[2] = a[2] + b[2]
     return out
 }
-},{}],184:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 module.exports = angle
 
 var fromValues = require('./fromValues')
@@ -30403,7 +35923,7 @@ function angle(a, b) {
     }     
 }
 
-},{"./dot":194,"./fromValues":200,"./normalize":211}],185:[function(require,module,exports){
+},{"./dot":213,"./fromValues":219,"./normalize":230}],204:[function(require,module,exports){
 module.exports = ceil
 
 /**
@@ -30420,7 +35940,7 @@ function ceil(out, a) {
   return out
 }
 
-},{}],186:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 module.exports = clone;
 
 /**
@@ -30436,7 +35956,7 @@ function clone(a) {
     out[2] = a[2]
     return out
 }
-},{}],187:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 module.exports = copy;
 
 /**
@@ -30452,7 +35972,7 @@ function copy(out, a) {
     out[2] = a[2]
     return out
 }
-},{}],188:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 module.exports = create;
 
 /**
@@ -30467,7 +35987,7 @@ function create() {
     out[2] = 0
     return out
 }
-},{}],189:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 module.exports = cross;
 
 /**
@@ -30487,10 +36007,10 @@ function cross(out, a, b) {
     out[2] = ax * by - ay * bx
     return out
 }
-},{}],190:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 module.exports = require('./distance')
 
-},{"./distance":191}],191:[function(require,module,exports){
+},{"./distance":210}],210:[function(require,module,exports){
 module.exports = distance;
 
 /**
@@ -30506,10 +36026,10 @@ function distance(a, b) {
         z = b[2] - a[2]
     return Math.sqrt(x*x + y*y + z*z)
 }
-},{}],192:[function(require,module,exports){
+},{}],211:[function(require,module,exports){
 module.exports = require('./divide')
 
-},{"./divide":193}],193:[function(require,module,exports){
+},{"./divide":212}],212:[function(require,module,exports){
 module.exports = divide;
 
 /**
@@ -30526,7 +36046,7 @@ function divide(out, a, b) {
     out[2] = a[2] / b[2]
     return out
 }
-},{}],194:[function(require,module,exports){
+},{}],213:[function(require,module,exports){
 module.exports = dot;
 
 /**
@@ -30539,10 +36059,10 @@ module.exports = dot;
 function dot(a, b) {
     return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
 }
-},{}],195:[function(require,module,exports){
+},{}],214:[function(require,module,exports){
 module.exports = 0.000001
 
-},{}],196:[function(require,module,exports){
+},{}],215:[function(require,module,exports){
 module.exports = equals
 
 var EPSILON = require('./epsilon')
@@ -30566,7 +36086,7 @@ function equals(a, b) {
           Math.abs(a2 - b2) <= EPSILON * Math.max(1.0, Math.abs(a2), Math.abs(b2)))
 }
 
-},{"./epsilon":195}],197:[function(require,module,exports){
+},{"./epsilon":214}],216:[function(require,module,exports){
 module.exports = exactEquals
 
 /**
@@ -30580,7 +36100,7 @@ function exactEquals(a, b) {
   return a[0] === b[0] && a[1] === b[1] && a[2] === b[2]
 }
 
-},{}],198:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 module.exports = floor
 
 /**
@@ -30597,7 +36117,7 @@ function floor(out, a) {
   return out
 }
 
-},{}],199:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 module.exports = forEach;
 
 var vec = require('./create')()
@@ -30642,7 +36162,7 @@ function forEach(a, stride, offset, count, fn, arg) {
         
         return a
 }
-},{"./create":188}],200:[function(require,module,exports){
+},{"./create":207}],219:[function(require,module,exports){
 module.exports = fromValues;
 
 /**
@@ -30660,7 +36180,7 @@ function fromValues(x, y, z) {
     out[2] = z
     return out
 }
-},{}],201:[function(require,module,exports){
+},{}],220:[function(require,module,exports){
 module.exports = {
   EPSILON: require('./epsilon')
   , create: require('./create')
@@ -30709,7 +36229,7 @@ module.exports = {
   , forEach: require('./forEach')
 }
 
-},{"./add":183,"./angle":184,"./ceil":185,"./clone":186,"./copy":187,"./create":188,"./cross":189,"./dist":190,"./distance":191,"./div":192,"./divide":193,"./dot":194,"./epsilon":195,"./equals":196,"./exactEquals":197,"./floor":198,"./forEach":199,"./fromValues":200,"./inverse":202,"./len":203,"./length":204,"./lerp":205,"./max":206,"./min":207,"./mul":208,"./multiply":209,"./negate":210,"./normalize":211,"./random":212,"./rotateX":213,"./rotateY":214,"./rotateZ":215,"./round":216,"./scale":217,"./scaleAndAdd":218,"./set":219,"./sqrDist":220,"./sqrLen":221,"./squaredDistance":222,"./squaredLength":223,"./sub":224,"./subtract":225,"./transformMat3":226,"./transformMat4":227,"./transformQuat":228}],202:[function(require,module,exports){
+},{"./add":202,"./angle":203,"./ceil":204,"./clone":205,"./copy":206,"./create":207,"./cross":208,"./dist":209,"./distance":210,"./div":211,"./divide":212,"./dot":213,"./epsilon":214,"./equals":215,"./exactEquals":216,"./floor":217,"./forEach":218,"./fromValues":219,"./inverse":221,"./len":222,"./length":223,"./lerp":224,"./max":225,"./min":226,"./mul":227,"./multiply":228,"./negate":229,"./normalize":230,"./random":231,"./rotateX":232,"./rotateY":233,"./rotateZ":234,"./round":235,"./scale":236,"./scaleAndAdd":237,"./set":238,"./sqrDist":239,"./sqrLen":240,"./squaredDistance":241,"./squaredLength":242,"./sub":243,"./subtract":244,"./transformMat3":245,"./transformMat4":246,"./transformQuat":247}],221:[function(require,module,exports){
 module.exports = inverse;
 
 /**
@@ -30725,10 +36245,10 @@ function inverse(out, a) {
   out[2] = 1.0 / a[2]
   return out
 }
-},{}],203:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 module.exports = require('./length')
 
-},{"./length":204}],204:[function(require,module,exports){
+},{"./length":223}],223:[function(require,module,exports){
 module.exports = length;
 
 /**
@@ -30743,7 +36263,7 @@ function length(a) {
         z = a[2]
     return Math.sqrt(x*x + y*y + z*z)
 }
-},{}],205:[function(require,module,exports){
+},{}],224:[function(require,module,exports){
 module.exports = lerp;
 
 /**
@@ -30764,7 +36284,7 @@ function lerp(out, a, b, t) {
     out[2] = az + t * (b[2] - az)
     return out
 }
-},{}],206:[function(require,module,exports){
+},{}],225:[function(require,module,exports){
 module.exports = max;
 
 /**
@@ -30781,7 +36301,7 @@ function max(out, a, b) {
     out[2] = Math.max(a[2], b[2])
     return out
 }
-},{}],207:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 module.exports = min;
 
 /**
@@ -30798,10 +36318,10 @@ function min(out, a, b) {
     out[2] = Math.min(a[2], b[2])
     return out
 }
-},{}],208:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 module.exports = require('./multiply')
 
-},{"./multiply":209}],209:[function(require,module,exports){
+},{"./multiply":228}],228:[function(require,module,exports){
 module.exports = multiply;
 
 /**
@@ -30818,7 +36338,7 @@ function multiply(out, a, b) {
     out[2] = a[2] * b[2]
     return out
 }
-},{}],210:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 module.exports = negate;
 
 /**
@@ -30834,7 +36354,7 @@ function negate(out, a) {
     out[2] = -a[2]
     return out
 }
-},{}],211:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 module.exports = normalize;
 
 /**
@@ -30858,7 +36378,7 @@ function normalize(out, a) {
     }
     return out
 }
-},{}],212:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 module.exports = random;
 
 /**
@@ -30880,7 +36400,7 @@ function random(out, scale) {
     out[2] = z * scale
     return out
 }
-},{}],213:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 module.exports = rotateX;
 
 /**
@@ -30910,7 +36430,7 @@ function rotateX(out, a, b, c){
     return out
 }
 
-},{}],214:[function(require,module,exports){
+},{}],233:[function(require,module,exports){
 module.exports = rotateY;
 
 /**
@@ -30940,7 +36460,7 @@ function rotateY(out, a, b, c){
     return out
 }
 
-},{}],215:[function(require,module,exports){
+},{}],234:[function(require,module,exports){
 module.exports = rotateZ;
 
 /**
@@ -30970,7 +36490,7 @@ function rotateZ(out, a, b, c){
     return out
 }
 
-},{}],216:[function(require,module,exports){
+},{}],235:[function(require,module,exports){
 module.exports = round
 
 /**
@@ -30987,7 +36507,7 @@ function round(out, a) {
   return out
 }
 
-},{}],217:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 module.exports = scale;
 
 /**
@@ -31004,7 +36524,7 @@ function scale(out, a, b) {
     out[2] = a[2] * b
     return out
 }
-},{}],218:[function(require,module,exports){
+},{}],237:[function(require,module,exports){
 module.exports = scaleAndAdd;
 
 /**
@@ -31022,7 +36542,7 @@ function scaleAndAdd(out, a, b, scale) {
     out[2] = a[2] + (b[2] * scale)
     return out
 }
-},{}],219:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 module.exports = set;
 
 /**
@@ -31040,13 +36560,13 @@ function set(out, x, y, z) {
     out[2] = z
     return out
 }
-},{}],220:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 module.exports = require('./squaredDistance')
 
-},{"./squaredDistance":222}],221:[function(require,module,exports){
+},{"./squaredDistance":241}],240:[function(require,module,exports){
 module.exports = require('./squaredLength')
 
-},{"./squaredLength":223}],222:[function(require,module,exports){
+},{"./squaredLength":242}],241:[function(require,module,exports){
 module.exports = squaredDistance;
 
 /**
@@ -31062,7 +36582,7 @@ function squaredDistance(a, b) {
         z = b[2] - a[2]
     return x*x + y*y + z*z
 }
-},{}],223:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 module.exports = squaredLength;
 
 /**
@@ -31077,10 +36597,10 @@ function squaredLength(a) {
         z = a[2]
     return x*x + y*y + z*z
 }
-},{}],224:[function(require,module,exports){
+},{}],243:[function(require,module,exports){
 module.exports = require('./subtract')
 
-},{"./subtract":225}],225:[function(require,module,exports){
+},{"./subtract":244}],244:[function(require,module,exports){
 module.exports = subtract;
 
 /**
@@ -31097,7 +36617,7 @@ function subtract(out, a, b) {
     out[2] = a[2] - b[2]
     return out
 }
-},{}],226:[function(require,module,exports){
+},{}],245:[function(require,module,exports){
 module.exports = transformMat3;
 
 /**
@@ -31115,7 +36635,7 @@ function transformMat3(out, a, m) {
     out[2] = x * m[2] + y * m[5] + z * m[8]
     return out
 }
-},{}],227:[function(require,module,exports){
+},{}],246:[function(require,module,exports){
 module.exports = transformMat4;
 
 /**
@@ -31136,7 +36656,7 @@ function transformMat4(out, a, m) {
     out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w
     return out
 }
-},{}],228:[function(require,module,exports){
+},{}],247:[function(require,module,exports){
 module.exports = transformQuat;
 
 /**
@@ -31165,7 +36685,2068 @@ function transformQuat(out, a, q) {
     out[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx
     return out
 }
-},{}],229:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
+"use strict"
+
+var glslTokenizer = require("glsl-tokenizer")
+var glslParser = require("glsl-parser")
+var through = require("through")
+
+function parseDeclaration(x) {
+  var type, identifiers = [], i
+  for(var i=0; i<x.children.length; ++i) {
+    var c = x.children[i]
+    if(c.type === "placeholder") {
+      continue
+    } else if(c.type === "keyword") {
+      if(c.token.data === "uniform" ||
+         c.token.data === "attribute") {
+        continue
+      }
+      type = c.token.data
+    } else if(c.type === "decllist") {
+      for(var j=0; j<c.children.length; ++j) {
+        var d = c.children[j]
+        if(d.type === "ident") {
+          identifiers.push(d.token.data)
+        }
+      }
+    }
+  }
+  return {
+    type: type,
+    vars: identifiers
+  }
+}
+
+function glslGlobals(src) {
+  var uniforms = {}
+  var attributes = {}
+  var strm = through()
+  strm.pipe(glslTokenizer()).pipe(glslParser()).on('data', function(x) {
+    if(x.type === "decl" && x.token.type === "keyword") {
+      if(x.token.data === "uniform") {
+        var result = parseDeclaration(x)
+        for(var i=0; i<result.vars.length; ++i) {
+          uniforms[result.vars[i]] = result.type
+        }
+      } else if(x.token.data === "attribute") {
+        var result = parseDeclaration(x)
+        for(var i=0; i<result.vars.length; ++i) {
+          attributes[result.vars[i]] = result.type
+        }
+      }
+    }
+  })
+  strm.write(src)
+  return {
+    uniforms: uniforms,
+    attributes: attributes
+  };
+}
+
+module.exports = glslGlobals
+},{"glsl-parser":253,"glsl-tokenizer":249,"through":339}],249:[function(require,module,exports){
+module.exports = tokenize
+
+var through = require('through')
+
+var literals = require('./lib/literals')
+  , operators = require('./lib/operators')
+  , builtins = require('./lib/builtins')
+
+var NORMAL = 999          // <-- never emitted
+  , TOKEN = 9999          // <-- never emitted 
+  , BLOCK_COMMENT = 0 
+  , LINE_COMMENT = 1
+  , PREPROCESSOR = 2
+  , OPERATOR = 3
+  , INTEGER = 4
+  , FLOAT = 5
+  , IDENT = 6
+  , BUILTIN = 7
+  , KEYWORD = 8
+  , WHITESPACE = 9
+  , EOF = 10 
+  , HEX = 11
+
+var map = [
+    'block-comment'
+  , 'line-comment'
+  , 'preprocessor'
+  , 'operator'
+  , 'integer'
+  , 'float'
+  , 'ident'
+  , 'builtin'
+  , 'keyword'
+  , 'whitespace'
+  , 'eof'
+  , 'integer'
+]
+
+function tokenize() {
+  var stream = through(write, end)
+
+  var i = 0
+    , total = 0
+    , mode = NORMAL 
+    , c
+    , last
+    , content = []
+    , token_idx = 0
+    , token_offs = 0
+    , line = 1
+    , start = 0
+    , isnum = false
+    , isoperator = false
+    , input = ''
+    , len
+
+  return stream
+
+  function token(data) {
+    if(data.length) {
+      stream.queue({
+        type: map[mode]
+      , data: data
+      , position: start
+      , line: line
+      })
+    }
+  }
+
+  function write(chunk) {
+    i = 0
+    input += chunk.toString()
+    len = input.length
+
+    while(c = input[i], i < len) switch(mode) {
+      case BLOCK_COMMENT: i = block_comment(); break
+      case LINE_COMMENT: i = line_comment(); break
+      case PREPROCESSOR: i = preprocessor(); break 
+      case OPERATOR: i = operator(); break
+      case INTEGER: i = integer(); break
+      case HEX: i = hex(); break
+      case FLOAT: i = decimal(); break
+      case TOKEN: i = readtoken(); break
+      case WHITESPACE: i = whitespace(); break
+      case NORMAL: i = normal(); break
+    }
+
+    total += i
+    input = input.slice(i)
+  } 
+
+  function end(chunk) {
+    if(content.length) {
+      token(content.join(''))
+    }
+
+    mode = EOF
+    token('(eof)')
+
+    stream.queue(null)
+  }
+
+  function normal() {
+    content = content.length ? [] : content
+
+    if(last === '/' && c === '*') {
+      start = total + i - 1
+      mode = BLOCK_COMMENT
+      last = c
+      return i + 1
+    }
+
+    if(last === '/' && c === '/') {
+      start = total + i - 1
+      mode = LINE_COMMENT
+      last = c
+      return i + 1
+    }
+
+    if(c === '#') {
+      mode = PREPROCESSOR
+      start = total + i
+      return i
+    }
+
+    if(/\s/.test(c)) {
+      mode = WHITESPACE
+      start = total + i
+      return i
+    }
+
+    isnum = /\d/.test(c)
+    isoperator = /[^\w_]/.test(c)
+
+    start = total + i
+    mode = isnum ? INTEGER : isoperator ? OPERATOR : TOKEN
+    return i
+  }
+
+  function whitespace() {
+    if(c === '\n') ++line
+
+    if(/[^\s]/g.test(c)) {
+      token(content.join(''))
+      mode = NORMAL
+      return i
+    }
+    content.push(c)
+    last = c
+    return i + 1
+  }
+
+  function preprocessor() {
+    if(c === '\n') ++line
+
+    if(c === '\n' && last !== '\\') {
+      token(content.join(''))
+      mode = NORMAL
+      return i
+    }
+    content.push(c)
+    last = c
+    return i + 1
+  }
+
+  function line_comment() {
+    return preprocessor()
+  }
+
+  function block_comment() {
+    if(c === '/' && last === '*') {
+      content.push(c)
+      token(content.join(''))
+      mode = NORMAL
+      return i + 1
+    }
+
+    if(c === '\n') ++line
+
+    content.push(c)
+    last = c
+    return i + 1
+  }
+
+  function operator() {
+    if(last === '.' && /\d/.test(c)) {
+      mode = FLOAT
+      return i
+    }
+
+    if(last === '/' && c === '*') {
+      mode = BLOCK_COMMENT
+      return i
+    }
+
+    if(last === '/' && c === '/') {
+      mode = LINE_COMMENT
+      return i
+    }
+
+    if(c === '.' && content.length) {
+      while(determine_operator(content));
+      
+      mode = FLOAT
+      return i
+    }
+
+    if(c === ';' || c === ')' || c === '(') {
+      if(content.length) while(determine_operator(content));
+      token(c)
+      mode = NORMAL
+      return i + 1
+    }
+
+    var is_composite_operator = content.length === 2 && c !== '='
+    if(/[\w_\d\s]/.test(c) || is_composite_operator) {
+      while(determine_operator(content));
+      mode = NORMAL
+      return i
+    }
+
+    content.push(c)
+    last = c
+    return i + 1
+  }
+
+  function determine_operator(buf) {
+    var j = 0
+      , idx
+
+    do {
+      idx = operators.indexOf(buf.slice(0, buf.length + j).join(''))
+      if(idx === -1) { 
+        j -= 1
+        continue
+      }
+      
+      token(operators[idx])
+
+      start += operators[idx].length
+      content = content.slice(operators[idx].length)
+      return content.length
+    } while(1)
+  }
+
+  function hex() {
+    if(/[^a-fA-F0-9]/.test(c)) {
+      token(content.join(''))
+      mode = NORMAL
+      return i
+    }
+
+    content.push(c)
+    last = c
+    return i + 1    
+  }
+
+  function integer() {
+    if(c === '.') {
+      content.push(c)
+      mode = FLOAT
+      last = c
+      return i + 1
+    }
+
+    if(/[eE]/.test(c)) {
+      content.push(c)
+      mode = FLOAT
+      last = c
+      return i + 1
+    }
+
+    if(c === 'x' && content.length === 1 && content[0] === '0') {
+      mode = HEX
+      content.push(c)
+      last = c
+      return i + 1
+    }
+
+    if(/[^\d]/.test(c)) {
+      token(content.join(''))
+      mode = NORMAL
+      return i
+    }
+
+    content.push(c)
+    last = c
+    return i + 1
+  }
+
+  function decimal() {
+    if(c === 'f') {
+      content.push(c)
+      last = c
+      i += 1
+    }
+
+    if(/[eE]/.test(c)) {
+      content.push(c)
+      last = c
+      return i + 1
+    }
+
+    if(/[^\d]/.test(c)) {
+      token(content.join(''))
+      mode = NORMAL
+      return i
+    }
+    content.push(c)
+    last = c
+    return i + 1
+  }
+
+  function readtoken() {
+    if(/[^\d\w_]/.test(c)) {
+      var contentstr = content.join('')
+      if(literals.indexOf(contentstr) > -1) {
+        mode = KEYWORD
+      } else if(builtins.indexOf(contentstr) > -1) {
+        mode = BUILTIN
+      } else {
+        mode = IDENT
+      }
+      token(content.join(''))
+      mode = NORMAL
+      return i
+    }
+    content.push(c)
+    last = c
+    return i + 1
+  }
+}
+
+},{"./lib/builtins":250,"./lib/literals":251,"./lib/operators":252,"through":339}],250:[function(require,module,exports){
+module.exports = [
+    'gl_Position'
+  , 'gl_PointSize'
+  , 'gl_ClipVertex'
+  , 'gl_FragCoord'
+  , 'gl_FrontFacing'
+  , 'gl_FragColor'
+  , 'gl_FragData'
+  , 'gl_FragDepth'
+  , 'gl_Color'
+  , 'gl_SecondaryColor'
+  , 'gl_Normal'
+  , 'gl_Vertex'
+  , 'gl_MultiTexCoord0'
+  , 'gl_MultiTexCoord1'
+  , 'gl_MultiTexCoord2'
+  , 'gl_MultiTexCoord3'
+  , 'gl_MultiTexCoord4'
+  , 'gl_MultiTexCoord5'
+  , 'gl_MultiTexCoord6'
+  , 'gl_MultiTexCoord7'
+  , 'gl_FogCoord'
+  , 'gl_MaxLights'
+  , 'gl_MaxClipPlanes'
+  , 'gl_MaxTextureUnits'
+  , 'gl_MaxTextureCoords'
+  , 'gl_MaxVertexAttribs'
+  , 'gl_MaxVertexUniformComponents'
+  , 'gl_MaxVaryingFloats'
+  , 'gl_MaxVertexTextureImageUnits'
+  , 'gl_MaxCombinedTextureImageUnits'
+  , 'gl_MaxTextureImageUnits'
+  , 'gl_MaxFragmentUniformComponents'
+  , 'gl_MaxDrawBuffers'
+  , 'gl_ModelViewMatrix'
+  , 'gl_ProjectionMatrix'
+  , 'gl_ModelViewProjectionMatrix'
+  , 'gl_TextureMatrix'
+  , 'gl_NormalMatrix'
+  , 'gl_ModelViewMatrixInverse'
+  , 'gl_ProjectionMatrixInverse'
+  , 'gl_ModelViewProjectionMatrixInverse'
+  , 'gl_TextureMatrixInverse'
+  , 'gl_ModelViewMatrixTranspose'
+  , 'gl_ProjectionMatrixTranspose'
+  , 'gl_ModelViewProjectionMatrixTranspose'
+  , 'gl_TextureMatrixTranspose'
+  , 'gl_ModelViewMatrixInverseTranspose'
+  , 'gl_ProjectionMatrixInverseTranspose'
+  , 'gl_ModelViewProjectionMatrixInverseTranspose'
+  , 'gl_TextureMatrixInverseTranspose'
+  , 'gl_NormalScale'
+  , 'gl_DepthRangeParameters'
+  , 'gl_DepthRange'
+  , 'gl_ClipPlane'
+  , 'gl_PointParameters'
+  , 'gl_Point'
+  , 'gl_MaterialParameters'
+  , 'gl_FrontMaterial'
+  , 'gl_BackMaterial'
+  , 'gl_LightSourceParameters'
+  , 'gl_LightSource'
+  , 'gl_LightModelParameters'
+  , 'gl_LightModel'
+  , 'gl_LightModelProducts'
+  , 'gl_FrontLightModelProduct'
+  , 'gl_BackLightModelProduct'
+  , 'gl_LightProducts'
+  , 'gl_FrontLightProduct'
+  , 'gl_BackLightProduct'
+  , 'gl_FogParameters'
+  , 'gl_Fog'
+  , 'gl_TextureEnvColor'
+  , 'gl_EyePlaneS'
+  , 'gl_EyePlaneT'
+  , 'gl_EyePlaneR'
+  , 'gl_EyePlaneQ'
+  , 'gl_ObjectPlaneS'
+  , 'gl_ObjectPlaneT'
+  , 'gl_ObjectPlaneR'
+  , 'gl_ObjectPlaneQ'
+  , 'gl_FrontColor'
+  , 'gl_BackColor'
+  , 'gl_FrontSecondaryColor'
+  , 'gl_BackSecondaryColor'
+  , 'gl_TexCoord'
+  , 'gl_FogFragCoord'
+  , 'gl_Color'
+  , 'gl_SecondaryColor'
+  , 'gl_TexCoord'
+  , 'gl_FogFragCoord'
+  , 'gl_PointCoord'
+  , 'radians'
+  , 'degrees'
+  , 'sin'
+  , 'cos'
+  , 'tan'
+  , 'asin'
+  , 'acos'
+  , 'atan'
+  , 'pow'
+  , 'exp'
+  , 'log'
+  , 'exp2'
+  , 'log2'
+  , 'sqrt'
+  , 'inversesqrt'
+  , 'abs'
+  , 'sign'
+  , 'floor'
+  , 'ceil'
+  , 'fract'
+  , 'mod'
+  , 'min'
+  , 'max'
+  , 'clamp'
+  , 'mix'
+  , 'step'
+  , 'smoothstep'
+  , 'length'
+  , 'distance'
+  , 'dot'
+  , 'cross'
+  , 'normalize'
+  , 'faceforward'
+  , 'reflect'
+  , 'refract'
+  , 'matrixCompMult'
+  , 'lessThan'
+  , 'lessThanEqual'
+  , 'greaterThan'
+  , 'greaterThanEqual'
+  , 'equal'
+  , 'notEqual'
+  , 'any'
+  , 'all'
+  , 'not'
+  , 'texture2D'
+  , 'texture2DProj'
+  , 'texture2DLod'
+  , 'texture2DProjLod'
+  , 'textureCube'
+  , 'textureCubeLod'
+]
+
+},{}],251:[function(require,module,exports){
+module.exports = [
+  // current
+    'precision'
+  , 'highp'
+  , 'mediump'
+  , 'lowp'
+  , 'attribute'
+  , 'const'
+  , 'uniform'
+  , 'varying'
+  , 'break'
+  , 'continue'
+  , 'do'
+  , 'for'
+  , 'while'
+  , 'if'
+  , 'else'
+  , 'in'
+  , 'out'
+  , 'inout'
+  , 'float'
+  , 'int'
+  , 'void'
+  , 'bool'
+  , 'true'
+  , 'false'
+  , 'discard'
+  , 'return'
+  , 'mat2'
+  , 'mat3'
+  , 'mat4'
+  , 'vec2'
+  , 'vec3'
+  , 'vec4'
+  , 'ivec2'
+  , 'ivec3'
+  , 'ivec4'
+  , 'bvec2'
+  , 'bvec3'
+  , 'bvec4'
+  , 'sampler1D'
+  , 'sampler2D'
+  , 'sampler3D'
+  , 'samplerCube'
+  , 'sampler1DShadow'
+  , 'sampler2DShadow'
+  , 'struct'
+
+  // future
+  , 'asm'
+  , 'class'
+  , 'union'
+  , 'enum'
+  , 'typedef'
+  , 'template'
+  , 'this'
+  , 'packed'
+  , 'goto'
+  , 'switch'
+  , 'default'
+  , 'inline'
+  , 'noinline'
+  , 'volatile'
+  , 'public'
+  , 'static'
+  , 'extern'
+  , 'external'
+  , 'interface'
+  , 'long'
+  , 'short'
+  , 'double'
+  , 'half'
+  , 'fixed'
+  , 'unsigned'
+  , 'input'
+  , 'output'
+  , 'hvec2'
+  , 'hvec3'
+  , 'hvec4'
+  , 'dvec2'
+  , 'dvec3'
+  , 'dvec4'
+  , 'fvec2'
+  , 'fvec3'
+  , 'fvec4'
+  , 'sampler2DRect'
+  , 'sampler3DRect'
+  , 'sampler2DRectShadow'
+  , 'sizeof'
+  , 'cast'
+  , 'namespace'
+  , 'using'
+]
+
+},{}],252:[function(require,module,exports){
+module.exports = [
+    '<<='
+  , '>>='
+  , '++'
+  , '--'
+  , '<<'
+  , '>>'
+  , '<='
+  , '>='
+  , '=='
+  , '!='
+  , '&&'
+  , '||'
+  , '+='
+  , '-='
+  , '*='
+  , '/='
+  , '%='
+  , '&='
+  , '^='
+  , '|='
+  , '('
+  , ')'
+  , '['
+  , ']'
+  , '.'
+  , '!'
+  , '~'
+  , '*'
+  , '/'
+  , '%'
+  , '+'
+  , '-'
+  , '<'
+  , '>'
+  , '&'
+  , '^'
+  , '|'
+  , '?'
+  , ':'
+  , '='
+  , ','
+  , ';'
+  , '{'
+  , '}'
+]
+
+},{}],253:[function(require,module,exports){
+module.exports = require('./lib/index')
+
+},{"./lib/index":255}],254:[function(require,module,exports){
+var state
+  , token
+  , tokens
+  , idx
+
+var original_symbol = {
+    nud: function() { return this.children && this.children.length ? this : fail('unexpected')() }
+  , led: fail('missing operator')
+}
+
+var symbol_table = {}
+
+function itself() {
+  return this
+}
+
+symbol('(ident)').nud = itself
+symbol('(keyword)').nud = itself
+symbol('(builtin)').nud = itself
+symbol('(literal)').nud = itself
+symbol('(end)')
+
+symbol(':')
+symbol(';')
+symbol(',')
+symbol(')')
+symbol(']')
+symbol('}')
+
+infixr('&&', 30)
+infixr('||', 30)
+infix('|', 43)
+infix('^', 44)
+infix('&', 45)
+infix('==', 46)
+infix('!=', 46)
+infix('<', 47)
+infix('<=', 47)
+infix('>', 47)
+infix('>=', 47)
+infix('>>', 48)
+infix('<<', 48)
+infix('+', 50)
+infix('-', 50)
+infix('*', 60)
+infix('/', 60)
+infix('%', 60)
+infix('?', 20, function(left) {
+  this.children = [left, expression(0), (advance(':'), expression(0))]
+  this.type = 'ternary'
+  return this
+})
+infix('.', 80, function(left) {
+  token.type = 'literal'
+  state.fake(token)
+  this.children = [left, token]
+  advance()
+  return this
+})
+infix('[', 80, function(left) {
+  this.children = [left, expression(0)]
+  this.type = 'binary'
+  advance(']')
+  return this
+})
+infix('(', 80, function(left) {
+  this.children = [left]
+  this.type = 'call'
+
+  if(token.data !== ')') while(1) {
+    this.children.push(expression(0))
+    if(token.data !== ',') break
+    advance(',')
+  }
+  advance(')')
+  return this
+})
+
+prefix('-')
+prefix('+')
+prefix('!')
+prefix('~')
+prefix('defined')
+prefix('(', function() {
+  this.type = 'group'
+  this.children = [expression(0)]
+  advance(')')
+  return this 
+})
+prefix('++')
+prefix('--')
+suffix('++')
+suffix('--')
+
+assignment('=')
+assignment('+=')
+assignment('-=')
+assignment('*=')
+assignment('/=')
+assignment('%=')
+assignment('&=')
+assignment('|=')
+assignment('^=')
+assignment('>>=')
+assignment('<<=')
+
+module.exports = function(incoming_state, incoming_tokens) {
+  state = incoming_state
+  tokens = incoming_tokens
+  idx = 0
+  var result
+
+  if(!tokens.length) return
+
+  advance()
+  result = expression(0)
+  result.parent = state[0]
+  emit(result)
+
+  if(idx < tokens.length) {
+    throw new Error('did not use all tokens')
+  }
+
+  result.parent.children = [result]
+
+  function emit(node) {
+    state.unshift(node, false)
+    for(var i = 0, len = node.children.length; i < len; ++i) {
+      emit(node.children[i])
+    }
+    state.shift()
+  }
+
+}
+
+function symbol(id, binding_power) {
+  var sym = symbol_table[id]
+  binding_power = binding_power || 0
+  if(sym) {
+    if(binding_power > sym.lbp) {
+      sym.lbp = binding_power
+    }
+  } else {
+    sym = Object.create(original_symbol)
+    sym.id = id 
+    sym.lbp = binding_power
+    symbol_table[id] = sym
+  }
+  return sym
+}
+
+function expression(rbp) {
+  var left, t = token
+  advance()
+
+  left = t.nud()
+  while(rbp < token.lbp) {
+    t = token
+    advance()
+    left = t.led(left)
+  }
+  return left
+}
+
+function infix(id, bp, led) {
+  var sym = symbol(id, bp)
+  sym.led = led || function(left) {
+    this.children = [left, expression(bp)]
+    this.type = 'binary'
+    return this
+  }
+}
+
+function infixr(id, bp, led) {
+  var sym = symbol(id, bp)
+  sym.led = led || function(left) {
+    this.children = [left, expression(bp - 1)]
+    this.type = 'binary'
+    return this
+  }
+  return sym
+}
+
+function prefix(id, nud) {
+  var sym = symbol(id)
+  sym.nud = nud || function() {
+    this.children = [expression(70)]
+    this.type = 'unary'
+    return this
+  }
+  return sym
+}
+
+function suffix(id) {
+  var sym = symbol(id, 150)
+  sym.led = function(left) {
+    this.children = [left]
+    this.type = 'suffix'
+    return this
+  }
+}
+
+function assignment(id) {
+  return infixr(id, 10, function(left) {
+    this.children = [left, expression(9)]
+    this.assignment = true
+    this.type = 'assign'
+    return this
+  })
+}
+
+function advance(id) {
+  var next
+    , value
+    , type
+    , output
+
+  if(id && token.data !== id) {
+    return state.unexpected('expected `'+ id + '`, got `'+token.data+'`')
+  }
+
+  if(idx >= tokens.length) {
+    token = symbol_table['(end)']
+    return
+  }
+
+  next = tokens[idx++]
+  value = next.data
+  type = next.type
+
+  if(type === 'ident') {
+    output = state.scope.find(value) || state.create_node()
+    type = output.type
+  } else if(type === 'builtin') {
+    output = symbol_table['(builtin)']
+  } else if(type === 'keyword') {
+    output = symbol_table['(keyword)']
+  } else if(type === 'operator') {
+    output = symbol_table[value]
+    if(!output) {
+      return state.unexpected('unknown operator `'+value+'`')
+    }
+  } else if(type === 'float' || type === 'integer') {
+    type = 'literal'
+    output = symbol_table['(literal)']
+  } else {
+    return state.unexpected('unexpected token.')
+  }
+
+  if(output) {
+    if(!output.nud) { output.nud = itself }
+    if(!output.children) { output.children = [] }
+  }
+
+  output = Object.create(output)
+  output.token = next
+  output.type = type
+  if(!output.data) output.data = value
+
+  return token = output
+}
+
+function fail(message) {
+  return function() { return state.unexpected(message) }
+}
+
+},{}],255:[function(require,module,exports){
+module.exports = parser
+
+var through = require('through')
+  , full_parse_expr = require('./expr')
+  , Scope = require('./scope')
+
+// singleton!
+var Advance = new Object
+
+var DEBUG = false
+
+var _ = 0
+  , IDENT = _++
+  , STMT = _++
+  , STMTLIST = _++
+  , STRUCT = _++
+  , FUNCTION = _++
+  , FUNCTIONARGS = _++
+  , DECL = _++
+  , DECLLIST = _++
+  , FORLOOP = _++
+  , WHILELOOP = _++
+  , IF = _++
+  , EXPR = _++
+  , PRECISION = _++
+  , COMMENT = _++
+  , PREPROCESSOR = _++
+  , KEYWORD = _++
+  , KEYWORD_OR_IDENT = _++
+  , RETURN = _++
+  , BREAK = _++
+  , CONTINUE = _++
+  , DISCARD = _++
+  , DOWHILELOOP = _++
+  , PLACEHOLDER = _++
+  , QUANTIFIER = _++
+
+var DECL_ALLOW_ASSIGN = 0x1
+  , DECL_ALLOW_COMMA = 0x2
+  , DECL_REQUIRE_NAME = 0x4
+  , DECL_ALLOW_INVARIANT = 0x8
+  , DECL_ALLOW_STORAGE = 0x10
+  , DECL_NO_INOUT = 0x20
+  , DECL_ALLOW_STRUCT = 0x40
+  , DECL_STATEMENT = 0xFF
+  , DECL_FUNCTION = DECL_STATEMENT & ~(DECL_ALLOW_ASSIGN | DECL_ALLOW_COMMA | DECL_NO_INOUT | DECL_ALLOW_INVARIANT | DECL_REQUIRE_NAME)
+  , DECL_STRUCT = DECL_STATEMENT & ~(DECL_ALLOW_ASSIGN | DECL_ALLOW_INVARIANT | DECL_ALLOW_STORAGE | DECL_ALLOW_STRUCT)
+
+var QUALIFIERS = ['const', 'attribute', 'uniform', 'varying']
+
+var NO_ASSIGN_ALLOWED = false
+  , NO_COMMA_ALLOWED = false
+
+// map of tokens to stmt types
+var token_map = {
+    'block-comment': COMMENT
+  , 'line-comment': COMMENT
+  , 'preprocessor': PREPROCESSOR
+}
+
+// map of stmt types to human
+var stmt_type = _ = [ 
+    'ident'
+  , 'stmt'
+  , 'stmtlist'
+  , 'struct'
+  , 'function'
+  , 'functionargs'
+  , 'decl'
+  , 'decllist'
+  , 'forloop'
+  , 'whileloop'
+  , 'if'
+  , 'expr'
+  , 'precision'
+  , 'comment'
+  , 'preprocessor'
+  , 'keyword'
+  , 'keyword_or_ident'
+  , 'return'
+  , 'break'
+  , 'continue'
+  , 'discard'
+  , 'do-while'
+  , 'placeholder'
+  , 'quantifier'
+]
+
+function parser() {
+  var stmtlist = n(STMTLIST)
+    , stmt = n(STMT)
+    , decllist = n(DECLLIST)
+    , precision = n(PRECISION)
+    , ident = n(IDENT)
+    , keyword_or_ident = n(KEYWORD_OR_IDENT)
+    , fn = n(FUNCTION)
+    , fnargs = n(FUNCTIONARGS)
+    , forstmt = n(FORLOOP)
+    , ifstmt = n(IF)
+    , whilestmt = n(WHILELOOP)
+    , returnstmt = n(RETURN)
+    , dowhilestmt = n(DOWHILELOOP)
+    , quantifier = n(QUANTIFIER)
+
+  var parse_struct
+    , parse_precision
+    , parse_quantifier
+    , parse_forloop
+    , parse_if
+    , parse_return
+    , parse_whileloop
+    , parse_dowhileloop
+    , parse_function
+    , parse_function_args
+
+  var stream = through(write, end)
+    , check = arguments.length ? [].slice.call(arguments) : []
+    , depth = 0
+    , state = []
+    , tokens = []
+    , whitespace = []
+    , errored = false
+    , program
+    , token
+    , node
+
+  // setup state
+  state.shift = special_shift
+  state.unshift = special_unshift
+  state.fake = special_fake
+  state.unexpected = unexpected
+  state.scope = new Scope(state)
+  state.create_node = function() {
+    var n = mknode(IDENT, token)
+    n.parent = stream.program
+    return n
+  }
+
+  setup_stative_parsers()
+
+  // setup root node
+  node = stmtlist()
+  node.expecting = '(eof)'
+  node.mode = STMTLIST
+  node.token = {type: '(program)', data: '(program)'}
+  program = node
+
+  stream.program = program
+  stream.scope = function(scope) {
+    if(arguments.length === 1) {
+      state.scope = scope
+    }
+    return state.scope
+  }
+
+  state.unshift(node)
+  return stream
+
+  // stream functions ---------------------------------------------
+
+  function write(input) {
+    if(input.type === 'whitespace' || input.type === 'line-comment' || input.type === 'block-comment') {
+
+      whitespace.push(input)
+      return
+    }
+    tokens.push(input)
+    token = token || tokens[0]
+
+    if(token && whitespace.length) {
+      token.preceding = token.preceding || []
+      token.preceding = token.preceding.concat(whitespace)
+      whitespace = []
+    }
+
+    while(take()) switch(state[0].mode) {
+      case STMT: parse_stmt(); break
+      case STMTLIST: parse_stmtlist(); break
+      case DECL: parse_decl(); break
+      case DECLLIST: parse_decllist(); break
+      case EXPR: parse_expr(); break
+      case STRUCT: parse_struct(true, true); break
+      case PRECISION: parse_precision(); break
+      case IDENT: parse_ident(); break
+      case KEYWORD: parse_keyword(); break
+      case KEYWORD_OR_IDENT: parse_keyword_or_ident(); break
+      case FUNCTION: parse_function(); break
+      case FUNCTIONARGS: parse_function_args(); break
+      case FORLOOP: parse_forloop(); break
+      case WHILELOOP: parse_whileloop(); break
+      case DOWHILELOOP: parse_dowhileloop(); break
+      case RETURN: parse_return(); break
+      case IF: parse_if(); break
+      case QUANTIFIER: parse_quantifier(); break
+    }
+  }
+  
+  function end(tokens) {
+    if(arguments.length) {
+      write(tokens)
+    }
+
+    if(state.length > 1) {
+      unexpected('unexpected EOF')
+      return
+    }
+
+    stream.emit('end')
+  }
+
+  function take() {
+    if(errored || !state.length)
+      return false
+
+    return (token = tokens[0]) && !stream.paused
+  }
+
+  // ----- state manipulation --------
+
+  function special_fake(x) {
+    state.unshift(x)
+    state.shift()
+  }
+
+  function special_unshift(_node, add_child) {
+    _node.parent = state[0]
+
+    var ret = [].unshift.call(this, _node)
+
+    add_child = add_child === undefined ? true : add_child
+
+    if(DEBUG) {
+      var pad = ''
+      for(var i = 0, len = this.length - 1; i < len; ++i) {
+        pad += ' |'
+      }
+      console.log(pad, '\\'+_node.type, _node.token.data)
+    }
+
+    if(add_child && node !== _node) node.children.push(_node)
+    node = _node
+
+    return ret
+  }
+
+  function special_shift() {
+    var _node = [].shift.call(this)
+      , okay = check[this.length]
+      , emit = false
+
+    if(DEBUG) {
+      var pad = ''
+      for(var i = 0, len = this.length; i < len; ++i) {
+        pad += ' |'
+      }
+      console.log(pad, '/'+_node.type)
+    }
+
+    if(check.length) { 
+      if(typeof check[0] === 'function') {
+        emit = check[0](_node)
+      } else if(okay !== undefined) {
+        emit = okay.test ? okay.test(_node.type) : okay === _node.type
+      }
+    } else {
+      emit = true
+    }
+
+    if(emit) stream.emit('data', _node) 
+  
+    node = _node.parent
+    return _node
+  }
+
+  // parse states ---------------
+
+  function parse_stmtlist() {
+    // determine the type of the statement
+    // and then start parsing
+    return stative(
+      function() { state.scope.enter(); return Advance }
+    , normal_mode
+    )()
+
+    function normal_mode() {
+      if(token.data === state[0].expecting) {
+        return state.scope.exit(), state.shift()
+      }
+      switch(token.type) {
+        case 'preprocessor':
+          state.fake(adhoc())
+          tokens.shift()
+        return
+        default:
+          state.unshift(stmt())
+        return 
+      }
+    }
+  }
+
+  function parse_stmt() {
+    if(state[0].brace) {
+      if(token.data !== '}') {
+        return unexpected('expected `}`, got '+token.data)
+      }
+      state[0].brace = false
+      return tokens.shift(), state.shift()
+    }
+    switch(token.type) {
+      case 'eof': return state.shift()
+      case 'keyword': 
+        switch(token.data) {
+          case 'for': return state.unshift(forstmt());
+          case 'if': return state.unshift(ifstmt());
+          case 'while': return state.unshift(whilestmt());
+          case 'do': return state.unshift(dowhilestmt());
+          case 'break': return state.fake(mknode(BREAK, token)), tokens.shift()
+          case 'continue': return state.fake(mknode(CONTINUE, token)), tokens.shift()
+          case 'discard': return state.fake(mknode(DISCARD, token)), tokens.shift()
+          case 'return': return state.unshift(returnstmt());
+          case 'precision': return state.unshift(precision());
+        }
+        return state.unshift(decl(DECL_STATEMENT))
+      case 'ident':
+        var lookup
+        if(lookup = state.scope.find(token.data)) {
+          if(lookup.parent.type === 'struct') {
+            // this is strictly untrue, you could have an
+            // expr that starts with a struct constructor.
+            //      ... sigh
+            return state.unshift(decl(DECL_STATEMENT))
+          }
+          return state.unshift(expr(';'))
+        }
+      case 'operator':
+        if(token.data === '{') {
+          state[0].brace = true
+          var n = stmtlist()
+          n.expecting = '}'
+          return tokens.shift(), state.unshift(n)
+        }
+        if(token.data === ';') {
+          return tokens.shift(), state.shift()
+        }
+      default: return state.unshift(expr(';'))
+    }
+  }
+
+  function parse_decl() {
+    var stmt = state[0]
+
+    return stative(
+      invariant_or_not,
+      storage_or_not,
+      parameter_or_not,
+      precision_or_not,
+      struct_or_type,
+      maybe_name,
+      maybe_lparen,     // lparen means we're a function
+      is_decllist,
+      done
+    )()
+
+    function invariant_or_not() {
+      if(token.data === 'invariant') {
+        if(stmt.flags & DECL_ALLOW_INVARIANT) {
+          state.unshift(keyword())
+          return Advance
+        } else {
+          return unexpected('`invariant` is not allowed here') 
+        }
+      } else {
+        state.fake(mknode(PLACEHOLDER, {data: '', position: token.position}))
+        return Advance
+      }
+    }
+
+    function storage_or_not() {
+      if(is_storage(token)) {
+        if(stmt.flags & DECL_ALLOW_STORAGE) {
+          state.unshift(keyword()) 
+          return Advance
+        } else {
+          return unexpected('storage is not allowed here') 
+        }
+      } else {
+        state.fake(mknode(PLACEHOLDER, {data: '', position: token.position}))
+        return Advance
+      }
+    }
+
+    function parameter_or_not() {
+      if(is_parameter(token)) {
+        if(!(stmt.flags & DECL_NO_INOUT)) {
+          state.unshift(keyword()) 
+          return Advance
+        } else {
+          return unexpected('parameter is not allowed here') 
+        }
+      } else {
+        state.fake(mknode(PLACEHOLDER, {data: '', position: token.position}))
+        return Advance
+      }
+    }
+
+    function precision_or_not() {
+      if(is_precision(token)) {
+        state.unshift(keyword())
+        return Advance
+      } else {
+        state.fake(mknode(PLACEHOLDER, {data: '', position: token.position}))
+        return Advance
+      }
+    }
+
+    function struct_or_type() {
+      if(token.data === 'struct') {
+        if(!(stmt.flags & DECL_ALLOW_STRUCT)) {
+          return unexpected('cannot nest structs')
+        }
+        state.unshift(struct())
+        return Advance
+      }
+
+      if(token.type === 'keyword') {
+        state.unshift(keyword())
+        return Advance
+      }
+
+      var lookup = state.scope.find(token.data)
+
+      if(lookup) {
+        state.fake(Object.create(lookup))
+        tokens.shift()
+        return Advance  
+      }
+      return unexpected('expected user defined type, struct or keyword, got '+token.data)
+    }
+
+    function maybe_name() {
+      if(token.data === ',' && !(stmt.flags & DECL_ALLOW_COMMA)) {
+        return state.shift()
+      }
+
+      if(token.data === '[') {
+        // oh lord.
+        state.unshift(quantifier())
+        return
+      }
+
+      if(token.data === ')') return state.shift()
+
+      if(token.data === ';') {
+        return stmt.stage + 3
+      }
+
+      if(token.type !== 'ident' && token.type !== 'builtin') {
+        return unexpected('expected identifier, got '+token.data)
+      }
+
+      stmt.collected_name = tokens.shift()
+      return Advance      
+    }
+
+    function maybe_lparen() {
+      if(token.data === '(') {
+        tokens.unshift(stmt.collected_name)
+        delete stmt.collected_name
+        state.unshift(fn())
+        return stmt.stage + 2 
+      }
+      return Advance
+    }
+
+    function is_decllist() {
+      tokens.unshift(stmt.collected_name)
+      delete stmt.collected_name
+      state.unshift(decllist())
+      return Advance
+    }
+
+    function done() {
+      return state.shift()
+    }
+  }
+  
+  function parse_decllist() {
+    // grab ident
+
+    if(token.type === 'ident') {
+      var name = token.data
+      state.unshift(ident())
+      state.scope.define(name)
+      return
+    }
+
+    if(token.type === 'operator') {
+
+      if(token.data === ',') {
+        // multi-decl!
+        if(!(state[1].flags & DECL_ALLOW_COMMA)) {
+          return state.shift()
+        }
+
+        return tokens.shift()
+      } else if(token.data === '=') {
+        if(!(state[1].flags & DECL_ALLOW_ASSIGN)) return unexpected('`=` is not allowed here.')
+
+        tokens.shift()
+
+        state.unshift(expr(',', ';'))
+        return
+      } else if(token.data === '[') {
+        state.unshift(quantifier())
+        return
+      }
+    }
+    return state.shift()
+  }
+
+  function parse_keyword_or_ident() {
+    if(token.type === 'keyword') {
+      state[0].type = 'keyword'
+      state[0].mode = KEYWORD
+      return
+    }
+
+    if(token.type === 'ident') {
+      state[0].type = 'ident'
+      state[0].mode = IDENT
+      return
+    }
+
+    return unexpected('expected keyword or user-defined name, got '+token.data)
+  }
+
+  function parse_keyword() {
+    if(token.type !== 'keyword') {
+      return unexpected('expected keyword, got '+token.data)
+    }
+
+    return state.shift(), tokens.shift()
+  }
+
+  function parse_ident() {
+    if(token.type !== 'ident') {
+      return unexpected('expected user-defined name, got '+token.data)
+    }
+
+    state[0].data = token.data
+    return state.shift(), tokens.shift()
+  }
+
+
+  function parse_expr() {
+    var expecting = state[0].expecting
+
+    state[0].tokens = state[0].tokens || []
+
+    if(state[0].parenlevel === undefined) {
+      state[0].parenlevel = 0
+      state[0].bracelevel = 0
+    }
+    if(state[0].parenlevel < 1 && expecting.indexOf(token.data) > -1) {
+      return parseexpr(state[0].tokens)
+    }
+    if(token.data === '(') {
+      ++state[0].parenlevel
+    } else if(token.data === ')') {
+      --state[0].parenlevel
+    }
+
+    switch(token.data) {
+      case '{': ++state[0].bracelevel; break
+      case '}': --state[0].bracelevel; break
+      case '(': ++state[0].parenlevel; break
+      case ')': --state[0].parenlevel; break
+    }
+
+    if(state[0].parenlevel < 0) return unexpected('unexpected `)`')
+    if(state[0].bracelevel < 0) return unexpected('unexpected `}`')
+
+    state[0].tokens.push(tokens.shift())
+    return
+
+    function parseexpr(tokens) {
+      return full_parse_expr(state, tokens), state.shift()
+    }
+  }
+
+  // node types ---------------
+
+  function n(type) {
+    // this is a function factory that suffices for most kinds of expressions and statements
+    return function() {
+      return mknode(type, token)
+    }
+  }
+
+  function adhoc() {
+    return mknode(token_map[token.type], token, node)
+  }
+
+  function decl(flags) {
+    var _ = mknode(DECL, token, node)
+    _.flags = flags
+
+    return _
+  }
+
+  function struct(allow_assign, allow_comma) {
+    var _ = mknode(STRUCT, token, node)
+    _.allow_assign = allow_assign === undefined ? true : allow_assign
+    _.allow_comma = allow_comma === undefined ? true : allow_comma
+    return _
+  }
+
+  function expr() {
+    var n = mknode(EXPR, token, node)
+
+    n.expecting = [].slice.call(arguments)
+    return n
+  }
+  
+  function keyword(default_value) {
+    var t = token
+    if(default_value) {
+      t = {'type': '(implied)', data: '(default)', position: t.position} 
+    }
+    return mknode(KEYWORD, t, node)
+  }
+
+  // utils ----------------------------
+
+  function unexpected(str) {
+    errored = true
+    stream.emit('error', new Error(
+      (str || 'unexpected '+state) +
+      ' at line '+state[0].token.line
+    ))
+  }
+
+  function assert(type, data) {
+    return 1,
+      assert_null_string_or_array(type, token.type) && 
+      assert_null_string_or_array(data, token.data)
+  }
+
+  function assert_null_string_or_array(x, y) {
+    switch(typeof x) {
+      case 'string': if(y !== x) {
+        unexpected('expected `'+x+'`, got '+y+'\n'+token.data);
+      } return !errored
+
+      case 'object': if(x && x.indexOf(y) === -1) {
+        unexpected('expected one of `'+x.join('`, `')+'`, got '+y);
+      } return !errored
+    }
+    return true
+  }
+
+  // stative ----------------------------
+
+  function stative() {
+    var steps = [].slice.call(arguments)
+      , step
+      , result
+
+    return function() {
+      var current = state[0]
+
+      current.stage || (current.stage = 0)
+
+      step = steps[current.stage]
+      if(!step) return unexpected('parser in undefined state!')
+
+      result = step()
+
+      if(result === Advance) return ++current.stage
+      if(result === undefined) return
+      current.stage = result
+    } 
+  }
+
+  function advance(op, t) {
+    t = t || 'operator'
+    return function() {
+      if(!assert(t, op)) return
+
+      var last = tokens.shift()
+        , children = state[0].children
+        , last_node = children[children.length - 1]
+
+      if(last_node && last_node.token && last.preceding) {
+        last_node.token.succeeding = last_node.token.succeeding || []
+        last_node.token.succeeding = last_node.token.succeeding.concat(last.preceding)
+      }
+      return Advance
+    }
+  }
+
+  function advance_expr(until) {
+    return function() { return state.unshift(expr(until)), Advance }
+  }
+
+  function advance_ident(declare) {
+    return declare ? function() {
+      var name = token.data
+      return assert('ident') && (state.unshift(ident()), state.scope.define(name), Advance)
+    } :  function() {
+      if(!assert('ident')) return
+
+      var s = Object.create(state.scope.find(token.data))
+      s.token = token
+
+      return (tokens.shift(), Advance)
+    }
+  }
+
+  function advance_stmtlist() {
+    return function() {
+      var n = stmtlist()
+      n.expecting = '}'
+      return state.unshift(n), Advance
+    }
+  }
+
+  function maybe_stmtlist(skip) {
+    return function() {
+      var current = state[0].stage
+      if(token.data !== '{') { return state.unshift(stmt()), current + skip }
+      return tokens.shift(), Advance
+    }
+  }
+
+  function popstmt() {
+    return function() { return state.shift(), state.shift() }
+  }
+
+
+  function setup_stative_parsers() {
+
+    // could also be
+    // struct { } decllist
+    parse_struct =
+        stative(
+          advance('struct', 'keyword')
+        , function() {
+            if(token.data === '{') {
+              state.fake(mknode(IDENT, {data:'', position: token.position, type:'ident'}))
+              return Advance
+            }
+
+            return advance_ident(true)()
+          }
+        , function() { state.scope.enter(); return Advance }
+        , advance('{')
+        , function() {
+            if(token.type === 'preprocessor') {
+              state.fake(adhoc())
+              tokens.shift()
+              return
+            }
+            if(token.data === '}') {
+              state.scope.exit()
+              tokens.shift()
+              return state.shift()
+            }
+            if(token.data === ';') { tokens.shift(); return }
+            state.unshift(decl(DECL_STRUCT))
+          }
+        )
+
+    parse_precision =
+        stative(
+          function() { return tokens.shift(), Advance }
+        , function() { 
+            return assert(
+            'keyword', ['lowp', 'mediump', 'highp']
+            ) && (state.unshift(keyword()), Advance) 
+          }
+        , function() { return (state.unshift(keyword()), Advance) }
+        , function() { return state.shift() } 
+        )
+
+    parse_quantifier =
+        stative(
+          advance('[')
+        , advance_expr(']')
+        , advance(']')
+        , function() { return state.shift() }
+        )
+
+    parse_forloop = 
+        stative(
+          advance('for', 'keyword')
+        , advance('(')
+        , function() {
+            var lookup
+            if(token.type === 'ident') {
+              if(!(lookup = state.scope.find(token.data))) {
+                lookup = state.create_node()
+              }
+             
+              if(lookup.parent.type === 'struct') {
+                return state.unshift(decl(DECL_STATEMENT)), Advance
+              }
+            } else if(token.type === 'builtin' || token.type === 'keyword') {
+              return state.unshift(decl(DECL_STATEMENT)), Advance
+            }
+            return advance_expr(';')()
+          }
+        , advance(';')
+        , advance_expr(';')
+        , advance(';')
+        , advance_expr(')')
+        , advance(')')
+        , maybe_stmtlist(3)
+        , advance_stmtlist()
+        , advance('}')
+        , popstmt()
+        )
+
+    parse_if = 
+        stative(
+          advance('if', 'keyword')
+        , advance('(')
+        , advance_expr(')')
+        , advance(')')
+        , maybe_stmtlist(3)
+        , advance_stmtlist()
+        , advance('}')
+        , function() {
+            if(token.data === 'else') {
+              return tokens.shift(), state.unshift(stmt()), Advance
+            }
+            return popstmt()()
+          }
+        , popstmt()
+        )
+
+    parse_return =
+        stative(
+          advance('return', 'keyword')
+        , function() {
+            if(token.data === ';') return Advance
+            return state.unshift(expr(';')), Advance
+          }
+        , function() { tokens.shift(), popstmt()() } 
+        )
+
+    parse_whileloop =
+        stative(
+          advance('while', 'keyword')
+        , advance('(')
+        , advance_expr(')')
+        , advance(')')
+        , maybe_stmtlist(3)
+        , advance_stmtlist()
+        , advance('}')
+        , popstmt()
+        )
+
+    parse_dowhileloop = 
+      stative(
+        advance('do', 'keyword')
+      , maybe_stmtlist(3)
+      , advance_stmtlist()
+      , advance('}')
+      , advance('while', 'keyword')
+      , advance('(')
+      , advance_expr(')')
+      , advance(')')
+      , popstmt()
+      )
+
+    parse_function =
+      stative(
+        function() {
+          for(var i = 1, len = state.length; i < len; ++i) if(state[i].mode === FUNCTION) {
+            return unexpected('function definition is not allowed within another function')
+          }
+
+          return Advance
+        }
+      , function() {
+          if(!assert("ident")) return
+
+          var name = token.data
+            , lookup = state.scope.find(name)
+
+          state.unshift(ident())
+          state.scope.define(name)
+
+          state.scope.enter(lookup ? lookup.scope : null)
+          return Advance
+        }
+      , advance('(')
+      , function() { return state.unshift(fnargs()), Advance }
+      , advance(')')
+      , function() { 
+          // forward decl
+          if(token.data === ';') {
+            return state.scope.exit(), state.shift(), state.shift()
+          }
+          return Advance
+        }
+      , advance('{')
+      , advance_stmtlist()
+      , advance('}')
+      , function() { state.scope.exit(); return Advance } 
+      , function() { return state.shift(), state.shift(), state.shift() }
+      )
+
+    parse_function_args =
+      stative(
+        function() {
+          if(token.data === 'void') { state.fake(keyword()); tokens.shift(); return Advance }
+          if(token.data === ')') { state.shift(); return }
+          if(token.data === 'struct') {
+            state.unshift(struct(NO_ASSIGN_ALLOWED, NO_COMMA_ALLOWED))
+            return Advance
+          }
+          state.unshift(decl(DECL_FUNCTION))
+          return Advance
+        }
+      , function() {
+          if(token.data === ',') { tokens.shift(); return 0 }
+          if(token.data === ')') { state.shift(); return }
+          unexpected('expected one of `,` or `)`, got '+token.data)
+        }
+      )
+  }
+}
+
+function mknode(mode, sourcetoken) {
+  return {
+      mode: mode
+    , token: sourcetoken
+    , children: []
+    , type: stmt_type[mode]
+    , id: (Math.random() * 0xFFFFFFFF).toString(16)
+  }
+}
+
+function is_storage(token) {
+  return token.data === 'const' ||
+         token.data === 'attribute' ||
+         token.data === 'uniform' ||
+         token.data === 'varying'
+}
+
+function is_parameter(token) {
+  return token.data === 'in' ||
+         token.data === 'inout' ||
+         token.data === 'out'
+}
+
+function is_precision(token) {
+  return token.data === 'highp' ||
+         token.data === 'mediump' ||
+         token.data === 'lowp'
+}
+
+},{"./expr":254,"./scope":256,"through":257}],256:[function(require,module,exports){
+module.exports = scope
+
+function scope(state) {
+  if(this.constructor !== scope)
+    return new scope(state)
+
+  this.state = state
+  this.scopes = []
+  this.current = null
+}
+
+var cons = scope
+  , proto = cons.prototype
+
+proto.enter = function(s) {
+  this.scopes.push(
+    this.current = this.state[0].scope = s || {}
+  )
+}
+
+proto.exit = function() {
+  this.scopes.pop()
+  this.current = this.scopes[this.scopes.length - 1]
+}
+
+proto.define = function(str) {
+  this.current[str] = this.state[0]
+}
+
+proto.find = function(name, fail) {
+  for(var i = this.scopes.length - 1; i > -1; --i) {
+    if(this.scopes[i].hasOwnProperty(name)) {
+      return this.scopes[i][name]
+    }
+  }
+
+  return null
+}
+
+},{}],257:[function(require,module,exports){
+(function (process){(function (){
+var Stream = require('stream')
+
+// through
+//
+// a stream that does nothing but re-emit the input.
+// useful for aggregating a series of changing but not ending streams into one stream)
+
+
+
+exports = module.exports = through
+through.through = through
+
+//create a readable writable stream.
+
+function through (write, end) {
+  write = write || function (data) { this.emit('data', data) }
+  end = end || function () { this.emit('end') }
+
+  var ended = false, destroyed = false
+  var stream = new Stream(), buffer = []
+  stream.buffer = buffer
+  stream.readable = stream.writable = true
+  stream.paused = false
+  stream.write = function (data) {
+    write.call(this, data)
+    return !stream.paused
+  }
+
+  function drain() {
+    while(buffer.length && !stream.paused) {
+      var data = buffer.shift()
+      if(null === data)
+        return stream.emit('end')
+      else
+        stream.emit('data', data)
+    }
+  }
+
+  stream.queue = function (data) {
+    buffer.push(data)
+    drain()
+  }
+
+  //this will be registered as the first 'end' listener
+  //must call destroy next tick, to make sure we're after any
+  //stream piped from here.
+  //this is only a problem if end is not emitted synchronously.
+  //a nicer way to do this is to make sure this is the last listener for 'end'
+
+  stream.on('end', function () {
+    stream.readable = false
+    if(!stream.writable)
+      process.nextTick(function () {
+        stream.destroy()
+      })
+  })
+
+  function _end () {
+    stream.writable = false
+    end.call(stream)
+    if(!stream.readable)
+      stream.destroy()
+  }
+
+  stream.end = function (data) {
+    if(ended) return
+    ended = true
+    if(arguments.length) stream.write(data)
+    _end() // will emit or queue
+  }
+
+  stream.destroy = function () {
+    if(destroyed) return
+    destroyed = true
+    ended = true
+    buffer.length = 0
+    stream.writable = stream.readable = false
+    stream.emit('close')
+  }
+
+  stream.pause = function () {
+    if(stream.paused) return
+    stream.paused = true
+    stream.emit('pause')
+  }
+  stream.resume = function () {
+    if(stream.paused) {
+      stream.paused = false
+    }
+    drain()
+    //may have become paused again,
+    //as drain emits 'data'.
+    if(!stream.paused)
+      stream.emit('drain')
+  }
+  return stream
+}
+
+
+}).call(this)}).call(this,require('_process'))
+},{"_process":42,"stream":44}],258:[function(require,module,exports){
 var tokenize = require('glsl-tokenizer')
 var atob     = require('atob-lite')
 
@@ -31190,7 +38771,7 @@ function getName(src) {
   }
 }
 
-},{"atob-lite":71,"glsl-tokenizer":236}],230:[function(require,module,exports){
+},{"atob-lite":73,"glsl-tokenizer":265}],259:[function(require,module,exports){
 module.exports = tokenize
 
 var literals100 = require('./lib/literals')
@@ -31567,7 +39148,7 @@ function tokenize(opt) {
   }
 }
 
-},{"./lib/builtins":232,"./lib/builtins-300es":231,"./lib/literals":234,"./lib/literals-300es":233,"./lib/operators":235}],231:[function(require,module,exports){
+},{"./lib/builtins":261,"./lib/builtins-300es":260,"./lib/literals":263,"./lib/literals-300es":262,"./lib/operators":264}],260:[function(require,module,exports){
 // 300es builtins/reserved words that were previously valid in v100
 var v100 = require('./builtins')
 
@@ -31638,7 +39219,7 @@ module.exports = v100.concat([
   , 'textureProjGradOffset'
 ])
 
-},{"./builtins":232}],232:[function(require,module,exports){
+},{"./builtins":261}],261:[function(require,module,exports){
 module.exports = [
   // Keep this list sorted
   'abs'
@@ -31790,7 +39371,7 @@ module.exports = [
   , 'textureCubeGradEXT'
 ]
 
-},{}],233:[function(require,module,exports){
+},{}],262:[function(require,module,exports){
 var v100 = require('./literals')
 
 module.exports = v100.slice().concat([
@@ -31879,7 +39460,7 @@ module.exports = v100.slice().concat([
   , 'usampler2DMSArray'
 ])
 
-},{"./literals":234}],234:[function(require,module,exports){
+},{"./literals":263}],263:[function(require,module,exports){
 module.exports = [
   // current
     'precision'
@@ -31975,7 +39556,7 @@ module.exports = [
   , 'using'
 ]
 
-},{}],235:[function(require,module,exports){
+},{}],264:[function(require,module,exports){
 module.exports = [
     '<<='
   , '>>='
@@ -32024,7 +39605,7 @@ module.exports = [
   , '}'
 ]
 
-},{}],236:[function(require,module,exports){
+},{}],265:[function(require,module,exports){
 var tokenize = require('./index')
 
 module.exports = tokenizeString
@@ -32039,7 +39620,7 @@ function tokenizeString(str, opt) {
   return tokens
 }
 
-},{"./index":230}],237:[function(require,module,exports){
+},{"./index":259}],266:[function(require,module,exports){
 'use strict';
 
 var color = require('onecolor');
@@ -32123,7 +39704,7 @@ var graycolorize = function(pixels, colors) {
 module.exports = graycolorize;
 module.exports.generateMap = generateMap;
 
-},{"ndarray":266,"onecolor":276}],238:[function(require,module,exports){
+},{"ndarray":302,"onecolor":313}],267:[function(require,module,exports){
 "use strict"
 
 var pool = require("typedarray-pool")
@@ -32322,17 +39903,522 @@ function compileMesher(options) {
 }
 module.exports = compileMesher
 
-},{"iota-array":246,"typedarray-pool":302,"uniq":303}],239:[function(require,module,exports){
+},{"iota-array":276,"typedarray-pool":345,"uniq":347}],268:[function(require,module,exports){
 arguments[4][20][0].apply(exports,arguments)
-},{"./shams":240,"dup":20}],240:[function(require,module,exports){
+},{"./shams":269,"dup":20}],269:[function(require,module,exports){
 arguments[4][21][0].apply(exports,arguments)
-},{"dup":21}],241:[function(require,module,exports){
+},{"dup":21}],270:[function(require,module,exports){
 arguments[4][22][0].apply(exports,arguments)
-},{"dup":22,"has-symbols/shams":240}],242:[function(require,module,exports){
+},{"dup":22,"has-symbols/shams":269}],271:[function(require,module,exports){
 arguments[4][23][0].apply(exports,arguments)
-},{"dup":23,"function-bind":112}],243:[function(require,module,exports){
+},{"dup":23,"function-bind":131}],272:[function(require,module,exports){
 arguments[4][25][0].apply(exports,arguments)
-},{"dup":25}],244:[function(require,module,exports){
+},{"dup":25}],273:[function(require,module,exports){
+(function (global){(function (){
+'use strict';
+
+const EventEmitter = require('events').EventEmitter;
+const ever = require('ever');
+const createTooltip = require('ftooltip');
+const CubeIcon = require('cube-icon');
+const touchup = require('touchup');
+
+class InventoryWindow extends EventEmitter {
+  // moved to global.InventoryWindow_ instead of class variable, since this module
+  // might be included multiple times, creating multiple class variables, but we
+  // want them to be shared across _all_ instances, so you can drop between any
+  // inventory-window.
+  //this.heldItemPile = undefined
+  //this.heldNode = undefined
+  //this.mouseButtonDown = undefined
+  //this.resolvedImageURLs = {}
+
+  constructor(opts) {
+    super();
+    if (!opts) opts = {};
+    this.inventory = opts.inventory;
+    if (!this.inventory) throw new Error('inventory-window requires "inventory" option set to Inventory instance');
+    this.linkedInventory = opts.linkedInventory;
+    this.getTexture = opts.getTexture;
+    if (!this.getTexture) this.getTexture = InventoryWindow.defaultGetTexture;
+    if (!this.getTexture) this.getTexture = global.InventoryWindow_defaultGetTexture;
+    this.registry = opts.registry;
+    if (!this.getTexture && !this.registry) {
+      throw new Error('inventory-window: required "getTexture" or "registry" option missing');
+    }
+    this.getMaxDamage = opts.getMaxDamage;
+    if (!this.getMaxDamage) this.getMaxDamage = InventoryWindow.defaultGetMaxDamage;
+    if (!this.getMaxDamage) this.getMaxDamage = global.InventoryWindow_defaultGetMaxDamage;
+    this.inventorySize = opts.inventorySize;
+    if (this.inventorySize === undefined) this.inventorySize = this.inventory.size();
+    this.width = opts.width;
+    if (this.width === undefined) this.width = this.inventory.width;
+    this.textureScale = opts.textureScale !== undefined ? opts.textureScale : 5;
+    this.textureScaleAlgorithm = 'nearest-neighbor';
+    this.textureSrcPx = opts.textureSrcPx !== undefined ? opts.textureSrcPx : 16;
+    this.textureSize = opts.textureSize !== undefined ? opts.textureSize : (this.textureSrcPx * this.textureScale);
+    this.getTooltip = opts.getTooltip;
+    if (!this.getTooltip) this.getTooltip = InventoryWindow.defaultGetTooltip;
+    if (!this.getTooltip) this.getTooltip = global.InventoryWindow_defaultGetTooltip;
+    this.tooltips = opts.tooltips !== undefined ? opts.tooltips : true;
+    this.borderSize = opts.borderSize !== undefined ? opts.borderSize : 4;
+    this.progressThickness = opts.progressThickness !== undefined ? opts.progressThickness : 10;
+    this.secondaryMouseButton = opts.secondaryMouseButton !== undefined ? opts.secondaryMouseButton : 2;
+    this.allowDrop = opts.allowDrop !== undefined ? opts.allowDrop : true;
+    this.allowPickup = opts.allowPickup !== undefined ? opts.allowPickup : true;
+    this.allowDragPaint = opts.allowDragPaint !== undefined ? opts.allowDragPaint : true;
+    this.progressColorsThresholds = opts.progressColorsThresholds !== undefined ? opts.progressColorsThresholds : [0.20, 0.40, Infinity];
+    this.progressColors = opts.progressColors !== undefined ? opts.progressColors : ['red', 'orange', 'green'];
+
+    this.slotNodes = [];
+    this.container = undefined;
+    this.selectedIndex = undefined;  //  no selection
+
+    this.enable();
+  }
+
+  enable() {
+    if (global.document) {
+      ever(document).on('mousemove', (ev) => {
+        if (!global.InventoryWindow_heldNode) return;
+        this.positionAtMouse(global.InventoryWindow_heldNode, ev);
+      });
+
+      ever(document).on('mouseup', (ev) => {
+        global.InventoryWindow_mouseButtonDown = undefined;
+      });
+    }
+
+    this.inventory.on('changed', () => {
+      this.refresh();
+    });
+  };
+
+  createContainer() {
+    if (!global.document) return;
+
+    let container = document.createElement('div');
+    for (let i = 0; i < this.inventorySize; ++i) {
+      const slotItem = this.inventory.get(i)
+
+      const node = this.createSlotNode(slotItem);
+      this.setBorderStyle(node, i);
+      this.bindSlotNodeEvent(node, i);
+
+      this.slotNodes.push(node);
+      container.appendChild(node);
+    }
+
+    const widthpx = this.width * (this.textureSize + this.borderSize * 2) + 2 * this.borderSize;
+    container.setAttribute('style', `
+display: block;
+float: left;
+width:  ${widthpx}px;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+`);
+
+    this.container = container;
+    return this.container;
+  }
+
+  bindSlotNodeEvent(node, index) {
+    ever(node).on('mousedown', (ev) => {
+      this.clickSlot(index, ev);
+    });
+    ever(node).on('mouseover', (ev) => {
+      if (!this.allowDragPaint) return;
+      if (!this.allowDrop) return;
+      if (!global.InventoryWindow_heldItemPile) return;
+      if (global.InventoryWindow_mouseButtonDown !== this.secondaryMouseButton) return;
+
+      //  'drag paint' mode, distributing items as mouseover without clicking
+      this.dropOneHeld(index);
+      this.createHeldNode(global.InventoryWindow_heldItemPile, ev);
+      this.refreshSlotNode(index);
+
+      //  TODO: support left-click drag paint = evenly redistribute 
+      //   (vs right-click = drop only one item)
+    });
+  }
+
+  createSlotNode(itemPile) {
+    const div = document.createElement('div');
+    div.setAttribute('style', `
+display: inline-block;
+float: inherit;
+margin: 0;
+padding: 0;
+width: ${this.textureSize}px;
+height: ${this.textureSize}px;
+font-size: 20pt;
+background-size: 100% auto;
+image-rendering: -moz-crisp-edges;
+image-rendering: -o-crisp-edges;
+image-rendering: -webkit-optimize-contrast;
+image-rendering: crisp-edges;
+-ms-interpolation-mode: nearest-neighbor;
+`);
+    // set image and text
+    this.populateSlotNode(div, itemPile);
+
+    return div;
+  }
+
+  populateSlotNode(div, itemPile, isSelected) {
+    let src = undefined;
+    let text = '';
+    let progress = undefined;
+    let progressColor = undefined;
+
+    if (itemPile !== undefined) {
+      if (this.registry !== undefined) {
+        src = this.registry.getItemPileTexture(itemPile);
+      } else if (this.getTexture !== undefined) {
+        src = this.getTexture(itemPile);
+      } else {
+        throw new Error('inventory-window textures not specified, set global.InventoryWindow_defaultGetTexture or pass "getTexture" or "registry" option');
+      }
+
+      //text = this.getTextOverlay this.inventory.slot
+      text = itemPile.count;
+      if (text === 1) text = '';
+      if (text === Infinity) text = '\u221e';
+
+      if (itemPile.tags !== undefined && itemPile.tags.damage !== undefined) {
+        let maxDamage;
+        if (this.registry !== undefined) {
+          maxDamage = this.registry.getItemProps(itemPile.item).maxDamage;
+        } else if (this.getMaxDamage !== undefined) {
+          maxDamage = this.getMaxDamage(itemPile);
+        } else {
+          maxDamage = 100;
+        }
+
+        progress = (maxDamage - itemPile.tags.damage) / maxDamage;
+        progressColor = this.getProgressBarColor(progress);
+      }
+    }
+
+    function setImage(src) {
+      let newImage;
+      if (typeof src === 'string') {   //  simple image
+        newImage = 'url(' + src + ')';
+      } else {
+        newImage = '';   //  clear
+        // note: might be 3d cube set below
+      }
+
+      // update image, but only if changed to prevent flickering
+      if (global.InventoryWindow_resolvedImageURLs === undefined) {
+        global.InventoryWindow_resolvedImageURLs = {};
+      }
+      if (global.InventoryWindow_resolvedImageURLs[newImage] !== div.style.backgroundImage) {
+        div.style.backgroundImage = newImage;
+        // wrinkle: if the URL may not be fully resolved (relative path, ../, etc.),
+        // but setting backgroundImage resolves it, so it won't always match what we
+        // set it to -- to fix this, cache the result for comparison next time
+        global.InventoryWindow_resolvedImageURLs[newImage] = div.style.backgroundImage;
+      }
+    }
+
+    if (this.textureScaleAlgorithm !== undefined && typeof src === 'string') {
+      // cache scaled images
+      if (global.InventoryWindow_cachedScaledImages === undefined) {
+        global.InventoryWindow_cachedScaledImages = {};
+      }
+      if (global.InventoryWindow_cachedScaledImages[src]) {
+        setImage(global.InventoryWindow_cachedScaledImages[src]);
+      } else {
+        // generate scaled image, requires async callback
+        let img = new Image();
+        img.onload = () => {
+          const scaled = touchup.scale(img, this.textureScale, this.textureScale, this.textureScaleAlgorithm);
+          global.InventoryWindow_cachedScaledImages[src] = scaled;
+          setImage(scaled);
+        };
+        img.src = src;
+      }
+    } else {
+      // unscaled image
+      setImage(src);
+    }
+
+    // 3D cube node (for blocks)
+    let cubeNode = div.children[0];
+    if (!cubeNode) {
+      cubeNode = document.createElement('div');
+      cubeNode.setAttribute('style', 'position: relative; z-index: 0;');
+      div.appendChild(cubeNode);
+    }
+
+    while(cubeNode.firstChild) {
+      cubeNode.removeChild(cubeNode.firstChild);
+    }
+
+    if (Array.isArray(src) || typeof(src) === 'object') {   //  3d cube
+      const cube = CubeIcon({images:src});
+      cubeNode.appendChild(cube.container);
+    }
+
+    // textual count
+    let textBox = div.children[1];
+    if (!textBox) {
+      textBox = document.createElement('div');
+      textBox.setAttribute('style', 'position: absolute; text-shadow: 1px 1px #eee, -1px -1px #333;');
+      div.appendChild(textBox);
+    }
+
+    if (textBox.textContent !== text) {
+      textBox.textContent = text;
+    }
+
+    // progress bar
+    let progressNode = div.children[2];
+    if (!progressNode) {
+      progressNode = document.createElement('div');
+      progressNode.setAttribute('style', `
+width: 0%;
+top:  ${this.textureSize - this.borderSize * 2}px;
+position: relative;
+visibility: hidden;
+`);
+      div.appendChild(progressNode);
+    }
+
+    if (progressColor !== undefined) {
+      progressNode.style.borderTop = ` ${this.progressThickness}px solid  ${progressColor}`;
+    }
+    if (progress !== undefined) {
+      progressNode.style.width = (progress * 100) + '%';
+    }
+    progressNode.style.visibility = progress !== undefined ? '' : 'hidden';
+
+    // tooltip
+    if (this.tooltips) {
+      let tooltipNode = div.children[3];
+      if (!tooltipNode) {
+        tooltipNode = document.createTextNode('not set');
+        let tooltip = createTooltip(div, tooltipNode);
+        div.appendChild(tooltip.div);
+      }
+
+      let tooltipText;
+      if (itemPile) {
+        if (this.registry) {
+          tooltipText = this.registry.getItemDisplayName(itemPile.item);
+        } else if (this.getTooltip) {
+          tooltipText = this.getTooltip(itemPile);
+        }
+      } else {
+        tooltipText = '';
+      }
+
+      tooltipNode.textContent = tooltipText;
+    }
+  }
+
+  getProgressBarColor(progress) {
+    for (let i = 0; i < this.progressColorsThresholds.length; ++i) {
+      const threshold = this.progressColorsThresholds.length[i];
+
+      if (progress <= threshold) {
+        return this.progressColors[i];
+      }
+
+    return this.progressColors.slice(-1)[0];   // default to last
+    }
+  }
+
+  setBorderStyle(node, index) {
+    // based on http://coffeescript.org
+    // a // b     Math.floor(a / b)
+    // a %% b     (a % b + b) % b
+    // TODO: refactor
+    function integer_division(a, b) { return Math.floor(a / b); }
+    function true_modulo(a, b) { return (a % b + b) % b; }
+
+    const x = true_modulo(index, this.width);
+    const y = integer_division(index, this.width);
+    const height = this.inventorySize / this.width;
+    let kind;
+    if (index === this.selectedIndex) {
+      kind = 'dotted';
+    } else {
+      kind = 'solid';
+    }
+
+    node.style.border = `${this.borderSize}px ${kind} black`
+    if (y === 0) node.style.borderTop = `${this.borderSize * 2}px ${kind} black`;
+    if (y === height - 1) node.style.borderBottom = `${this.borderSize * 2}px ${kind} black`;
+    if (x === 0) node.style.borderLeft = `${this.borderSize * 2}px ${kind} black`;
+    if (x === this.width - 1) node.style.borderRight = `${this.borderSize * 2}px ${kind} black`;
+  }
+ 
+  setSelected(index) {
+    this.selectedIndex = index;
+    this.refresh();    // TODO: selective refresh?
+  }
+
+  getSelected(index) {
+    return this.selectedIndex;
+  }
+
+  refreshSlotNode(index) {
+    this.populateSlotNode(this.slotNodes[index], this.inventory.get(index));
+    this.setBorderStyle(this.slotNodes[index], index);
+  }
+
+  refresh() {
+    for (let i = 0; i < this.inventorySize; ++i) {
+      this.refreshSlotNode(i);
+    }
+  }
+
+  positionAtMouse(node, mouseEvent) {
+    let x = mouseEvent.x !== undefined ? mouseEvent.x : mouseEvent.clientX
+    let y = mouseEvent.y !== undefined ? mouseEvent.y : mouseEvent.clientY;
+
+    x -= this.textureSize / 2;
+    y -= this.textureSize / 2;
+
+    node.style.left = x + 'px';
+    node.style.top = y + 'px';
+  }
+
+  createHeldNode(itemPile, ev) {
+    if (global.InventoryWindow_heldNode) this.removeHeldNode();
+    if (!itemPile || itemPile.count === 0) {
+      global.InventoryWindow_heldItemPile = undefined;
+      return;
+    }
+
+    global.InventoryWindow_heldItemPile = itemPile;
+    global.InventoryWindow_heldNode = this.createSlotNode(global.InventoryWindow_heldItemPile);
+    global.InventoryWindow_heldNode.setAttribute('style', global.InventoryWindow_heldNode.getAttribute('style') + `
+position: absolute;
+user-select: none;
+-moz-user-select: none;
+-webkit-user-select: none;
+pointer-events: none;
+z-index: 10;
+`);
+
+    this.positionAtMouse(global.InventoryWindow_heldNode, ev);
+
+    document.body.appendChild(global.InventoryWindow_heldNode);
+  }
+
+  removeHeldNode() {
+    global.InventoryWindow_heldNode.parentNode.removeChild(global.InventoryWindow_heldNode);
+    global.InventoryWindow_heldNode = undefined;
+    global.InventoryWindow_heldItemPile = undefined;
+  }
+
+  dropOneHeld(index) {
+    if (this.inventory.get(index)) {
+      // drop one, but try to merge with existing
+      let oneHeld = global.InventoryWindow_heldItemPile.splitPile(1);
+      if (this.inventory.get(index).mergePile(oneHeld) === false) {
+        // could not merge, so swap 
+        global.InventoryWindow_heldItemPile.increase(1);
+        let tmp = global.InventoryWindow_heldItemPile;
+        global.InventoryWindow_heldItemPile = this.inventory.get(index);
+        this.inventory.set(index, tmp);
+      } else {
+        this.inventory.changed();
+      }
+    } else {
+      // drop on empty slot
+      this.inventory.set(index, global.InventoryWindow_heldItemPile.splitPile(1));
+    }
+  }
+
+  clickSlot(index, ev) {
+    let itemPile = this.inventory.get(index);
+    console.log('clickSlot',index,itemPile);
+
+    global.InventoryWindow_mouseButtonDown = ev.button;
+
+    let shiftDown = ev.shiftKey;
+
+    if (ev.button !== this.secondaryMouseButton) {
+      // left click: whole pile
+      if (!global.InventoryWindow_heldItemPile || !this.allowDrop) {
+        // pickup whole pile
+        if (!this.allowPickup) return;
+
+        if (global.InventoryWindow_heldItemPile) {
+          // tried to drop on pickup-only inventory, so merge into held inventory instead
+          if (this.inventory.get(index) !== undefined) {
+            if (!global.InventoryWindow_heldItemPile.canPileWith(this.inventory.get(index))) return;
+            global.InventoryWindow_heldItemPile.mergePile(this.inventory.get(index));
+          }
+        } else {
+          if (!shiftDown) {
+            // simply picking up the whole pile
+            global.InventoryWindow_heldItemPile = this.inventory.get(index);
+            this.inventory.set(index, undefined);
+          } else if (this.linkedInventory && this.inventory.get(index) !== undefined) {
+            // shift-click: transfer to linked inventory
+            this.linkedInventory.give(this.inventory.get(index));
+            if (this.inventory.get(index).count === 0) {
+              this.inventory.set(index, undefined);
+            }
+            this.inventory.changed();   //  update source, might not have transferred all of the pile
+          }
+        }
+
+        this.emit('pickup');  //  TODO: event data? index, item? cancelable?
+      } else {
+        // drop whole pile
+        if (this.inventory.get(index)) {
+          // try to merge piles dropped on each other
+          if (this.inventory.get(index).mergePile(global.InventoryWindow_heldItemPile) === false) {
+            // cannot pile together; swap dropped/held
+            let tmp = global.InventoryWindow_heldItemPile;
+            global.InventoryWindow_heldItemPile = this.inventory.get(index);
+            this.inventory.set(index, tmp);
+          } else {
+            this.inventory.changed();
+          }
+        } else {
+          // fill entire slot
+          this.inventory.set(index, global.InventoryWindow_heldItemPile);
+          global.InventoryWindow_heldItemPile = undefined;
+        }
+      }
+    } else {
+      // right-click: half/one
+      if (!global.InventoryWindow_heldItemPile) {
+        // pickup half
+        if (!this.allowPickup) return;
+        if (this.inventory.get(index) !== undefined) {
+          global.InventoryWindow_heldItemPile = this.inventory.get(index).splitPile(0.5);
+        } else {
+          global.InventoryWindow_heldItemPile = undefined;
+        }
+
+        if (this.inventory.get(index) && this.inventory.get(index).count == 0) {
+          this.inventory.set(index, undefined );
+        }
+        this.inventory.changed();
+        this.emit('pickup');  //  TODO: event data? index, item? cancelable?
+      } else {
+        if (!this.allowDrop) return;
+        this.dropOneHeld(index);
+      }
+    }
+    this.createHeldNode(global.InventoryWindow_heldItemPile, ev);
+    this.refreshSlotNode(index);
+  }
+}
+
+module.exports = InventoryWindow;
+
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"cube-icon":108,"events":15,"ever":125,"ftooltip":129,"touchup":343}],274:[function(require,module,exports){
 'use strict';
 
 const deepEqual = require('deep-equal');
@@ -32461,7 +40547,7 @@ class Inventory extends EventEmitter {
 
 module.exports = Inventory;
 
-},{"deep-equal":104,"events":15,"itempile":252}],245:[function(require,module,exports){
+},{"deep-equal":120,"events":15,"itempile":282}],275:[function(require,module,exports){
 "use strict"
 
 function invert(hash) {
@@ -32475,7 +40561,7 @@ function invert(hash) {
 }
 
 module.exports = invert
-},{}],246:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 "use strict"
 
 function iota(n) {
@@ -32487,9 +40573,9 @@ function iota(n) {
 }
 
 module.exports = iota
-},{}],247:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 arguments[4][26][0].apply(exports,arguments)
-},{"call-bind/callBound":91,"dup":26,"has-tostringtag/shams":241}],248:[function(require,module,exports){
+},{"call-bind/callBound":100,"dup":26,"has-tostringtag/shams":270}],278:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -32512,7 +40598,7 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],249:[function(require,module,exports){
+},{}],279:[function(require,module,exports){
 'use strict';
 
 var getDay = Date.prototype.getDay;
@@ -32536,7 +40622,7 @@ module.exports = function isDateObject(value) {
 	return hasToStringTag ? tryDateObject(value) : toStr.call(value) === dateClass;
 };
 
-},{"has-tostringtag/shams":241}],250:[function(require,module,exports){
+},{"has-tostringtag/shams":270}],280:[function(require,module,exports){
 'use strict';
 
 var callBound = require('call-bind/callBound');
@@ -32596,7 +40682,7 @@ module.exports = hasToStringTag
 		return $toString(value) === regexClass;
 	};
 
-},{"call-bind/callBound":91,"has-tostringtag/shams":241}],251:[function(require,module,exports){
+},{"call-bind/callBound":100,"has-tostringtag/shams":270}],281:[function(require,module,exports){
 module.exports = function(arr) {
   if (!arr) return false
   if (!arr.dtype) return false
@@ -32604,7 +40690,7 @@ module.exports = function(arr) {
   return re.test(String(arr.constructor))
 }
 
-},{}],252:[function(require,module,exports){
+},{}],282:[function(require,module,exports){
 'use strict';
 const deepEqual = require('deep-equal');
 const cloneObject = require('clone');
@@ -32780,7 +40866,643 @@ class ItemPile {
 module.exports = ItemPile;
 
 
-},{"clone":93,"deep-equal":104}],253:[function(require,module,exports){
+},{"clone":103,"deep-equal":120}],283:[function(require,module,exports){
+'use strict';
+
+var vkey = require('vkey');
+var createDatgui = require('dat-gui')
+
+module.exports = function(game, opts) {
+  return new BindingsUI(game, opts);
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-debug', 'voxel-plugins-ui'], // optional to load after and reuse same gui
+  clientOnly: true
+};
+
+function BindingsUI(game, opts) {
+  this.game = game;
+
+  opts = opts || {};
+
+  this.kb = opts.kb || (game && game.buttons); // might be undefined
+
+  // try to latch on to an existing datgui, otherwise make our own
+  this.gui = opts.gui;
+  if (!this.gui) {
+    if (game && game.plugins) {
+      if (game.plugins.get('voxel-debug')) this.gui = game.plugins.get('voxel-debug').gui;
+      else if (game.plugins.get('voxel-plugins-ui')) this.gui = game.plugins.get('voxel-plugins-ui').gui;
+    }
+  }
+  if (!this.gui) this.gui = new createDatgui.GUI();
+
+  this.hideKeys = opts.hideKeys || ['ime-', 'launch-', 'browser-']; // too long
+  this.folder = this.gui.addFolder('keys');
+
+  // clean up the valid key listing TODO: refactor with game-shell? it does almost the same
+  this.vkey2code = {};
+  this.vkeyBracket2Bare = {};
+  this.vkeyBare2Bracket = {};
+  this.keyListing = [];
+  for (var code in vkey) {
+    var keyName = vkey[code];
+
+    this.vkey2code[keyName] = code;
+
+    var keyNameBare = filtered_vkey(keyName);
+    this.vkeyBracket2Bare[keyName] = keyNameBare;
+    this.vkeyBare2Bracket[keyNameBare] = keyName;
+
+    if (!this.shouldHideKey(keyNameBare))
+      this.keyListing.push(keyNameBare);
+  }
+
+  this.enable();
+}
+
+// cleanup key name - based on https://github.com/mikolalysenko/game-shell/blob/master/shell.js
+// TODO: refactor with game-shell? and voxel-engine?
+var filtered_vkey = function(k) {
+  if(k.charAt(0) === '<' && k.charAt(k.length-1) === '>') {
+    k = k.substring(1, k.length-1)
+  }
+  k = k.replace(/\s/g, "-")
+  return k
+}
+
+BindingsUI.prototype.enable = function() {
+  this.populate();
+  if (this.game.shell) {
+    this.game.shell.on('bind', this.onBind = this.populate.bind(this));
+    this.game.shell.on('unbind', this.onUnbind = this.populate.bind(this));
+  }
+}
+
+BindingsUI.prototype.disable = function() {
+  if (this.game.shell) {
+    this.game.shell.removeListener('bind', this.onBind);
+    this.game.shell.removeListener('unbind', this.onUnbind);
+  }
+}
+
+BindingsUI.prototype.populate = function() {
+  // get keybindings
+  this.binding2Key = {};
+  if (this.kb && this.kb.bindings) {
+    // voxel-engine with kb-bindings - stores key -> binding
+    for (var key in this.kb.bindings) {
+      var binding = this.kb.bindings[key];
+      this.binding2Key[binding] = this.vkeyBracket2Bare[key] || key;
+      this.addBinding(binding);
+    }
+  } else if (this.game.shell && this.game.shell.bindings) {
+    // game-shell - stores binding -> key(s)
+
+    // first, remove all items, since this may be called multiple times
+    if (this.addedItems) {
+      for (var i = 0; i < this.addedItems.length; i += 1) {
+        this.folder.remove(this.addedItems[i]);
+      }
+    }
+
+    // then add everything
+    this.addedItems = [];
+    for (var binding in this.game.shell.bindings) {
+      var key = this.game.shell.bindings[binding];
+
+      if (Array.isArray(key)) {
+        key = key[0]; // TODO: support multiple keys. for now, only taking first
+      }
+
+      this.binding2Key[binding] = this.vkeyBracket2Bare[key] || key;
+      var item = this.addBinding(binding);
+      this.addedItems.push(item);
+    }
+  }
+}
+
+BindingsUI.prototype.shouldHideKey = function(name) {
+  for (var i = 0; i < this.hideKeys.length; ++i) {
+    if (name.indexOf(this.hideKeys[i]) === 0) return true;
+  }
+  return false;
+};
+
+BindingsUI.prototype.addBinding = function (binding) {
+  var item = this.folder.add(this.binding2Key, binding, this.keyListing);
+
+  item.onChange(updateBinding(this, binding));
+
+  return item;
+};
+
+function updateBinding(self, binding) {
+  return function(newKeyNameBare) {
+    //if (self.vkey2code[newKeyName] === undefined) // invalid vkey
+
+    var newKeyName = self.vkeyBare2Bracket[newKeyNameBare];
+
+    self.removeBindings(binding);
+
+    if (self.kb && self.kb.bindings) {
+      self.kb.bindings[newKeyName] = binding;
+    } else {
+      self.game.shell.bind(binding, newKeyName);
+    }
+  };
+}
+
+// remove all keys bound to given binding
+BindingsUI.prototype.removeBindings = function(binding) {
+  if (this.kb && this.kb.bindings) {
+    for (var key in this.kb.bindings) {
+      var thisBinding = this.kb.bindings[key];
+      if (thisBinding === binding) {
+        delete this.kb.bindings[key];
+      }
+    }
+  } else {
+    this.game.shell.unbind(binding);
+  }
+};
+
+
+},{"dat-gui":117,"vkey":350}],284:[function(require,module,exports){
+/**
+ * lodash 3.9.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+/** `Object#toString` result references. */
+var funcTag = '[object Function]';
+
+/** Used to detect host constructors (Safari > 5). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/**
+ * Checks if `value` is object-like.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ */
+function isObjectLike(value) {
+  return !!value && typeof value == 'object';
+}
+
+/** Used for native method references. */
+var objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var fnToString = Function.prototype.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var objToString = objectProto.toString;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = object == null ? undefined : object[key];
+  return isNative(value) ? value : undefined;
+}
+
+/**
+ * Checks if `value` is classified as a `Function` object.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+ * @example
+ *
+ * _.isFunction(_);
+ * // => true
+ *
+ * _.isFunction(/abc/);
+ * // => false
+ */
+function isFunction(value) {
+  // The use of `Object#toString` avoids issues with the `typeof` operator
+  // in older versions of Chrome and Safari which return 'function' for regexes
+  // and Safari 8 equivalents which return 'object' for typed array constructors.
+  return isObject(value) && objToString.call(value) == funcTag;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+/**
+ * Checks if `value` is a native function.
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+ * @example
+ *
+ * _.isNative(Array.prototype.push);
+ * // => true
+ *
+ * _.isNative(_);
+ * // => false
+ */
+function isNative(value) {
+  if (value == null) {
+    return false;
+  }
+  if (isFunction(value)) {
+    return reIsNative.test(fnToString.call(value));
+  }
+  return isObjectLike(value) && reIsHostCtor.test(value);
+}
+
+module.exports = getNative;
+
+},{}],285:[function(require,module,exports){
+/**
+ * lodash 3.1.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var getNative = require('lodash._getnative');
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/* Native method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max,
+    nativeNow = getNative(Date, 'now');
+
+/**
+ * Gets the number of milliseconds that have elapsed since the Unix epoch
+ * (1 January 1970 00:00:00 UTC).
+ *
+ * @static
+ * @memberOf _
+ * @category Date
+ * @example
+ *
+ * _.defer(function(stamp) {
+ *   console.log(_.now() - stamp);
+ * }, _.now());
+ * // => logs the number of milliseconds it took for the deferred function to be invoked
+ */
+var now = nativeNow || function() {
+  return new Date().getTime();
+};
+
+/**
+ * Creates a debounced function that delays invoking `func` until after `wait`
+ * milliseconds have elapsed since the last time the debounced function was
+ * invoked. The debounced function comes with a `cancel` method to cancel
+ * delayed invocations. Provide an options object to indicate that `func`
+ * should be invoked on the leading and/or trailing edge of the `wait` timeout.
+ * Subsequent calls to the debounced function return the result of the last
+ * `func` invocation.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
+ * on the trailing edge of the timeout only if the the debounced function is
+ * invoked more than once during the `wait` timeout.
+ *
+ * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+ * for details over the differences between `_.debounce` and `_.throttle`.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to debounce.
+ * @param {number} [wait=0] The number of milliseconds to delay.
+ * @param {Object} [options] The options object.
+ * @param {boolean} [options.leading=false] Specify invoking on the leading
+ *  edge of the timeout.
+ * @param {number} [options.maxWait] The maximum time `func` is allowed to be
+ *  delayed before it is invoked.
+ * @param {boolean} [options.trailing=true] Specify invoking on the trailing
+ *  edge of the timeout.
+ * @returns {Function} Returns the new debounced function.
+ * @example
+ *
+ * // avoid costly calculations while the window size is in flux
+ * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
+ *
+ * // invoke `sendMail` when the click event is fired, debouncing subsequent calls
+ * jQuery('#postbox').on('click', _.debounce(sendMail, 300, {
+ *   'leading': true,
+ *   'trailing': false
+ * }));
+ *
+ * // ensure `batchLog` is invoked once after 1 second of debounced calls
+ * var source = new EventSource('/stream');
+ * jQuery(source).on('message', _.debounce(batchLog, 250, {
+ *   'maxWait': 1000
+ * }));
+ *
+ * // cancel a debounced call
+ * var todoChanges = _.debounce(batchLog, 1000);
+ * Object.observe(models.todo, todoChanges);
+ *
+ * Object.observe(models, function(changes) {
+ *   if (_.find(changes, { 'user': 'todo', 'type': 'delete'})) {
+ *     todoChanges.cancel();
+ *   }
+ * }, ['delete']);
+ *
+ * // ...at some point `models.todo` is changed
+ * models.todo.completed = true;
+ *
+ * // ...before 1 second has passed `models.todo` is deleted
+ * // which cancels the debounced `todoChanges` call
+ * delete models.todo;
+ */
+function debounce(func, wait, options) {
+  var args,
+      maxTimeoutId,
+      result,
+      stamp,
+      thisArg,
+      timeoutId,
+      trailingCall,
+      lastCalled = 0,
+      maxWait = false,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  wait = wait < 0 ? 0 : (+wait || 0);
+  if (options === true) {
+    var leading = true;
+    trailing = false;
+  } else if (isObject(options)) {
+    leading = !!options.leading;
+    maxWait = 'maxWait' in options && nativeMax(+options.maxWait || 0, wait);
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+
+  function cancel() {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    if (maxTimeoutId) {
+      clearTimeout(maxTimeoutId);
+    }
+    lastCalled = 0;
+    maxTimeoutId = timeoutId = trailingCall = undefined;
+  }
+
+  function complete(isCalled, id) {
+    if (id) {
+      clearTimeout(id);
+    }
+    maxTimeoutId = timeoutId = trailingCall = undefined;
+    if (isCalled) {
+      lastCalled = now();
+      result = func.apply(thisArg, args);
+      if (!timeoutId && !maxTimeoutId) {
+        args = thisArg = undefined;
+      }
+    }
+  }
+
+  function delayed() {
+    var remaining = wait - (now() - stamp);
+    if (remaining <= 0 || remaining > wait) {
+      complete(trailingCall, maxTimeoutId);
+    } else {
+      timeoutId = setTimeout(delayed, remaining);
+    }
+  }
+
+  function maxDelayed() {
+    complete(trailing, timeoutId);
+  }
+
+  function debounced() {
+    args = arguments;
+    stamp = now();
+    thisArg = this;
+    trailingCall = trailing && (timeoutId || !leading);
+
+    if (maxWait === false) {
+      var leadingCall = leading && !timeoutId;
+    } else {
+      if (!maxTimeoutId && !leading) {
+        lastCalled = stamp;
+      }
+      var remaining = maxWait - (stamp - lastCalled),
+          isCalled = remaining <= 0 || remaining > maxWait;
+
+      if (isCalled) {
+        if (maxTimeoutId) {
+          maxTimeoutId = clearTimeout(maxTimeoutId);
+        }
+        lastCalled = stamp;
+        result = func.apply(thisArg, args);
+      }
+      else if (!maxTimeoutId) {
+        maxTimeoutId = setTimeout(maxDelayed, remaining);
+      }
+    }
+    if (isCalled && timeoutId) {
+      timeoutId = clearTimeout(timeoutId);
+    }
+    else if (!timeoutId && wait !== maxWait) {
+      timeoutId = setTimeout(delayed, wait);
+    }
+    if (leadingCall) {
+      isCalled = true;
+      result = func.apply(thisArg, args);
+    }
+    if (isCalled && !timeoutId && !maxTimeoutId) {
+      args = thisArg = undefined;
+    }
+    return result;
+  }
+  debounced.cancel = cancel;
+  return debounced;
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+module.exports = debounce;
+
+},{"lodash._getnative":284}],286:[function(require,module,exports){
+/**
+ * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modern modularize exports="npm" -o ./`
+ * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+var debounce = require('lodash.debounce');
+
+/** Used as the `TypeError` message for "Functions" methods. */
+var FUNC_ERROR_TEXT = 'Expected a function';
+
+/**
+ * Creates a throttled function that only invokes `func` at most once per
+ * every `wait` milliseconds. The throttled function comes with a `cancel`
+ * method to cancel delayed invocations. Provide an options object to indicate
+ * that `func` should be invoked on the leading and/or trailing edge of the
+ * `wait` timeout. Subsequent calls to the throttled function return the
+ * result of the last `func` call.
+ *
+ * **Note:** If `leading` and `trailing` options are `true`, `func` is invoked
+ * on the trailing edge of the timeout only if the the throttled function is
+ * invoked more than once during the `wait` timeout.
+ *
+ * See [David Corbacho's article](http://drupalmotion.com/article/debounce-and-throttle-visual-explanation)
+ * for details over the differences between `_.throttle` and `_.debounce`.
+ *
+ * @static
+ * @memberOf _
+ * @category Function
+ * @param {Function} func The function to throttle.
+ * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
+ * @param {Object} [options] The options object.
+ * @param {boolean} [options.leading=true] Specify invoking on the leading
+ *  edge of the timeout.
+ * @param {boolean} [options.trailing=true] Specify invoking on the trailing
+ *  edge of the timeout.
+ * @returns {Function} Returns the new throttled function.
+ * @example
+ *
+ * // avoid excessively updating the position while scrolling
+ * jQuery(window).on('scroll', _.throttle(updatePosition, 100));
+ *
+ * // invoke `renewToken` when the click event is fired, but not more than once every 5 minutes
+ * jQuery('.interactive').on('click', _.throttle(renewToken, 300000, {
+ *   'trailing': false
+ * }));
+ *
+ * // cancel a trailing throttled call
+ * jQuery(window).on('popstate', throttled.cancel);
+ */
+function throttle(func, wait, options) {
+  var leading = true,
+      trailing = true;
+
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+  if (options === false) {
+    leading = false;
+  } else if (isObject(options)) {
+    leading = 'leading' in options ? !!options.leading : leading;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+  return debounce(func, wait, { 'leading': leading, 'maxWait': +wait, 'trailing': trailing });
+}
+
+/**
+ * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+ * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(1);
+ * // => false
+ */
+function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+  var type = typeof value;
+  return !!value && (type == 'object' || type == 'function');
+}
+
+module.exports = throttle;
+
+},{"lodash.debounce":285}],287:[function(require,module,exports){
 /*
 
    Converts gl-matrix mat4 objects into strings that can be applied as matrix3d transforms.
@@ -32822,7 +41544,7 @@ function generateCSSString(matrix ){
 }
 
 module.exports = generateCSSString;
-},{}],254:[function(require,module,exports){
+},{}],288:[function(require,module,exports){
 'use strict';
 
 var getPixels = require('get-pixels');
@@ -32964,7 +41686,549 @@ module.exports.getFrames = getFrames;
 module.exports.parseFramesInfo = parseFramesInfo;
 module.exports.splitTiles = splitTiles;
 
-},{"get-pixels":122,"save-pixels":293}],255:[function(require,module,exports){
+},{"get-pixels":141,"save-pixels":331}],289:[function(require,module,exports){
+var THREE
+
+module.exports = function(three, image, sizeRatio) {
+  return new Skin(three, image, sizeRatio)
+}
+
+function Skin(three, image, opts) {
+  if (opts) opts.image = opts.image || image
+  else opts = { image: image }
+  if (typeof image === 'object' && !(image instanceof HTMLElement)) opts = image
+  THREE = three // hack until three.js fixes multiple instantiation
+  this.sizeRatio = opts.sizeRatio || 8
+  this.scale = opts.scale || new three.Vector3(1, 1, 1)
+  this.fallbackImage = opts.fallbackImage || 'skin.png'
+  this.createCanvases()
+  this.charMaterial = this.getMaterial(this.skin, false)
+	this.charMaterialTrans = this.getMaterial(this.skin, true)
+  if (typeof opts.image === "string") this.fetchImage(opts.image)
+  if (opts.image instanceof HTMLElement) this.setImage(opts.image)
+  this.mesh = this.createPlayerObject()
+}
+
+Skin.prototype.createCanvases = function() {
+  this.skinBig = document.createElement('canvas')
+  this.skinBigContext = this.skinBig.getContext('2d')
+  this.skinBig.width = 64 * this.sizeRatio
+  this.skinBig.height = 32 * this.sizeRatio
+  
+  this.skin = document.createElement('canvas')
+  this.skinContext = this.skin.getContext('2d')
+  this.skin.width = 64
+  this.skin.height = 32
+}
+
+Skin.prototype.fetchImage = function(imageURL) {
+  var self = this
+  this.image = new Image()
+  this.image.crossOrigin = 'anonymous'
+  this.image.src = imageURL
+  this.image.onload = function() {
+    self.setImage(self.image)
+  }
+}
+
+Skin.prototype.setImage = function (skin) {
+  this.image = skin
+  this.skinContext.clearRect(0, 0, 64, 32);
+  
+  this.skinContext.drawImage(skin, 0, 0);
+  
+  var imgdata = this.skinContext.getImageData(0, 0, 64, 32);
+  var pixels = imgdata.data;
+
+  this.skinBigContext.clearRect(0, 0, this.skinBig.width, this.skinBig.height);
+  this.skinBigContext.save();
+  
+  var isOnecolor = true;
+  
+  var colorCheckAgainst = [40, 0];
+  var colorIndex = (colorCheckAgainst[0]+colorCheckAgainst[1]*64)*4;
+  
+  var isPixelDifferent = function (x, y) {
+    if(pixels[(x+y*64)*4+0] !== pixels[colorIndex+0] || pixels[(x+y*64)*4+1] !== pixels[colorIndex+1] || pixels[(x+y*64)*4+2] !== pixels[colorIndex+2] || pixels[(x+y*64)*4+3] !== pixels[colorIndex+3]) {
+      return true;
+    }
+    return false;
+  };
+  
+  // Check if helmet/hat is a solid color
+  // Bottom row
+  for(var i=32; i < 64; i+=1) {
+    for(var j=8; j < 16; j+=1) {
+      if(isPixelDifferent(i, j)) {
+        isOnecolor = false;
+        break;
+      }
+    }
+    if(!isOnecolor) {
+      break;
+    }
+  }
+  if(!isOnecolor) {
+    // Top row
+    for(var i=40; i < 56; i+=1) {
+      for(var j=0; j < 8; j+=1) {
+        if(isPixelDifferent(i, j)) {
+          isOnecolor = false;
+          break;
+        }
+      }
+      if(!isOnecolor) {
+        break;
+      }
+      
+    }
+  }
+  
+  for(var i=0; i < 64; i+=1) {
+    for(var j=0; j < 32; j+=1) {
+      if(isOnecolor && ((i >= 32 && i < 64 && j >= 8 && j < 16) || (i >= 40 && i < 56 && j >= 0 && j < 8))) {
+        pixels[(i+j*64)*4+3] = 0
+      }
+      this.skinBigContext.fillStyle = 'rgba('+pixels[(i+j*64)*4+0]+', '+pixels[(i+j*64)*4+1]+', '+pixels[(i+j*64)*4+2]+', '+pixels[(i+j*64)*4+3]/255+')';
+      this.skinBigContext.fillRect(i * this.sizeRatio, j * this.sizeRatio, this.sizeRatio, this.sizeRatio);
+    }
+  }
+  
+  this.skinBigContext.restore();
+  
+  this.skinContext.putImageData(imgdata, 0, 0);
+  
+  this.charMaterial.map.needsUpdate = true;
+  this.charMaterialTrans.map.needsUpdate = true;
+  
+};
+
+Skin.prototype.getMaterial = function(img, transparent) {
+  var texture    = new THREE.Texture(img);
+  texture.magFilter  = THREE.NearestFilter;
+  texture.minFilter  = THREE.NearestFilter;
+  texture.format    = transparent ? THREE.RGBAFormat : THREE.RGBFormat;
+  texture.needsUpdate  = true;
+  var material  = new THREE.MeshBasicMaterial({
+    map    : texture,
+    transparent  : transparent ? true : false
+  });
+  return material;
+}
+
+Skin.prototype.UVMap = function(mesh, face, x, y, w, h, rotateBy) {
+  if (!rotateBy) rotateBy = 0;
+  var uvs = mesh.geometry.faceVertexUvs[0][face];
+  var tileU = x;
+  var tileV = y;
+  var tileUvWidth = 1/64;
+  var tileUvHeight = 1/32;
+  uvs[ (0 + rotateBy) % 4 ].x = (tileU * tileUvWidth)
+  uvs[ (0 + rotateBy) % 4 ].y = 1 - (tileV * tileUvHeight)
+  uvs[ (1 + rotateBy) % 4 ].x = (tileU * tileUvWidth)
+  uvs[ (1 + rotateBy) % 4 ].y = 1 - (tileV * tileUvHeight + h * tileUvHeight)
+  uvs[ (2 + rotateBy) % 4 ].x = (tileU * tileUvWidth + w * tileUvWidth)
+  uvs[ (2 + rotateBy) % 4 ].y = 1 - (tileV * tileUvHeight + h * tileUvHeight)
+  uvs[ (3 + rotateBy) % 4 ].x = (tileU * tileUvWidth + w * tileUvWidth)
+  uvs[ (3 + rotateBy) % 4 ].y = 1 - (tileV * tileUvHeight)
+}
+
+Skin.prototype.cubeFromPlanes = function (size, mat) {
+  var cube = new THREE.Object3D();
+  var meshes = [];
+  for(var i=0; i < 6; i++) {
+    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(size, size), mat);
+    mesh.doubleSided = true;
+    cube.add(mesh);
+    meshes.push(mesh);
+  }
+  // Front
+  meshes[0].rotation.x = Math.PI/2;
+  meshes[0].rotation.z = -Math.PI/2;
+  meshes[0].position.x = size/2;
+  
+  // Back
+  meshes[1].rotation.x = Math.PI/2;
+  meshes[1].rotation.z = Math.PI/2;
+  meshes[1].position.x = -size/2;
+  
+  // Top
+  meshes[2].position.y = size/2;
+  
+  // Bottom
+  meshes[3].rotation.y = Math.PI;
+  meshes[3].rotation.z = Math.PI;
+  meshes[3].position.y = -size/2;
+  
+  // Left
+  meshes[4].rotation.x = Math.PI/2;
+  meshes[4].position.z = size/2;
+  
+  // Right
+  meshes[5].rotation.x = -Math.PI/2;
+  meshes[5].rotation.y = Math.PI;
+  meshes[5].position.z = -size/2;
+  
+  return cube;
+}
+
+//exporting these meshes for manipulation:
+//leftLeg
+//rightLeg
+//leftArm
+//rightArm
+//body
+//head
+
+Skin.prototype.createPlayerObject = function(scene) {
+  var headgroup = new THREE.Object3D();
+  var upperbody = this.upperbody = new THREE.Object3D();
+  
+  // Left leg
+  var leftleggeo = new THREE.CubeGeometry(4, 12, 4);
+  for(var i=0; i < 8; i+=1) {
+    leftleggeo.vertices[i].y -= 6;
+  }
+  var leftleg = this.leftLeg = new THREE.Mesh(leftleggeo, this.charMaterial);
+  leftleg.position.z = -2;
+  leftleg.position.y = -6;
+  this.UVMap(leftleg, 0, 8, 20, -4, 12);
+  this.UVMap(leftleg, 1, 16, 20, -4, 12);
+  this.UVMap(leftleg, 2, 4, 16, 4, 4, 3);
+  this.UVMap(leftleg, 3, 8, 20, 4, -4, 1);
+  this.UVMap(leftleg, 4, 12, 20, -4, 12);
+  this.UVMap(leftleg, 5, 4, 20, -4, 12);
+
+  // Right leg
+  var rightleggeo = new THREE.CubeGeometry(4, 12, 4);
+  for(var i=0; i < 8; i+=1) {
+    rightleggeo.vertices[i].y -= 6;
+  }
+  var rightleg = this.rightLeg =new THREE.Mesh(rightleggeo, this.charMaterial);
+  rightleg.position.z = 2;
+  rightleg.position.y = -6;
+  this.UVMap(rightleg, 0, 4, 20, 4, 12);
+  this.UVMap(rightleg, 1, 12, 20, 4, 12);
+  this.UVMap(rightleg, 2, 8, 16, -4, 4, 3);
+  this.UVMap(rightleg, 3, 12, 20, -4, -4, 1);
+  this.UVMap(rightleg, 4, 0, 20, 4, 12);
+  this.UVMap(rightleg, 5, 8, 20, 4, 12);
+  
+  // Body
+  var bodygeo = new THREE.CubeGeometry(4, 12, 8);
+  var bodymesh = this.body = new THREE.Mesh(bodygeo, this.charMaterial);
+  this.UVMap(bodymesh, 0, 20, 20, 8, 12);
+  this.UVMap(bodymesh, 1, 32, 20, 8, 12);
+  this.UVMap(bodymesh, 2, 20, 16, 8, 4, 1);
+  this.UVMap(bodymesh, 3, 28, 16, 8, 4, 3);
+  this.UVMap(bodymesh, 4, 16, 20, 4, 12);
+  this.UVMap(bodymesh, 5, 28, 20, 4, 12);
+  upperbody.add(bodymesh);
+  
+  
+  // Left arm
+  var leftarmgeo = new THREE.CubeGeometry(4, 12, 4);
+  for(var i=0; i < 8; i+=1) {
+    leftarmgeo.vertices[i].y -= 4;
+  }
+  var leftarm = this.leftArm = new THREE.Mesh(leftarmgeo, this.charMaterial);
+  leftarm.position.z = -6;
+  leftarm.position.y = 4;
+  leftarm.rotation.x = Math.PI/32;
+  this.UVMap(leftarm, 0, 48, 20, -4, 12);
+  this.UVMap(leftarm, 1, 56, 20, -4, 12);
+  this.UVMap(leftarm, 2, 48, 16, -4, 4, 1);
+  this.UVMap(leftarm, 3, 52, 16, -4, 4, 3);
+  this.UVMap(leftarm, 4, 52, 20, -4, 12);
+  this.UVMap(leftarm, 5, 44, 20, -4, 12);
+  upperbody.add(leftarm);
+  
+  // Right arm
+  var rightarmgeo = new THREE.CubeGeometry(4, 12, 4);
+  for(var i=0; i < 8; i+=1) {
+    rightarmgeo.vertices[i].y -= 4;
+  }
+  var rightarm =this.rightArm = new THREE.Mesh(rightarmgeo, this.charMaterial);
+  rightarm.position.z = 6;
+  rightarm.position.y = 4;
+  rightarm.rotation.x = -Math.PI/32;
+  this.UVMap(rightarm, 0, 44, 20, 4, 12);
+  this.UVMap(rightarm, 1, 52, 20, 4, 12);
+  this.UVMap(rightarm, 2, 44, 16, 4, 4, 1);
+  this.UVMap(rightarm, 3, 48, 16, 4, 4, 3);
+  this.UVMap(rightarm, 4, 40, 20, 4, 12);
+  this.UVMap(rightarm, 5, 48, 20, 4, 12);
+  upperbody.add(rightarm);
+  
+  //Head
+  var headgeo = new THREE.CubeGeometry(8, 8, 8);
+  var headmesh = this.head = new THREE.Mesh(headgeo, this.charMaterial);
+  headmesh.position.y = 2;
+  this.UVMap(headmesh, 0, 8, 8, 8, 8);
+  this.UVMap(headmesh, 1, 24, 8, 8, 8);
+  
+  this.UVMap(headmesh, 2, 8, 0, 8, 8, 1);
+  this.UVMap(headmesh, 3, 16, 0, 8, 8, 3);
+  
+  this.UVMap(headmesh, 4, 0, 8, 8, 8);
+  this.UVMap(headmesh, 5, 16, 8, 8, 8);
+
+  var unrotatedHeadMesh = new THREE.Object3D();
+  unrotatedHeadMesh.rotation.y = Math.PI / 2;
+  unrotatedHeadMesh.add(headmesh);
+
+  headgroup.add(unrotatedHeadMesh);
+
+  var helmet = this.cubeFromPlanes(9, this.charMaterialTrans);
+  helmet.position.y = 2;
+  this.UVMap(helmet.children[0], 0, 32+8, 8, 8, 8);
+  this.UVMap(helmet.children[1], 0, 32+24, 8, 8, 8);
+  this.UVMap(helmet.children[2], 0, 32+8, 0, 8, 8, 1);
+  this.UVMap(helmet.children[3], 0, 32+16, 0, 8, 8, 3);
+  this.UVMap(helmet.children[4], 0, 32+0, 8, 8, 8);
+  this.UVMap(helmet.children[5], 0, 32+16, 8, 8, 8);
+  
+  headgroup.add(helmet);
+  
+  var ears = new THREE.Object3D();
+  
+  var eargeo = new THREE.CubeGeometry(1, (9/8)*6, (9/8)*6);
+  var leftear = new THREE.Mesh(eargeo, this.charMaterial);
+  var rightear = new THREE.Mesh(eargeo, this.charMaterial);
+  
+  leftear.position.y = 2+(9/8)*5;
+  rightear.position.y = 2+(9/8)*5;
+  leftear.position.z = -(9/8)*5;
+  rightear.position.z = (9/8)*5;
+  
+  // Right ear share same geometry, same uv-maps
+  
+  this.UVMap(leftear, 0, 25, 1, 6, 6); // Front side
+  this.UVMap(leftear, 1, 32, 1, 6, 6); // Back side
+  
+  this.UVMap(leftear, 2, 25, 0, 6, 1, 1); // Top edge
+  this.UVMap(leftear, 3, 31, 0, 6, 1, 1); // Bottom edge
+  
+  this.UVMap(leftear, 4, 24, 1, 1, 6); // Left edge
+  this.UVMap(leftear, 5, 31, 1, 1, 6); // Right edge
+  
+  ears.add(leftear);
+  ears.add(rightear);
+  
+  leftear.visible = rightear.visible = false;
+  
+  headgroup.add(ears);
+  headgroup.position.y = 8;
+  
+  var playerModel = this.playerModel = new THREE.Object3D();
+  
+  playerModel.add(leftleg);
+  playerModel.add(rightleg);
+  
+  playerModel.add(upperbody);
+  
+  var playerRotation = new THREE.Object3D();
+  playerRotation.rotation.y = Math.PI / 2
+  playerRotation.position.y = 12
+  playerRotation.add(playerModel)
+
+  var rotatedHead = new THREE.Object3D();
+  rotatedHead.rotation.y = -Math.PI/2;
+  rotatedHead.add(headgroup);
+
+  playerModel.add(rotatedHead);
+  playerModel.position.y = 6;
+  
+  var playerGroup = new THREE.Object3D();
+  playerGroup.cameraInside = new THREE.Object3D()
+  playerGroup.cameraOutside = new THREE.Object3D()
+
+  playerGroup.cameraInside.position.x = 0;
+  playerGroup.cameraInside.position.y = 2;
+  playerGroup.cameraInside.position.z = 0; 
+
+  playerGroup.head = headgroup
+  headgroup.add(playerGroup.cameraInside)
+  playerGroup.cameraInside.add(playerGroup.cameraOutside)
+
+  playerGroup.cameraOutside.position.z = 100
+
+  
+  playerGroup.add(playerRotation);
+  playerGroup.scale = this.scale
+  return playerGroup
+}
+},{}],290:[function(require,module,exports){
+(function (Buffer){(function (){
+/*
+	NBT.js - a JavaScript parser for NBT archives
+	by Sijmen Mulder
+
+	I, the copyright holder of this work, hereby release it into the public
+	domain. This applies worldwide.
+
+	In case this is not legally possible: I grant anyone the right to use this
+	work for any purpose, without any conditions, unless such conditions are
+	required by law.
+*/
+
+(function() {
+	'use strict';
+
+	var nbt = this;
+	var zlib = require('zlib');
+	var Int64 = require('node-int64');
+
+	nbt.tagTypes = {
+		'end': 0,
+		'byte': 1,
+		'short': 2,
+		'int': 3,
+		'long': 4,
+		'float': 5,
+		'double': 6,
+		'byteArray': 7,
+		'string': 8,
+		'list': 9,
+		'compound': 10,
+		'intArray': 11
+	};
+
+	nbt.tagTypeNames = {};
+	(function() {
+		for (var typeName in nbt.tagTypes) {
+			if (nbt.tagTypes.hasOwnProperty(typeName)) {
+				nbt.tagTypeNames[nbt.tagTypes[typeName]] = typeName;
+			}
+		}
+	})();
+
+	var hasGzipHeader = function(data){
+		var result=true;
+		if(data[0]!=0x1f) result=false;
+		if(data[1]!=0x8b) result=false;
+		return result;
+	}
+
+	nbt.Reader = function(buffer) {
+		var offset = 0;
+
+		function read(dataType, size) {
+			var val = buffer['read' + dataType](offset);
+			offset += size;
+			return val;
+		}
+
+		this[nbt.tagTypes.byte]   = read.bind(this, 'Int8', 1);
+		this[nbt.tagTypes.short]  = read.bind(this, 'Int16BE', 2);
+		this[nbt.tagTypes.int]    = read.bind(this, 'Int32BE', 4);
+		this[nbt.tagTypes.float]  = read.bind(this, 'FloatBE', 4);
+		this[nbt.tagTypes.double] = read.bind(this, 'DoubleBE', 8);
+
+		this[nbt.tagTypes.long] = function() {
+			var upper = this.int();
+			var lower = this.int();
+			return new Int64(upper, lower);
+		};
+
+		this[nbt.tagTypes.byteArray] = function() {
+			var length = this.int();
+			var bytes = [];
+			var i;
+			for (i = 0; i < length; i++) {
+				bytes.push(this.byte());
+			}
+			return bytes;
+		};
+
+		this[nbt.tagTypes.intArray] = function() {
+			var length = this.int();
+			var ints = [];
+			var i;
+			for (i = 0; i < length; i++) {
+				ints.push(this.int());
+			}
+			return ints;
+		};
+
+		this[nbt.tagTypes.string] = function() {
+			var length = this.short();
+			var val = buffer.toString('utf8', offset, offset + length);
+			offset += length;
+			return val;
+		};
+
+		this[nbt.tagTypes.list] = function() {
+			var type = this.byte();
+			var length = this.int();
+			var values = [];
+			var i;
+			for (i = 0; i < length; i++) {
+				values.push(this[type]());
+			}
+			return values;
+		};
+
+		this[nbt.tagTypes.compound] = function() {
+			var values = {};
+			while (true) {
+				var type = this.byte();
+				if (type === nbt.tagTypes.end) {
+					break;
+				}
+				var name = this.string();
+				var value = this[type]();
+				values[name] = value;
+			}
+			return values;
+		};
+
+		var typeName;
+		for (typeName in nbt.tagTypes) {
+			if (nbt.tagTypes.hasOwnProperty(typeName)) {
+				this[typeName] = this[nbt.tagTypes[typeName]];
+			}
+		}
+	};
+
+	var parseUncompressed = function(data) {
+		var buffer = new Buffer(data);
+		var reader = new nbt.Reader(buffer);
+
+		var type = reader.byte();
+		if (type !== nbt.tagTypes.compound) {
+			throw new Error('Top tag should be a compound');
+		}
+
+		var name = reader.string();
+		var value = reader.compound();
+
+		if (name === '') {
+			return value;
+		} else {
+			var result = {};
+			result[name] = value;
+			return result;
+		}
+	}
+
+	this.parse = function(data, callback) {
+		if (hasGzipHeader(data)) {
+			zlib.gunzip(data, function(error, uncompressed) {
+				if (error) {
+					callback(error, data);
+				} else {
+					callback(null, parseUncompressed(uncompressed));
+				}
+			});
+		} else {
+			callback(null, parseUncompressed(data));
+		}
+	};
+}).apply(exports || (nbt = {}));
+
+}).call(this)}).call(this,require("buffer").Buffer)
+},{"buffer":11,"node-int64":303,"zlib":10}],291:[function(require,module,exports){
 'use strict'
 
 var ops = require('ndarray-ops')
@@ -33047,7 +42311,7 @@ function ndfft(dir, x, y) {
 }
 
 module.exports = ndfft
-},{"./lib/fft-matrix.js":256,"ndarray":266,"ndarray-ops":258,"typedarray-pool":302}],256:[function(require,module,exports){
+},{"./lib/fft-matrix.js":292,"ndarray":302,"ndarray-ops":294,"typedarray-pool":345}],292:[function(require,module,exports){
 var bits = require('bit-twiddle')
 
 function fft(dir, nrows, ncols, buffer, x_ptr, y_ptr, scratch_ptr) {
@@ -33266,7 +42530,7 @@ function fftBluestein(dir, nrows, ncols, buffer, x_ptr, y_ptr, scratch_ptr) {
   }
 }
 
-},{"bit-twiddle":77}],257:[function(require,module,exports){
+},{"bit-twiddle":86}],293:[function(require,module,exports){
 "use strict"
 
 var ndarray = require("ndarray")
@@ -33291,7 +42555,7 @@ function createNDHash(shape) {
 }
 
 module.exports = createNDHash
-},{"ndarray":266}],258:[function(require,module,exports){
+},{"ndarray":302}],294:[function(require,module,exports){
 "use strict"
 
 var compile = require("cwise-compiler")
@@ -33754,7 +43018,7 @@ exports.equals = compile({
 
 
 
-},{"cwise-compiler":97}],259:[function(require,module,exports){
+},{"cwise-compiler":110}],295:[function(require,module,exports){
 "use strict"
 
 var ndarray = require("ndarray")
@@ -33777,16 +43041,16 @@ module.exports = function convert(arr, result) {
   return result
 }
 
-},{"./doConvert.js":260,"ndarray":266}],260:[function(require,module,exports){
+},{"./doConvert.js":296,"ndarray":302}],296:[function(require,module,exports){
 module.exports=require('cwise-compiler')({"args":["array","scalar","index"],"pre":{"body":"{}","args":[],"thisVars":[],"localVars":[]},"body":{"body":"{\nvar _inline_1_v=_inline_1_arg1_,_inline_1_i\nfor(_inline_1_i=0;_inline_1_i<_inline_1_arg2_.length-1;++_inline_1_i) {\n_inline_1_v=_inline_1_v[_inline_1_arg2_[_inline_1_i]]\n}\n_inline_1_arg0_=_inline_1_v[_inline_1_arg2_[_inline_1_arg2_.length-1]]\n}","args":[{"name":"_inline_1_arg0_","lvalue":true,"rvalue":false,"count":1},{"name":"_inline_1_arg1_","lvalue":false,"rvalue":true,"count":1},{"name":"_inline_1_arg2_","lvalue":false,"rvalue":true,"count":4}],"thisVars":[],"localVars":["_inline_1_i","_inline_1_v"]},"post":{"body":"{}","args":[],"thisVars":[],"localVars":[]},"funcName":"convert","blockSize":64})
 
-},{"cwise-compiler":261}],261:[function(require,module,exports){
-arguments[4][97][0].apply(exports,arguments)
-},{"./lib/thunk.js":263,"dup":97}],262:[function(require,module,exports){
-arguments[4][102][0].apply(exports,arguments)
-},{"dup":102,"uniq":303}],263:[function(require,module,exports){
-arguments[4][103][0].apply(exports,arguments)
-},{"./compile.js":262,"dup":103}],264:[function(require,module,exports){
+},{"cwise-compiler":297}],297:[function(require,module,exports){
+arguments[4][110][0].apply(exports,arguments)
+},{"./lib/thunk.js":299,"dup":110}],298:[function(require,module,exports){
+arguments[4][115][0].apply(exports,arguments)
+},{"dup":115,"uniq":347}],299:[function(require,module,exports){
+arguments[4][116][0].apply(exports,arguments)
+},{"./compile.js":298,"dup":116}],300:[function(require,module,exports){
 "use strict"
 
 var fft = require("ndarray-fft")
@@ -33890,7 +43154,7 @@ function resample(out, inp, clamp_lo, clamp_hi) {
 }
 
 module.exports = resample
-},{"cwise/lib/wrapper":100,"ndarray-fft":255,"ndarray-ops":258,"ndarray-scratch":265}],265:[function(require,module,exports){
+},{"cwise/lib/wrapper":113,"ndarray-fft":291,"ndarray-ops":294,"ndarray-scratch":301}],301:[function(require,module,exports){
 "use strict"
 
 var ndarray = require("ndarray")
@@ -33998,7 +43262,7 @@ function eye(shape, dtype) {
 }
 exports.eye = eye
 
-},{"ndarray":266,"ndarray-ops":258,"typedarray-pool":302}],266:[function(require,module,exports){
+},{"ndarray":302,"ndarray-ops":294,"typedarray-pool":345}],302:[function(require,module,exports){
 var iota = require("iota-array")
 var isBuffer = require("is-buffer")
 
@@ -34349,7 +43613,245 @@ function wrappedNDArrayCtor(data, shape, stride, offset) {
 
 module.exports = wrappedNDArrayCtor
 
-},{"iota-array":246,"is-buffer":248}],267:[function(require,module,exports){
+},{"iota-array":276,"is-buffer":278}],303:[function(require,module,exports){
+(function (Buffer){(function (){
+//     Int64.js
+//
+//     Copyright (c) 2012 Robert Kieffer
+//     MIT License - http://opensource.org/licenses/mit-license.php
+
+/**
+ * Support for handling 64-bit int numbers in Javascript (node.js)
+ *
+ * JS Numbers are IEEE-754 binary double-precision floats, which limits the
+ * range of values that can be represented with integer precision to:
+ *
+ * 2^^53 <= N <= 2^53
+ *
+ * Int64 objects wrap a node Buffer that holds the 8-bytes of int64 data.  These
+ * objects operate directly on the buffer which means that if they are created
+ * using an existing buffer then setting the value will modify the Buffer, and
+ * vice-versa.
+ *
+ * Internal Representation
+ *
+ * The internal buffer format is Big Endian.  I.e. the most-significant byte is
+ * at buffer[0], the least-significant at buffer[7].  For the purposes of
+ * converting to/from JS native numbers, the value is assumed to be a signed
+ * integer stored in 2's complement form.
+ *
+ * For details about IEEE-754 see:
+ * http://en.wikipedia.org/wiki/Double_precision_floating-point_format
+ */
+
+// Useful masks and values for bit twiddling
+var MASK31 =  0x7fffffff, VAL31 = 0x80000000;
+var MASK32 =  0xffffffff, VAL32 = 0x100000000;
+
+// Map for converting hex octets to strings
+var _HEX = [];
+for (var i = 0; i < 256; i++) {
+  _HEX[i] = (i > 0xF ? '' : '0') + i.toString(16);
+}
+
+//
+// Int64
+//
+
+/**
+ * Constructor accepts any of the following argument types:
+ *
+ * new Int64(buffer[, offset=0]) - Existing Buffer with byte offset
+ * new Int64(Uint8Array[, offset=0]) - Existing Uint8Array with a byte offset
+ * new Int64(string)             - Hex string (throws if n is outside int64 range)
+ * new Int64(number)             - Number (throws if n is outside int64 range)
+ * new Int64(hi, lo)             - Raw bits as two 32-bit values
+ */
+var Int64 = module.exports = function(a1, a2) {
+  if (a1 instanceof Buffer) {
+    this.buffer = a1;
+    this.offset = a2 || 0;
+  } else if (Object.prototype.toString.call(a1) == '[object Uint8Array]') {
+    // Under Browserify, Buffers can extend Uint8Arrays rather than an
+    // instance of Buffer. We could assume the passed in Uint8Array is actually
+    // a buffer but that won't handle the case where a raw Uint8Array is passed
+    // in. We construct a new Buffer just in case.
+    this.buffer = new Buffer(a1);
+    this.offset = a2 || 0;
+  } else {
+    this.buffer = this.buffer || new Buffer(8);
+    this.offset = 0;
+    this.setValue.apply(this, arguments);
+  }
+};
+
+
+// Max integer value that JS can accurately represent
+Int64.MAX_INT = Math.pow(2, 53);
+
+// Min integer value that JS can accurately represent
+Int64.MIN_INT = -Math.pow(2, 53);
+
+Int64.prototype = {
+  /**
+   * Do in-place 2's compliment.  See
+   * http://en.wikipedia.org/wiki/Two's_complement
+   */
+  _2scomp: function() {
+    var b = this.buffer, o = this.offset, carry = 1;
+    for (var i = o + 7; i >= o; i--) {
+      var v = (b[i] ^ 0xff) + carry;
+      b[i] = v & 0xff;
+      carry = v >> 8;
+    }
+  },
+
+  /**
+   * Set the value. Takes any of the following arguments:
+   *
+   * setValue(string) - A hexidecimal string
+   * setValue(number) - Number (throws if n is outside int64 range)
+   * setValue(hi, lo) - Raw bits as two 32-bit values
+   */
+  setValue: function(hi, lo) {
+    var negate = false;
+    if (arguments.length == 1) {
+      if (typeof(hi) == 'number') {
+        // Simplify bitfield retrieval by using abs() value.  We restore sign
+        // later
+        negate = hi < 0;
+        hi = Math.abs(hi);
+        lo = hi % VAL32;
+        hi = hi / VAL32;
+        if (hi > VAL32) throw new RangeError(hi  + ' is outside Int64 range');
+        hi = hi | 0;
+      } else if (typeof(hi) == 'string') {
+        hi = (hi + '').replace(/^0x/, '');
+        lo = hi.substr(-8);
+        hi = hi.length > 8 ? hi.substr(0, hi.length - 8) : '';
+        hi = parseInt(hi, 16);
+        lo = parseInt(lo, 16);
+      } else {
+        throw new Error(hi + ' must be a Number or String');
+      }
+    }
+
+    // Technically we should throw if hi or lo is outside int32 range here, but
+    // it's not worth the effort. Anything past the 32'nd bit is ignored.
+
+    // Copy bytes to buffer
+    var b = this.buffer, o = this.offset;
+    for (var i = 7; i >= 0; i--) {
+      b[o+i] = lo & 0xff;
+      lo = i == 4 ? hi : lo >>> 8;
+    }
+
+    // Restore sign of passed argument
+    if (negate) this._2scomp();
+  },
+
+  /**
+   * Convert to a native JS number.
+   *
+   * WARNING: Do not expect this value to be accurate to integer precision for
+   * large (positive or negative) numbers!
+   *
+   * @param allowImprecise If true, no check is performed to verify the
+   * returned value is accurate to integer precision.  If false, imprecise
+   * numbers (very large positive or negative numbers) will be forced to +/-
+   * Infinity.
+   */
+  toNumber: function(allowImprecise) {
+    var b = this.buffer, o = this.offset;
+
+    // Running sum of octets, doing a 2's complement
+    var negate = b[o] & 0x80, x = 0, carry = 1;
+    for (var i = 7, m = 1; i >= 0; i--, m *= 256) {
+      var v = b[o+i];
+
+      // 2's complement for negative numbers
+      if (negate) {
+        v = (v ^ 0xff) + carry;
+        carry = v >> 8;
+        v = v & 0xff;
+      }
+
+      x += v * m;
+    }
+
+    // Return Infinity if we've lost integer precision
+    if (!allowImprecise && x >= Int64.MAX_INT) {
+      return negate ? -Infinity : Infinity;
+    }
+
+    return negate ? -x : x;
+  },
+
+  /**
+   * Convert to a JS Number. Returns +/-Infinity for values that can't be
+   * represented to integer precision.
+   */
+  valueOf: function() {
+    return this.toNumber(false);
+  },
+
+  /**
+   * Return string value
+   *
+   * @param radix Just like Number#toString()'s radix
+   */
+  toString: function(radix) {
+    return this.valueOf().toString(radix || 10);
+  },
+
+  /**
+   * Return a string showing the buffer octets, with MSB on the left.
+   *
+   * @param sep separator string. default is '' (empty string)
+   */
+  toOctetString: function(sep) {
+    var out = new Array(8);
+    var b = this.buffer, o = this.offset;
+    for (var i = 0; i < 8; i++) {
+      out[i] = _HEX[b[o+i]];
+    }
+    return out.join(sep || '');
+  },
+
+  /**
+   * Returns the int64's 8 bytes in a buffer.
+   *
+   * @param {bool} [rawBuffer=false]  If no offset and this is true, return the internal buffer.  Should only be used if
+   *                                  you're discarding the Int64 afterwards, as it breaks encapsulation.
+   */
+  toBuffer: function(rawBuffer) {
+    if (rawBuffer && this.offset === 0) return this.buffer;
+
+    var out = new Buffer(8);
+    this.buffer.copy(out, 0, this.offset, this.offset + 8);
+    return out;
+  },
+
+  /**
+   * Copy 8 bytes of int64 into target buffer at target offset.
+   *
+   * @param {Buffer} targetBuffer       Buffer to copy into.
+   * @param {number} [targetOffset=0]   Offset into target buffer.
+   */
+  copy: function(targetBuffer, targetOffset) {
+    this.buffer.copy(targetBuffer, targetOffset || 0, this.offset, this.offset + 8);
+  },
+
+  /**
+   * Pretty output in console.log
+   */
+  inspect: function() {
+    return '[Int64 value:' + this + ' octets:' + this.toOctetString(' ') + ']';
+  }
+};
+
+}).call(this)}).call(this,require("buffer").Buffer)
+},{"buffer":11}],304:[function(require,module,exports){
 'use strict';
 
 var numberIsNaN = function (value) {
@@ -34370,7 +43872,7 @@ module.exports = function is(a, b) {
 };
 
 
-},{}],268:[function(require,module,exports){
+},{}],305:[function(require,module,exports){
 'use strict';
 
 var define = require('define-properties');
@@ -34390,7 +43892,7 @@ define(polyfill, {
 
 module.exports = polyfill;
 
-},{"./implementation":267,"./polyfill":269,"./shim":270,"call-bind":92,"define-properties":105}],269:[function(require,module,exports){
+},{"./implementation":304,"./polyfill":306,"./shim":307,"call-bind":101,"define-properties":121}],306:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
@@ -34399,7 +43901,7 @@ module.exports = function getPolyfill() {
 	return typeof Object.is === 'function' ? Object.is : implementation;
 };
 
-},{"./implementation":267}],270:[function(require,module,exports){
+},{"./implementation":304}],307:[function(require,module,exports){
 'use strict';
 
 var getPolyfill = require('./polyfill');
@@ -34415,7 +43917,7 @@ module.exports = function shimObjectIs() {
 	return polyfill;
 };
 
-},{"./polyfill":269,"define-properties":105}],271:[function(require,module,exports){
+},{"./polyfill":306,"define-properties":121}],308:[function(require,module,exports){
 'use strict';
 
 var keysShim;
@@ -34539,7 +44041,7 @@ if (!Object.keys) {
 }
 module.exports = keysShim;
 
-},{"./isArguments":273}],272:[function(require,module,exports){
+},{"./isArguments":310}],309:[function(require,module,exports){
 'use strict';
 
 var slice = Array.prototype.slice;
@@ -34573,7 +44075,7 @@ keysShim.shim = function shimObjectKeys() {
 
 module.exports = keysShim;
 
-},{"./implementation":271,"./isArguments":273}],273:[function(require,module,exports){
+},{"./implementation":308,"./isArguments":310}],310:[function(require,module,exports){
 'use strict';
 
 var toStr = Object.prototype.toString;
@@ -34592,7 +44094,7 @@ module.exports = function isArguments(value) {
 	return isArgs;
 };
 
-},{}],274:[function(require,module,exports){
+},{}],311:[function(require,module,exports){
 'use strict';
 
 var obsolete = function(object, property, reason) {
@@ -34608,7 +44110,7 @@ var obsolete = function(object, property, reason) {
 
 module.exports = obsolete;
 
-},{}],275:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 // (c) Dean McNamee <dean@gmail.com>, 2013.
 //
 // https://github.com/deanm/omggif
@@ -35417,7 +44919,7 @@ function GifReaderLZWOutputIndexStream(code_stream, p, output, output_length) {
 // CommonJS.
 try { exports.GifWriter = GifWriter; exports.GifReader = GifReader } catch(e) {}
 
-},{}],276:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 /*jshint evil:true, onevar:false*/
 /*global define*/
 var installedColorSpaces = [],
@@ -36194,7 +45696,7 @@ ONECOLOR.installMethod('toAlpha', function (color) {
 // Convenience functions
 
 
-},{}],277:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 /*!
  * pad-left <https://github.com/jonschlinkert/pad-left>
  *
@@ -36210,7 +45712,121 @@ module.exports = function padLeft(str, num, ch) {
   ch = typeof ch !== 'undefined' ? (ch + '') : ' ';
   return repeat(ch, num) + str;
 };
-},{"repeat-string":292}],278:[function(require,module,exports){
+},{"repeat-string":330}],315:[function(require,module,exports){
+(function (Buffer){(function (){
+'use strict';
+
+var nbt = require('nbt');
+var ItemPile = require('itempile');
+var Inventory = require('inventory');
+
+// translate MC numerical ID to names used by some common voxel.js plugins
+// see http://minecraft-ids.grahamedgecombe.com/
+var id2name = {
+  0: 'air',
+  1: 'stone',
+  2: 'grass',
+  3: 'dirt',
+  4: 'cobblestone',
+  5: 'plankOak',
+
+  8: 'waterFlow',
+  9: 'waterSource',
+  10: 'lavaFlow',
+  11: 'lavaSource',
+
+  14: 'oreGold',
+  15: 'oreIron',
+  16: 'oreCoal',
+  17: 'logOak',
+  18: 'leavesOak',
+
+  20: 'glass',
+
+  35: 'woolWhite', // TODO: colors
+
+  41: 'blockGold',
+  42: 'blockIron',
+
+  54: 'chest',
+
+  58: 'workbench',
+
+  61: 'furnace',
+
+  86: 'pumpkin',
+
+  98: 'stoneBrick', // TODO: mossy, cracked, chiseled
+
+
+  256: 'spadeIron',
+  257: 'pickaxeIron',
+  258: 'axeIron',
+  259: 'lighter',
+  260: 'apple',
+
+  263: 'coal',
+
+  265: 'ingotIron',
+  266: 'ingotGold',
+
+  270: 'pickaxeWood',
+  271: 'axeWood',
+
+  273: 'spadeStone',
+  274: 'pickaxeStone',
+  275: 'axeStone',
+
+  297: 'bread',
+
+  280: 'stick',
+
+  325: 'bucket',
+  326: 'bucketWater',
+  327: 'bucketLava',
+
+  357: 'cookie',
+
+  359: 'shears',
+
+  375: 'spiderEye',
+};
+
+var loadInventory = function(data, cb) {
+  if (data instanceof ArrayBuffer) data = new Buffer(new Uint8Array(data));
+
+  nbt.parse(data, function(err, result) {
+    //console.log(JSON.stringify(result,null, '  '));
+
+    if (result.Inventory) {
+      var inventory = new Inventory(result.Inventory.length);
+
+      for (var i = 0; i < result.Inventory.length; i += 1) {
+        //console.log(i, result.Inventory[i]);
+
+        var name = id2name[result.Inventory[i].id] || 'unknown-' + result.Inventory[i].id;
+        var count = +result.Inventory[i].Count;
+        var slot = +result.Inventory[i].Slot;
+        var pile = new ItemPile(name, count);
+
+        //console.log(pile);
+        inventory.set(slot, pile);
+      }
+      //console.log(inventory);
+      cb(inventory, data);
+    } else {
+      cb(undefined, data);
+    }
+  });
+};
+
+module.exports = {
+  loadInventory: loadInventory
+};
+
+
+}).call(this)}).call(this,require("buffer").Buffer)
+},{"buffer":11,"inventory":274,"itempile":282,"nbt":290}],316:[function(require,module,exports){
 (function (Buffer){(function (){
 // Copyright (c) 2012 Kuba Niegowski
 //
@@ -36412,7 +46028,7 @@ ChunkStream.prototype._process = function() {
 };
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":11,"stream":44,"util":63}],279:[function(require,module,exports){
+},{"buffer":11,"stream":44,"util":63}],317:[function(require,module,exports){
 // Copyright (c) 2012 Kuba Niegowski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36452,7 +46068,7 @@ module.exports = {
     COLOR_ALPHA: 4
 };
 
-},{}],280:[function(require,module,exports){
+},{}],318:[function(require,module,exports){
 // Copyright (c) 2012 Kuba Niegowski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36533,7 +46149,7 @@ for (var i = 0; i < 256; i++) {
     crcTable[i] = c;
 }
 
-},{"stream":44,"util":63}],281:[function(require,module,exports){
+},{"stream":44,"util":63}],319:[function(require,module,exports){
 (function (Buffer){(function (){
 // Copyright (c) 2012 Kuba Niegowski
 //
@@ -36851,7 +46467,7 @@ var PaethPredictor = function(left, above, upLeft) {
 };
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./chunkstream":278,"buffer":11,"util":63,"zlib":10}],282:[function(require,module,exports){
+},{"./chunkstream":316,"buffer":11,"util":63,"zlib":10}],320:[function(require,module,exports){
 (function (Buffer){(function (){
 // Copyright (c) 2012 Kuba Niegowski
 //
@@ -36965,7 +46581,7 @@ Packer.prototype._packIEND = function() {
 };
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./constants":279,"./crc":280,"./filter":281,"buffer":11,"stream":44,"util":63,"zlib":10}],283:[function(require,module,exports){
+},{"./constants":317,"./crc":318,"./filter":319,"buffer":11,"stream":44,"util":63,"zlib":10}],321:[function(require,module,exports){
 (function (Buffer){(function (){
 // Copyright (c) 2012 Kuba Niegowski
 //
@@ -37328,7 +46944,7 @@ Parser.prototype._reverseFiltered = function(data, width, height) {
 };
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./chunkstream":278,"./constants":279,"./crc":280,"./filter":281,"buffer":11,"util":63,"zlib":10}],284:[function(require,module,exports){
+},{"./chunkstream":316,"./constants":317,"./crc":318,"./filter":319,"buffer":11,"util":63,"zlib":10}],322:[function(require,module,exports){
 (function (process,Buffer){(function (){
 // Copyright (c) 2012 Kuba Niegowski
 //
@@ -37479,7 +47095,7 @@ PNG.prototype.bitblt = function(dst, sx, sy, w, h, dx, dy) {
 };
 
 }).call(this)}).call(this,require('_process'),require("buffer").Buffer)
-},{"./packer":282,"./parser":283,"_process":42,"buffer":11,"stream":44,"util":63}],285:[function(require,module,exports){
+},{"./packer":320,"./parser":321,"_process":42,"buffer":11,"stream":44,"util":63}],323:[function(require,module,exports){
 (function (process){(function (){
 var Stream = require('stream')
 
@@ -37586,7 +47202,7 @@ function through (write, end) {
 
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":42,"stream":44}],286:[function(require,module,exports){
+},{"_process":42,"stream":44}],324:[function(require,module,exports){
 (function (process,Buffer){(function (){
 "use strict";
 var through = require("through");
@@ -37908,7 +47524,7 @@ exports.serialize = function(image) {
 }
 
 }).call(this)}).call(this,require('_process'),require("buffer").Buffer)
-},{"_process":42,"buffer":11,"through":285}],287:[function(require,module,exports){
+},{"_process":42,"buffer":11,"through":323}],325:[function(require,module,exports){
 'use strict';
 
 var ndarray = require('ndarray');
@@ -38024,7 +47640,7 @@ var makeMipMaps = function(array, rects, maxLevels) {
 
 module.exports = makeMipMaps;
 
-},{"ndarray":266,"ndarray-ops":258,"ndarray-resample":264}],288:[function(require,module,exports){
+},{"ndarray":302,"ndarray-ops":294,"ndarray-resample":300}],326:[function(require,module,exports){
 'use strict';
 
 var $Object = Object;
@@ -38056,7 +47672,7 @@ module.exports = function flags() {
 	return result;
 };
 
-},{}],289:[function(require,module,exports){
+},{}],327:[function(require,module,exports){
 'use strict';
 
 var define = require('define-properties');
@@ -38076,7 +47692,7 @@ define(flagsBound, {
 
 module.exports = flagsBound;
 
-},{"./implementation":288,"./polyfill":290,"./shim":291,"call-bind":92,"define-properties":105}],290:[function(require,module,exports){
+},{"./implementation":326,"./polyfill":328,"./shim":329,"call-bind":101,"define-properties":121}],328:[function(require,module,exports){
 'use strict';
 
 var implementation = require('./implementation');
@@ -38098,7 +47714,7 @@ module.exports = function getPolyfill() {
 	return implementation;
 };
 
-},{"./implementation":288,"define-properties":105}],291:[function(require,module,exports){
+},{"./implementation":326,"define-properties":121}],329:[function(require,module,exports){
 'use strict';
 
 var supportsDescriptors = require('define-properties').supportsDescriptors;
@@ -38126,7 +47742,7 @@ module.exports = function shimFlags() {
 	return polyfill;
 };
 
-},{"./polyfill":290,"define-properties":105}],292:[function(require,module,exports){
+},{"./polyfill":328,"define-properties":121}],330:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *
@@ -38198,7 +47814,7 @@ function repeat(str, num) {
   return res;
 }
 
-},{}],293:[function(require,module,exports){
+},{}],331:[function(require,module,exports){
 "use strict"
 
 var PNG = require("pngjs").PNG
@@ -38290,7 +47906,411 @@ module.exports = function savePixels(array, type) {
   }
 }
 
-},{"pngjs":284,"through":296}],294:[function(require,module,exports){
+},{"pngjs":322,"through":339}],332:[function(require,module,exports){
+module.exports = function (obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    
+    var copy;
+    
+    if (isArray(obj)) {
+        var len = obj.length;
+        copy = Array(len);
+        for (var i = 0; i < len; i++) {
+            copy[i] = obj[i];
+        }
+    }
+    else {
+        var keys = objectKeys(obj);
+        copy = {};
+        
+        for (var i = 0, l = keys.length; i < l; i++) {
+            var key = keys[i];
+            copy[key] = obj[key];
+        }
+    }
+    return copy;
+};
+
+var objectKeys = Object.keys || function (obj) {
+    var keys = [];
+    for (var key in obj) {
+        if ({}.hasOwnProperty.call(obj, key)) keys.push(key);
+    }
+    return keys;
+};
+
+var isArray = Array.isArray || function (xs) {
+    return {}.toString.call(xs) === '[object Array]';
+};
+
+},{}],333:[function(require,module,exports){
+// Generated by CoffeeScript 1.3.3
+(function() {
+  var scan;
+
+  scan = function(string, pattern, callback) {
+    var match, result;
+    result = "";
+    while (string.length > 0) {
+      match = string.match(pattern);
+      if (match) {
+        result += string.slice(0, match.index);
+        result += callback(match);
+        string = string.slice(match.index + match[0].length);
+      } else {
+        result += string;
+        string = "";
+      }
+    }
+    return result;
+  };
+
+  exports.split = function(line) {
+    var field, words;
+    if (line == null) {
+      line = "";
+    }
+    words = [];
+    field = "";
+    scan(line, /\s*(?:([^\s\\\'\"]+)|'((?:[^\'\\]|\\.)*)'|"((?:[^\"\\]|\\.)*)"|(\\.?)|(\S))(\s|$)?/, function(match) {
+      var dq, escape, garbage, raw, seperator, sq, word;
+      raw = match[0], word = match[1], sq = match[2], dq = match[3], escape = match[4], garbage = match[5], seperator = match[6];
+      if (garbage != null) {
+        throw new Error("Unmatched quote");
+      }
+      field += word || (sq || dq || escape).replace(/\\(?=.)/, "");
+      if (seperator != null) {
+        words.push(field);
+        return field = "";
+      }
+    });
+    if (field) {
+      words.push(field);
+    }
+    return words;
+  };
+
+  exports.escape = function(str) {
+    if (str == null) {
+      str = "";
+    }
+    if (str == null) {
+      return "''";
+    }
+    return str.replace(/([^A-Za-z0-9_\-.,:\/@\n])/g, "\\$1").replace(/\n/g, "'\n'");
+  };
+
+}).call(this);
+
+},{}],334:[function(require,module,exports){
+"use strict"
+
+var createShader = require("gl-shader")
+
+module.exports = function createSimple3DShader(gl) {
+return createShader(gl,
+"attribute vec3 position;\
+attribute vec3 color;\
+uniform mat4 model;\
+uniform mat4 view;\
+uniform mat4 projection;\
+varying vec3 fragColor;\
+void main() {\
+  gl_Position = projection * view * model * vec4(position,1);\
+  fragColor = color;\
+}",
+"precision highp float;\
+varying vec3 fragColor;\
+void main() {\
+  gl_FragColor = vec4(fragColor, 1.0);\
+}")
+}
+
+},{"gl-shader":335}],335:[function(require,module,exports){
+"use strict"
+
+var glslExports = require("glsl-exports")
+var uniq = require("uniq")
+
+function Shader(gl, prog, uniforms, attributes) {
+  this.gl = gl
+  this.program = prog
+  this.uniforms = uniforms
+  this.attributes = attributes
+}
+
+Shader.prototype.bind = function() {
+  this.gl.useProgram(this.program)
+}
+
+function kvPairs(obj) {
+  return Object.keys(obj).map(function(x) { return [x, obj[x]] })
+}
+
+function makeVectorUniform(gl, prog, location, obj, type, d, name) {
+  if(d > 1) {
+    type += "v"
+  }
+  var setter = new Function("gl", "prog", "v", "gl.uniform" + d + type + "(gl.getUniformLocation(prog,'"+name+"'), v)")
+  var getter = new Function("gl", "prog", "return gl.getUniform(prog, gl.getUniformLocation(prog,'"+name+"'))")
+  Object.defineProperty(obj, name, {
+    set: setter.bind(undefined, gl, prog),
+    get: getter.bind(undefined, gl, prog),
+    enumerable: true
+  })
+}
+
+function makeMatrixUniform(gl, prog, location, obj, d, name) {
+  var setter = new Function("gl", "prog", "v", "gl.uniformMatrix" + d + "fv(gl.getUniformLocation(prog,'"+name+"'), false, v)")
+  var getter = new Function("gl", "prog", "return gl.getUniform(prog, gl.getUniformLocation(prog,'"+name+"'))")
+  Object.defineProperty(obj, name, {
+    set: setter.bind(undefined, gl, prog),
+    get: getter.bind(undefined, gl, prog),
+    enumerable: true
+  })
+}
+
+function makeVectorAttrib(gl, prog, location, obj, d, name) {
+  var out = {}
+  out.pointer = function attribPointer(type, normalized, stride, offset) {
+    gl.vertexAttribPointer(location, d, type||gl.FLOAT, normalized?gl.TRUE:gl.FALSE, stride||0, offset||0)
+  }
+  out.enable = function enableAttrib() {
+    gl.enableVertexAttribArray(location)
+  }
+  out.disable = function disableAttrib() {
+    gl.disableVertexAttribArray(location)
+  }
+  Object.defineProperty(out, "location", {
+    get: function() {
+      return location
+    },
+    set: function(v) {
+      if(v !== location) {
+        location = v
+        gl.bindAttribLocation(prog, v, name)
+        gl.linkProgram(prog)
+      }
+      return v
+    }
+  })
+  var constFuncArgs = [ "gl", "v" ]
+  var var_names = []
+  for(var i=0; i<d; ++i) {
+    constFuncArgs.push("x"+i)
+    var_names.push("x"+i)
+  }
+  constFuncArgs.push([
+    "if(x0.length === undefined) {",
+      "return gl.vertexAttrib"+d+"f(v," + var_names.join(",") + ")",
+    "} else {",
+      "return gl.vertexAttrib" + d + "fv(v,x0)",
+    "}"
+  ].join("\n"))
+  var constFunc = Function.apply(undefined, constFuncArgs)
+  out.set = function setAttrib(x, y, z, w) {
+    return constFunc(gl, location, x, y, z, w)
+  }
+  Object.defineProperty(obj, name, {
+    set: function(x) {
+      out.isArray = false
+      constFunc(gl, location, x)
+      return x
+    },
+    get: function() {
+      return out
+    },
+    enumerable: true
+  })
+}
+
+function makeShader(gl, vert_source, frag_source) {
+  var vert_shader = gl.createShader(gl.VERTEX_SHADER)
+  gl.shaderSource(vert_shader, vert_source)
+  gl.compileShader(vert_shader)
+  if(!gl.getShaderParameter(vert_shader, gl.COMPILE_STATUS)) {
+    throw new Error("Error compiling vertex shader: " + gl.getShaderInfoLog(vert_shader))
+  }
+  
+  var frag_shader = gl.createShader(gl.FRAGMENT_SHADER)
+  gl.shaderSource(frag_shader, frag_source)
+  gl.compileShader(frag_shader)
+  if(!gl.getShaderParameter(frag_shader, gl.COMPILE_STATUS)) {
+    throw new Error("Error compiling fragment shader: " + gl.getShaderInfoLog(frag_shader))
+  }
+  
+  var program = gl.createProgram()
+  gl.attachShader(program, frag_shader)
+  gl.attachShader(program, vert_shader)
+  gl.linkProgram(program)
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    throw new Error("Error linking shader program: " + gl.getProgramInfoLog (program))
+  }
+  
+  var frag_exports = glslExports(frag_source)
+  var vert_exports = glslExports(vert_source)
+  
+  //Bind uniforms
+  var uniforms = uniq(
+      kvPairs(frag_exports.uniforms)
+        .concat(kvPairs(vert_exports.uniforms)),
+      function compare(a,b) {
+        return a[0] < b[0] ? -1 : (a[0] === b[0] ? 0 : 1)
+      })
+  var uniform_fields = {}
+  for(var i=0; i<uniforms.length; ++i) {
+    var u = uniforms[i]
+    var name = u[0]
+    var type = u[1]
+    var x = gl.getUniformLocation(program, name)
+    
+    if(!x) {
+      Object.defineProperty(uniform_fields, name, {
+        get: function() { },
+        set: function() { }
+      })
+      continue
+    }
+    
+    switch(type) {
+      case "bool":
+      case "int":
+      case "sampler2D":
+      case "samplerCube":
+        makeVectorUniform(gl, program, x, uniform_fields, "i", 1, name)
+      break
+      
+      case "float":
+        makeVectorUniform(gl, program, x, uniform_fields, "f", 1, name)
+      break
+      
+      default:
+      
+        if(type.indexOf("vec") >= 0) {
+          var d = type.charCodeAt(type.length-1) - 48
+          if(d < 2 || d > 4) {
+            throw new Error("Invalid data type")
+          }
+          switch(type.charAt(0)) {
+            case "b":
+            case "i":
+              makeVectorUniform(gl, program, x, uniform_fields, "i", d, name)
+            break
+            
+            case "v":
+              makeVectorUniform(gl, program, x, uniform_fields, "f", d, name)
+            break
+            
+            default:
+              throw new Error("Unrecognized data type")
+          }
+        } else if(type.charAt(0) === "m") {
+          var d = type.charCodeAt(type.length-1) - 48
+          if(d < 2 || d > 4) {
+            throw new Error("Invalid data type")
+          }
+          makeMatrixUniform(gl, program, x, uniform_fields, d, name)
+        } else {
+          throw new Error("Invalid data type")
+        }
+      break
+    }
+  }
+  
+  //Bind attributes
+  var attributes = kvPairs(vert_exports.attributes)
+  var attribute_fields = {}
+  for(var i=0; i<attributes.length; ++i) {
+    var u = attributes[i]
+    var name = u[0]
+    var type = u[1]
+    var x = gl.getAttribLocation(program, name)
+    
+    switch(type) {
+      case "bool":
+      case "int":
+      case "float":
+        makeVectorAttrib(gl, program, x, attribute_fields, 1, name)
+      break
+      
+      default:
+        if(type.indexOf("vec") >= 0) {
+          var d = type.charCodeAt(type.length-1) - 48
+          if(d < 2 || d > 4) {
+            throw new Error("Invalid data type")
+          }
+          makeVectorAttrib(gl, program, x, attribute_fields, d, name)
+        } else {
+          throw new Error("Invalid data type")
+        }
+      break
+    }
+  }
+  
+  return new Shader(gl, program, uniform_fields, attribute_fields)
+}
+
+module.exports = makeShader
+
+},{"glsl-exports":248,"uniq":336}],336:[function(require,module,exports){
+"use strict"
+
+function unique_pred(list, compare) {
+  var ptr = 1
+    , len = list.length
+    , a=list[0], b=list[0]
+  for(var i=1; i<len; ++i) {
+    b = a
+    a = list[i]
+    if(compare(a, b)) {
+      if(i === ptr) {
+        ptr++
+        continue
+      }
+      list[ptr++] = a
+    }
+  }
+  list.length = ptr
+  return list
+}
+
+function unique_eq(list) {
+  var ptr = 1
+    , len = list.length
+    , a=list[0], b = list[0]
+  for(var i=1; i<len; ++i, b=a) {
+    b = a
+    a = list[i]
+    if(a !== b) {
+      if(i === ptr) {
+        ptr++
+        continue
+      }
+      list[ptr++] = a
+    }
+  }
+  list.length = ptr
+  return list
+}
+
+function unique(list, compare, sorted) {
+  if(list.length === 0) {
+    return []
+  }
+  if(compare) {
+    if(!sorted) {
+      list.sort(compare)
+    }
+    return unique_pred(list, compare)
+  }
+  if(!sorted) {
+    list.sort()
+  }
+  return unique_eq(list)
+}
+
+module.exports = unique
+},{}],337:[function(require,module,exports){
 /*
  * A fast javascript implementation of simplex noise by Jonas Wagner
 
@@ -38765,7 +48785,7 @@ Better rank ordering method by Stefan Gustavson in 2012.
 
 })();
 
-},{}],295:[function(require,module,exports){
+},{}],338:[function(require,module,exports){
 /* global window, exports, define */
 
 !function() {
@@ -38998,7 +49018,7 @@ Better rank ordering method by Stefan Gustavson in 2012.
     /* eslint-enable quote-props */
 }(); // eslint-disable-line
 
-},{}],296:[function(require,module,exports){
+},{}],339:[function(require,module,exports){
 (function (process){(function (){
 var Stream = require('stream')
 
@@ -39110,7 +49130,7 @@ function through (write, end, opts) {
 
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":42,"stream":44}],297:[function(require,module,exports){
+},{"_process":42,"stream":44}],340:[function(require,module,exports){
 /*
  * tic
  * https://github.com/shama/tic
@@ -39157,7 +49177,7 @@ Tic.prototype.tick = function(dt) {
   });
 };
 
-},{}],298:[function(require,module,exports){
+},{}],341:[function(require,module,exports){
 module.exports = to_utf8
 
 var out = []
@@ -39232,12 +49252,12 @@ function reduced(list) {
   return out
 }
 
-},{}],299:[function(require,module,exports){
+},{}],342:[function(require,module,exports){
 module.exports = function(item) {
   if(item === undefined)  return [];
   return Object.prototype.toString.call(item) === "[object Array]" ? item : [item];
 }
-},{}],300:[function(require,module,exports){
+},{}],343:[function(require,module,exports){
 'use strict';
 
 function createCanvas(w, h) {
@@ -39375,7 +49395,7 @@ function recolor(sourceImage, fromColor, toColor) {
 module.exports = {repeat, scale, crop, overlay, recolor };
 
 
-},{}],301:[function(require,module,exports){
+},{}],344:[function(require,module,exports){
 var util = require('util');
 
 module.exports = function tsort(initial) {
@@ -39449,7 +49469,7 @@ Graph.prototype.sort = function() {
   }
 };
 
-},{"util":63}],302:[function(require,module,exports){
+},{"util":63}],345:[function(require,module,exports){
 (function (global){(function (){
 'use strict'
 
@@ -39704,7 +49724,15 @@ exports.clearCache = function clearCache() {
 }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"bit-twiddle":77,"buffer":11,"dup":107}],303:[function(require,module,exports){
+},{"bit-twiddle":86,"buffer":11,"dup":124}],346:[function(require,module,exports){
+'use strict';
+
+module.exports = function(s) {
+  return s.substr(0, 1).toUpperCase() + s.substring(1);
+};
+
+
+},{}],347:[function(require,module,exports){
 "use strict"
 
 function unique_pred(list, compare) {
@@ -39763,7 +49791,7 @@ function unique(list, compare, sorted) {
 
 module.exports = unique
 
-},{}],304:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 (function (global){(function (){
 
 var EventEmitter = require('events').EventEmitter;
@@ -39788,9 +49816,251 @@ module.exports = function(fn) {
 };
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"events":15,"inherits":305}],305:[function(require,module,exports){
-arguments[4][76][0].apply(exports,arguments)
-},{"dup":76}],306:[function(require,module,exports){
+},{"events":15,"inherits":349}],349:[function(require,module,exports){
+arguments[4][85][0].apply(exports,arguments)
+},{"dup":85}],350:[function(require,module,exports){
+'use strict'
+
+var ua = typeof window !== 'undefined' ? window.navigator.userAgent : ''
+  , isOSX = /OS X/.test(ua)
+  , isOpera = /Opera/.test(ua)
+  , maybeFirefox = !/like Gecko/.test(ua) && !isOpera
+
+var i, output = module.exports = {
+  0:  isOSX ? '<menu>' : '<UNK>'
+, 1:  '<mouse 1>'
+, 2:  '<mouse 2>'
+, 3:  '<break>'
+, 4:  '<mouse 3>'
+, 5:  '<mouse 4>'
+, 6:  '<mouse 5>'
+, 8:  '<backspace>'
+, 9:  '<tab>'
+, 12: '<clear>'
+, 13: '<enter>'
+, 16: '<shift>'
+, 17: '<control>'
+, 18: '<alt>'
+, 19: '<pause>'
+, 20: '<caps-lock>'
+, 21: '<ime-hangul>'
+, 23: '<ime-junja>'
+, 24: '<ime-final>'
+, 25: '<ime-kanji>'
+, 27: '<escape>'
+, 28: '<ime-convert>'
+, 29: '<ime-nonconvert>'
+, 30: '<ime-accept>'
+, 31: '<ime-mode-change>'
+, 32: '<space>'
+, 33: '<page-up>'
+, 34: '<page-down>'
+, 35: '<end>'
+, 36: '<home>'
+, 37: '<left>'
+, 38: '<up>'
+, 39: '<right>'
+, 40: '<down>'
+, 41: '<select>'
+, 42: '<print>'
+, 43: '<execute>'
+, 44: '<snapshot>'
+, 45: '<insert>'
+, 46: '<delete>'
+, 47: '<help>'
+, 91: '<meta>'  // meta-left -- no one handles left and right properly, so we coerce into one.
+, 92: '<meta>'  // meta-right
+, 93: isOSX ? '<meta>' : '<menu>'      // chrome,opera,safari all report this for meta-right (osx mbp).
+, 95: '<sleep>'
+, 106: '<num-*>'
+, 107: '<num-+>'
+, 108: '<num-enter>'
+, 109: '<num-->'
+, 110: '<num-.>'
+, 111: '<num-/>'
+, 144: '<num-lock>'
+, 145: '<scroll-lock>'
+, 160: '<shift-left>'
+, 161: '<shift-right>'
+, 162: '<control-left>'
+, 163: '<control-right>'
+, 164: '<alt-left>'
+, 165: '<alt-right>'
+, 166: '<browser-back>'
+, 167: '<browser-forward>'
+, 168: '<browser-refresh>'
+, 169: '<browser-stop>'
+, 170: '<browser-search>'
+, 171: '<browser-favorites>'
+, 172: '<browser-home>'
+
+  // ff/osx reports '<volume-mute>' for '-'
+, 173: isOSX && maybeFirefox ? '-' : '<volume-mute>'
+, 174: '<volume-down>'
+, 175: '<volume-up>'
+, 176: '<next-track>'
+, 177: '<prev-track>'
+, 178: '<stop>'
+, 179: '<play-pause>'
+, 180: '<launch-mail>'
+, 181: '<launch-media-select>'
+, 182: '<launch-app 1>'
+, 183: '<launch-app 2>'
+, 186: ';'
+, 187: '='
+, 188: ','
+, 189: '-'
+, 190: '.'
+, 191: '/'
+, 192: '`'
+, 219: '['
+, 220: '\\'
+, 221: ']'
+, 222: "'"
+, 223: '<meta>'
+, 224: '<meta>'       // firefox reports meta here.
+, 226: '<alt-gr>'
+, 229: '<ime-process>'
+, 231: isOpera ? '`' : '<unicode>'
+, 246: '<attention>'
+, 247: '<crsel>'
+, 248: '<exsel>'
+, 249: '<erase-eof>'
+, 250: '<play>'
+, 251: '<zoom>'
+, 252: '<no-name>'
+, 253: '<pa-1>'
+, 254: '<clear>'
+}
+
+for(i = 58; i < 65; ++i) {
+  output[i] = String.fromCharCode(i)
+}
+
+// 0-9
+for(i = 48; i < 58; ++i) {
+  output[i] = (i - 48)+''
+}
+
+// A-Z
+for(i = 65; i < 91; ++i) {
+  output[i] = String.fromCharCode(i)
+}
+
+// num0-9
+for(i = 96; i < 106; ++i) {
+  output[i] = '<num-'+(i - 96)+'>'
+}
+
+// F1-F24
+for(i = 112; i < 136; ++i) {
+  output[i] = 'F'+(i-111)
+}
+
+},{}],351:[function(require,module,exports){
+'use strict';
+
+const ModalDialog = require('voxel-modal-dialog');
+const createSelector = require('artpacks-ui');
+
+module.exports = (game, opts) => new APPlugin(game, opts);
+
+module.exports.pluginInfo = {
+  clientOnly: true,
+  loadAfter: ['voxel-keys', 'voxel-stitch']
+};
+
+class APPlugin {
+  constructor(game, opts) {
+    this.game = game;
+    if (!this.getArtpacks()) throw new Error('voxel-artpacks requires game.materials as voxel-texture-shader, or voxel-stitch');
+    this.keys = this.game.plugins.get('voxel-keys');
+    if (!this.keys) throw new Error('voxel-artpacks requires voxel-keys plugin')
+
+    let bindKey = opts.bindKey;
+    if (bindKey === undefined) {
+      bindKey = (this.game.shell ? 'P' : false);
+    }
+
+    if (bindKey) {
+      this.game.shell.bind('packs', bindKey);
+    }
+
+    this.dialog = new APDialog(this, this.game);
+    this.enable();
+  }
+
+  enable() {
+    this.keys.down.on('packs', this.onDown = this.dialog.open.bind(this.dialog));
+  }
+
+  disable() {
+    if (this.onDown) this.keys.down.removeListener('packs', this.onDown);
+  }
+
+  getArtpacks() {
+    if (this.game.materials && this.game.materials.artPacks) {
+      return this.game.materials.artPacks;
+    }
+
+    if (this.game.plugins.get('voxel-stitch')) {
+        return this.game.plugins.get('voxel-stitch').artpacks;
+    }
+
+    return undefined;
+  }
+}
+
+class APDialog extends ModalDialog {
+  constructor(plugin, game) {
+    super(game, {
+      contents: APDialog.generateContents(plugin, game),
+      escapeKeys: [192, 80]});  // `, P # TODO: match close key from binding
+  }
+
+  static generateContents(plugin, game) {
+    const contents = [];
+
+    contents.push(document.createTextNode('Drag packs below to change priority, or drop a .zip to load new pack:'));
+
+    const selector = createSelector(plugin.getArtpacks());
+    selector.container.style.margin = '5px';
+    contents.push(selector.container);
+
+    // refresh chunks to apply changes TODO: automatic? voxel-drop timeout, see https://github.com/deathcap/voxel-drop/issues/1
+    const refreshButton = document.createElement('button');
+    refreshButton.textContent = 'Preview';
+    refreshButton.style.width = '100%';
+    refreshButton.addEventListener('click', (ev) => {
+      const stitcher = game.plugins.get('voxel-stitch');
+      if (stitcher) {
+        // game-shell/voxel-stitch - disable button while stitching in progress TODO: test this more
+        refreshButton.disabled = true;
+        stitcher.on('addedAll', () => {
+          refreshButton.disabled = false;
+        });
+        stitcher.stitch();
+      } else {
+        // reinitialize voxel-texture-shader TODO refactor
+        // TODO: support game-shell/voxel-stitch
+        const old_names = game.materials.names;
+        game.texture_opts.game = self.game;
+        const i = 0;
+        game.materials = game.texture_modules[i](game.texture_opts)
+        game.materials.load(old_names);
+
+        // refresh chunks
+        game.showAllChunks();
+      }
+    });
+
+    contents.push(refreshButton);
+
+    return contents;
+  }
+}
+
+},{"artpacks-ui":69,"voxel-modal-dialog":405}],352:[function(require,module,exports){
 'use strict';
 
 module.exports = function(game, opts) {
@@ -39816,7 +50086,185 @@ BedrockPlugin.prototype.disable = function() {
   // TODO: unregister block
 };
 
-},{}],307:[function(require,module,exports){
+},{}],353:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new BlockData(game, opts);
+};
+
+function BlockData(game, opts) {
+  this.game = game;
+
+  this.enable();
+}
+
+BlockData.prototype.enable = function() {
+  var self = this;
+
+  this.game.on('setBlock', this.onSetBlock = function(target) {
+    // clear blockdata when blocks change
+    self.clear.apply(self, target);
+  });
+};
+
+BlockData.prototype.disable = function() {
+  this.game.removeListener('setBlock', this.onSetBlock);
+};
+
+
+// API
+
+// Get the blockdataMap for the chunk at given world coordinates
+// Returns undefined if the chunk doesn't exist
+// Initializes blockdataMap to {} if it doesn't exist (but the chunk does), _unless_ noCreate true
+BlockData.prototype.getForChunk = function(x, y, z, noCreate) {
+  var chunkIndex = this.game.voxels.chunkAtCoordinates(x, y, z).join('|');
+  var chunk = this.game.voxels.chunks[chunkIndex];
+
+  if (!chunk)
+    return undefined;
+  
+  if (chunk.blockdata === undefined && !noCreate)
+    chunk.blockdata = {};
+
+  return chunk.blockdata;
+};
+
+BlockData.prototype.coordsToKey = function(x, y, z) {
+  // TODO: should we translate global world coords to local chunk coords?
+  return [x, y, z].join(',');
+};
+
+BlockData.prototype.get = function(x, y, z) {
+  var blockdataMap = this.getForChunk(x, y, z);
+  if (blockdataMap === undefined) return undefined;
+
+  return blockdataMap[this.coordsToKey(x, y, z)];
+};
+
+BlockData.prototype.set = function(x, y, z, data) {
+  var blockdataMap = this.getForChunk(x, y, z);
+  if (blockdataMap === undefined) return undefined;
+
+  blockdataMap[this.coordsToKey(x, y, z)] = data;
+};
+
+BlockData.prototype.clear = function(x, y, z) {
+  var blockdataMap = this.getForChunk(x, y, z, true); // don't create for chunk if doesn't exist (read-only)
+  if (blockdataMap === undefined) return undefined;
+
+  delete blockdataMap[this.coordsToKey(x, y,z)];
+};
+
+},{}],354:[function(require,module,exports){
+'use strict';
+
+const ItemPile = require('itempile');
+const ucfirst = require('ucfirst');
+
+module.exports = (game, opts) => new BucketPlugin(game, opts);
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-fluid'] // TODO: load after voxel-fluid dependants, too? post-init (other plugins might register other new fluids!)
+};
+
+class BucketPlugin {
+  constructor(game, opts) {
+    this.game = game;
+    this.opts = opts;
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-bucket requires "voxel-registry" plugin')
+    this.fluidPlugin = game.plugins.get('voxel-fluid');
+    if (!this.fluidPlugin) throw new Error('voxel-bucket requires "voxel-fluid" plugin')
+
+    this.fluidBuckets = {};
+
+    if (this.opts.registerBlocks === undefined) this.opts.registerBlocks = true;
+    if (this.opts.registerItems === undefined) this.opts.registerItems = true;
+    if (this.opts.registerRecipes === undefined) this.opts.registerRecipes = true;
+
+    this.enable();
+  }
+
+  enable() {
+    if (this.opts.registerItems) {
+      this.registry.registerItem('bucket', {
+        itemTexture: 'i/bucket_empty',
+        onUse: this.pickupFluid.bind(this),
+        displayName: 'Empty Bucket',
+        creativeTab: 'fluids'
+      });
+
+      for (let fluid of this.fluidPlugin.getFluidNames()) {
+        const bucketName = `bucket${ucfirst(fluid)}`;
+        this.registry.registerItem(bucketName, {
+          itemTexture: `i/bucket_${fluid}`,
+          fluid: fluid,
+          containerItem: 'bucket',
+          onUse: this.placeFluid.bind(this, fluid),
+          displayName: "${ucfirst(fluid)} Bucket",
+          creativeTab: 'fluids'
+        });
+
+        this.fluidBuckets[fluid] = bucketName;
+      }
+    }
+
+    if (this.opts.registerRecipes) {
+      this.recipes = this.game.plugins.get('voxel-recipes');
+      if (!this.recipes) throw new Error('voxel-bucket requires voxel-recipes plugin when opts.registerRecipes enabled');
+
+      this.recipes.registerPositional([
+        ['ingotIron', undefined, 'ingotIron'],
+        ['ingotIron', 'ingotIron', 'ingotIron']
+        [undefined, undefined, undefined]], // TODO: 2x3 recipe shape, not 3x3 - https://github.com/deathcap/craftingrecipes/issues/2
+          new ItemPile('bucket'));
+    }
+  }
+        
+
+  disable() {
+    // TODO
+  }
+
+  pickupFluid(held, target) {
+    console.log('pickupFluid',held,target);
+    if (!target) return;
+
+    const name = this.registry.getBlockName(target.value);
+    const props = this.registry.getBlockProps(name);
+    if (props === undefined) return;
+
+    const fluid = props.fluid;
+    if (!fluid) return;
+
+    const flowing = props.flowing;
+    if (flowing) return; // can only pick up source blocks, not flowing
+
+    const fluidBucket = this.fluidBuckets[fluid];
+    if (!fluidBucket) return;
+
+    // remove fluid from world, and add to returned bucket item
+    this.game.setBlock(target.voxel, 0);
+    return new ItemPile(fluidBucket);  // replace empty bucket with filled bucket
+  }
+
+  placeFluid(fluid, held, target) {
+    console.log('placeFluid',fluid,held,target);
+
+    if (!target) return;
+
+    const fluidIndex = this.registry.getBlockIndex(fluid);
+    if (fluidIndex === undefined) return;
+
+    // set voxel and empty bucket
+    this.game.setBlock(target.adjacent, fluidIndex);
+    return new ItemPile('bucket');
+  }
+}
+
+
+},{"itempile":282,"ucfirst":346}],355:[function(require,module,exports){
 
 var Inventory = require('inventory');
 
@@ -39832,7 +50280,595 @@ function Carry(game, opts) {
   this.inventory = new Inventory(opts.inventoryWidth, opts.inventoryRows);
 }
 
-},{"inventory":244}],308:[function(require,module,exports){
+},{"inventory":274}],356:[function(require,module,exports){
+'use strict';
+
+const InventoryDialog = require('voxel-inventory-dialog').InventoryDialog;
+const Inventory = require('inventory');
+const InventoryWindow = require('inventory-window');
+const ItemPile = require('itempile');
+
+module.exports = (game, opts) => new Chest(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-blockdata', 'voxel-registry', 'voxel-recipes', 'voxel-carry']
+};
+
+class Chest {
+  constructor(game, opts) {
+    this.game = game;
+    if (!game.plugins.get('voxel-carry')) throw new Error('voxel-chest requires "voxel-carry" plugin');
+    this.playerInventory = game.plugins.get('voxel-carry').inventory;
+
+    this.registry = game.plugins.get('voxel-registry') ? game.plugins.get('voxel-registry') : undefined;
+    this.recipes = game.plugins.get('voxel-recipes') ? game.plugins.get('voxel-recipes') : undefined;
+    this.blockdata = game.plugins.get('voxel-blockdata') ? game.plugins.get('voxel-blockdata') : undefined;
+
+    if (!('registerBlock' in opts)) opts.registerBlock = this.registry !== undefined;
+    if (!('registerRecipe' in opts)) opts.registerRecipe = this.recipes !== undefined;
+   
+    this.chestDialog = new ChestDialog(game, this.playerInventory, this.registry, this.blockdata);
+
+    this.opts = opts;
+    this.enable();
+  }
+
+  enable() {
+    if (this.opts.registerBlock) {
+      // TODO: chest textures? not in current tp..
+      this.registry.registerBlock('chest', {texture: ['door_wood_lower', 'piston_top_normal', 'bookshelf'], onInteract: (target) => {
+        // TODO: server-side?
+        this.chestDialog.open(target);
+        return true;
+      }});
+    }
+
+    if (this.opts.registerRecipe) {
+      this.recipes.registerPositional([
+        ['wood.plank', 'wood.plank', 'wood.plank'],
+        ['wood.plank', undefined, 'wood.plank'],
+        ['wood.plank', 'wood.plank', 'wood.plank']],
+        new ItemPile('chest', 1));
+    }
+  }
+
+  disable() {
+  }
+}
+
+class ChestDialog extends InventoryDialog {
+  constructor(game, playerInventory, registry, blockdata) {
+    const chestInventory = new Inventory(10, 3)
+    chestInventory.on('changed', () => this.updateBlockdata());
+    const chestIW = new InventoryWindow({inventory:chestInventory, registry:registry});
+
+    // allow shift-click to transfer items between these two inventories
+    chestIW.linkedInventory = playerInventory;
+    //this.playerIW.linkedInventory = this.chestInventory # TODO: need to reach into voxel-inventory-dialog?
+
+    const chestCont = chestIW.createContainer();
+
+    super(game,
+      {
+        playerLinkedInventory: chestInventory,
+        upper: [chestCont]
+      });
+    this.game = game;
+    this.playerInventory = playerInventory;
+    this.registry = registry;
+    this.blockdata = blockdata;
+    this.chestInventory = chestInventory;
+  }
+
+  loadBlockdata(x, y, z) {
+    if (!this.blockdata) {
+      console.log('voxel-blockdata not loaded, voxel-chest persistence disabled');
+      return;
+    }
+
+    let bd = this.blockdata.get(x, y, z);
+    console.log('activeBlockdata=',JSON.stringify(bd));
+    if (bd) {
+      console.log('load existing at ',x,y,z);
+      // TODO: better way to 'load' into an inventory than setting all slots?
+      const newInventory = Inventory.fromString(bd.inventory)
+      console.log('newInventory='+JSON.stringify(newInventory));
+      for (let i = 0; i < newInventory.array.length; ++i) { // TODO: if smaller than current?
+        let itemPile = newInventory.array[i];
+        console.log('load chest',i,itemPile);
+        this.chestInventory.set(i, itemPile);
+      }
+    } else {
+      console.log('new empty inventory at ',x,y,z);
+      bd = {inventory: this.chestInventory.toString()};
+      this.blockdata.set(x, y, z, bd);
+    }
+
+    this.activeBlockdata = bd;
+    console.log('activeBlockdata 2=',JSON.stringify(this.activeBlockdata));
+  }
+
+  open(target) {
+    this.chestInventory.clear();
+    const x = target.voxel[0];
+    const y = target.voxel[1];
+    const z = target.voxel[2];
+    this.loadBlockdata(x, y, z);
+
+    super.open(target);
+  }
+
+  updateBlockdata() {
+    console.log('update with activeBlockdata=',JSON.stringify(this.activeBlockdata));
+    if (!this.activeBlockdata) return;
+
+    console.log('chestInventory=',this.chestInventory.toString());
+    this.activeBlockdata.inventory = this.chestInventory.toString();
+  }
+
+  close() {
+    delete this.activeBlockdata;
+    super.close();
+  }
+}
+
+},{"inventory":274,"inventory-window":273,"itempile":282,"voxel-inventory-dialog":394}],357:[function(require,module,exports){
+'use strict';
+
+var createBuffer = require('gl-buffer');
+var createVAO = require('gl-vao');
+var createSimpleShader = require('simple-3d-shader');
+
+module.exports = function(game, opts) {
+  return new BorderPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-mesher', 'voxel-shader', 'voxel-keys'],
+  clientOnly: true
+};
+
+function BorderPlugin(game, opts) {
+  this.game = game;
+  this.shell = game.shell;
+  this.mesherPlugin = game.plugins.get('voxel-mesher');
+  if (!this.mesherPlugin) throw new Error('voxel-chunkborder requires voxel-mesher');
+
+  this.shaderPlugin = game.plugins.get('voxel-shader');
+  if (!this.shaderPlugin) throw new Error('voxel-chunkborder requires voxel-shader');
+
+  this.keysPlugin = game.plugins.get('voxel-keys'); // optional
+
+  this.showBorders = opts.showBorder !== undefined ? opts.showBorders : false; // also changed at runtime
+  this.colorVector = opts.color !== undefined ? opts.color : [0,0,1]; // blue, RGB TODO: convert from hex?
+
+  this.enable();
+}
+
+BorderPlugin.prototype.enable = function() {
+  this.shell.bind('chunkborder', 'F9');
+  if (this.keysPlugin) this.keysPlugin.down.on('chunkborder', this.onToggle = this.toggle.bind(this));
+  this.shell.on('gl-init', this.onInit = this.shaderInit.bind(this));
+  this.shell.on('gl-render', this.onRender = this.render.bind(this));
+  this.mesherPlugin.on('meshed', this.onMeshed = this.createBorderMesh.bind(this));
+};
+
+BorderPlugin.prototype.disable = function() {
+  this.mesherPlugin.removeListener('meshed', this.onMeshed);
+  this.shell.removeListener('gl-render', this.onRender);
+  this.shell.removeListener('gl-init', this.onInit);
+  this.shell.unbind('chunkborder');
+  if (this.keysPlugin) this.keysPlugin.down.removeListener('chunkborder', this.onToggle);
+};
+
+BorderPlugin.prototype.toggle = function(ev) {
+  if (ev && ev.shiftKey) return; // skip since voxel-wireframe wants Shift+F9
+  this.showBorders = !this.showBorders;
+};
+
+BorderPlugin.prototype.shaderInit = function() {
+  this.borderShader = createSimpleShader(this.shell.gl);
+};
+
+BorderPlugin.prototype.render = function() {
+  if (this.showBorders) {
+    var gl = this.shell.gl;
+
+    //gl.disable(gl.DEPTH_TEST); // TODO: ? if disable, too noisy, see through everything. maybe show differently?
+
+    this.borderShader.bind();
+    this.borderShader.attributes.position.location = 0;
+    this.borderShader.uniforms.projection = this.shaderPlugin.projectionMatrix;
+    this.borderShader.uniforms.view = this.shaderPlugin.viewMatrix;
+    this.borderShader.attributes.color = this.colorVector;
+
+    for (var chunkIndex in this.game.voxels.meshes) {
+      var mesh = this.game.voxels.meshes[chunkIndex];
+
+      this.borderShader.uniforms.model = mesh.modelMatrix;
+      var borderVAO = mesh.vertexArrayObjects.chunkborder;
+      borderVAO.bind();
+      borderVAO.draw(gl.LINES, borderVAO.length);
+      borderVAO.unbind();
+    }
+  }
+};
+
+// Create the mesh around each chunk
+// useful references:
+// https://github.com/deathcap/voxel-wireframe
+// https://github.com/hughsk/indexed-geometry-demo
+// https://github.com/deathcap/avatar
+BorderPlugin.prototype.createBorderMesh = function(mesh, gl, _vert_data, voxels) {
+  var w = this.game.chunkSize;
+
+  var borderVertexArray = new Uint8Array([
+    0,0,0,
+    0,0,w,
+    0,w,0,
+    0,w,w,
+    w,0,0,
+    w,0,w,
+    w,w,0,
+    w,w,w
+  ]);
+
+  var indexArray = new Uint16Array([
+    0,1, 0,2, 2,3, 3,1,
+    0,4, 4,5, 5,1,
+    5,7, 7,3,
+    7,6, 6,2,
+    6,4
+  ]);
+
+  var borderVertexCount = indexArray.length;
+
+  var borderBuf = createBuffer(gl, borderVertexArray);
+  var indexBuf = createBuffer(gl, indexArray, gl.ELEMENT_ARRAY_BUFFER);
+
+  var borderVAO = createVAO(gl, [
+      { buffer: borderBuf,
+        type: gl.UNSIGNED_BYTE,
+        size: 3
+      }], indexBuf);
+  borderVAO.length = borderVertexCount
+
+  mesh.vertexArrayObjects.chunkborder = borderVAO
+};
+
+},{"gl-buffer":142,"gl-vao":201,"simple-3d-shader":334}],358:[function(require,module,exports){
+'use strict';
+
+const shellwords = require('shellwords');
+const ItemPile = require('itempile');
+
+module.exports = (game, opts) => new CommandsPlugin(game, opts);
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-console']
+};
+
+class CommandsPlugin {
+  constructor(game, opts) {
+    this.game = game;
+    this.console = this.game.plugins.get('voxel-console');
+    if (!this.console) throw new Error('voxel-commands requires voxel-console');
+    this.registry = this.game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-commands requires voxel-registry');
+
+    // can be set to suppress 'Not connected to server' chat messages
+    this.isConnectedToServer = false;
+
+    this.usages = {
+      pos: "x y z",
+      home: "",
+      item: "name [count [tags]]",
+      clear: "",
+      block: "name [data]",
+      plugins: "",
+      enable: "plugin",
+      disable: "plugin"
+    };
+
+    this.handlers = {
+      undefined: (command, ...args) => {
+        this.console.log(`Invalid command ${command} ${args.join(' ')}`);
+      },
+
+      help: () => {
+        this.console.log("Available commands:");
+        //for name of this.handlers # TODO: include all commands, but this extraneously includes aliases, too
+        for (let name in this.usages) { // only documented commands
+          const usage = this.usages[name];
+          if (usage === undefined) usage = '';
+          this.console.log(`.${name} ${usage}`);
+        }
+      },
+
+      plugins: () => {
+        const list = this.game.plugins.list(); // TODO: listAll? show disabled in red
+        this.console.log(`Enabled plugins (${list.length}): ` + list.join(' '));
+      },
+
+      enable: (name) => {
+        if (this.game.plugins.enable(name))  {
+          this.console.log(`Enabled plugin: ${name}`);
+        } else {
+          this.console.log(`Failed to enable plugin: ${name}`);
+        }
+      },
+
+      disable: (name) => {
+        if (this.game.plugins.disable(name)) {
+          this.console.log(`Disabled plugin: ${name}`);
+        } else {
+          this.console.log(`Failed to disable plugin: ${name}`);
+        }
+      },
+
+      pos: (x, y, z) => {
+        const player = this.game.plugins.get('voxel-player');
+        if (player) {
+          player.moveTo(x, y, z);
+          this.console.log([player.position.x, player.position.y, player.position.z]);
+        }
+      },
+
+      home: () => {
+        if (this.game.plugins.get('voxel-player')) {
+          this.game.plugins.get('voxel-player').home();
+        }
+      },
+
+      item: (name, count, tagsStr) => {
+        const props = this.registry.getItemProps(name);
+        if (!props) {
+          this.console.log(`No such item: ${name}`);
+          return;
+        }
+
+        let tags;
+        if (tagsStr !== undefined) {
+          try {
+            tags = JSON.parse(tagsStr);
+          } catch(e) {
+            this.console.log(`Invalid JSON ${tagsStr}: ${e}`);
+            return;
+          }
+        } else {
+          tags = undefined;
+        }
+
+        if (count !== undefined) count = 1;
+        count = parseInt(count, 10);
+        if (isNaN(count)) count = 1;
+        const pile = new ItemPile(name, count, tags);
+        const carry = this.game.plugins.get('voxel-carry');
+        if (carry) {
+          carry.inventory.give(pile);
+          this.console.log(`Gave ${name} x ${count} ${ (tags !== undefined) ? JSON.stringify(tags) : ''}`);
+        }
+        // TODO: integrate with voxel-inventory-hotbar, move to current slot?
+      },
+
+      clear: () => { // TODO: optionally list item types to clear only those
+        const carry = this.game.plugins.get('voxel-carry');
+        if (carry) {
+          carry.inventory.clear();
+          this.console.log("Cleared inventory");
+        }
+      },
+
+      block: (name, data) => {
+        if (name !== undefined) {
+          const index = this.registry.getBlockIndex(name);
+          if (index !== undefined) {
+            this.console.log(`No such block: ${name}`);
+            return;
+          }
+        }
+
+        const reachDistance = 8;
+        const hit = this.game.raycastVoxels(this.game.cameraPosition(), this.game.cameraVector(), reachDistance); // TODO: refactor w/ voxel-highlight, voxel-reach?
+        if (!hit) {
+          this.console.log("No block targetted");
+          return;
+        }
+        const x = hit.voxel[0];
+        const y = hit.voxel[1];
+        const z = hit.voxel[2];
+
+        const oldIndex = hit.value;
+        const oldName = this.registry.getBlockName(oldIndex);
+
+        if (name !== undefined) {
+          this.game.setBlock(hit.voxel, index);
+        }
+
+        const blockdata = this.game.plugins.get('voxel-blockdata');
+        let oldData;
+        if (blockdata !== undefined) {
+          oldData = blockdata.get(x, y, z);
+          if (data !== undefined) {
+            blockdata.set(x, y, z, data);
+          }
+        }
+
+        let dataInfo = "";
+        if (oldData !== undefined) {
+          dataInfo = `${JSON.stringify(oldData)} -> `;
+        } 
+        if (data === undefined) data = oldData;
+        if (oldData !== undefined) {
+          dataInfo += JSON.stringify(data);
+        }
+
+        if (name === undefined) name = oldName;
+        if (index === undefined) index = oldIndex;
+
+        this.console.log(`Set (${x}, ${y}, ${z}) ${oldName}/${oldIndex} -> ${name}/${index}  ${dataInfo}`);
+      }
+    };
+
+    // aliases
+    this.handlers.p = this.handlers.position = this.handlers.tp = this.handlers.pos;
+    this.handlers.i = this.handlers.give = this.handlers.item;
+    this.handlers.b = this.handlers.setblock = this.handlers.set = this.handlers.block;
+
+    this.enable();
+  }
+
+  process(input) {
+    if (input.indexOf('.') !== 0) { // regular text
+      if (!this.isConnectedToServer) { // (or send to server)
+        this.console.log(input);
+        let connection;
+        if (this.game.plugins.get('voxel-client')) {
+          connection = this.game.plugins.get('voxel-client').connection;
+        }
+        if (connection !== undefined) {
+          connection.emit('chat', {message:input});
+        } else {
+          this.console.log('Not connected to server. Type .help for commands');
+        }
+      }
+      return; // no local echo
+    }
+
+    input = input.substring(1);
+
+    // split into tokens using shell-based rules (allows quoting)
+    // TODO: switch to https://github.com/substack/node-shell-quote?
+    const words = shellwords.split(input);
+    const command = words[0];
+    const args = words.slice(1);
+
+    let handler = this.handlers[command];
+    if (handler === undefined) {
+      handler = this.handlers.undefined;
+      args.unshift(command);
+    }
+
+    handler.apply(this, args);
+  }
+
+  enable() {
+    if (this.console.widget) {
+      this.console.widget.on('input', this.onInput = (input) => {
+        this.process(input);
+      });
+    }
+
+    if (this.game.plugins.get('voxel-client')) {
+      this.game.plugins.get('voxel-client').connection.on('chat', this.onChat = (input) => { // TODO: refresh if connection changes?
+        this.console.log(input.message !== undefined ? input.message : input);
+      });
+    }
+  }
+
+  disable() {
+    this.console.widget.removeListener('input', this.onInput);
+    if (this.game.plugins.get('voxel-client')) {
+      this.game.plugins.get('voxel-client').connection.removeListener('chat', this.onChat);
+    }
+  }
+
+  registerCommand(name, handler, usage, help) {
+    if (name in this.handlers) {
+      throw new Error(`voxel-commands duplicate command registration: ${name} for ${handler}`);
+    }
+
+    this.handlers[name] = handler;
+    this.usages[name] = `${usage} -- ${help}`;
+  }
+
+  unregisterCommand(name, handler) {
+    if (this.handlers[name] !== handler) {
+      throw new Error(`voxel-commands attempted to unregister mismatched command: ${name} was ${this.handlers[name]} not ${handler}`); // TODO: is this a good idea? like removeListener..
+    }
+
+    delete this.handlers[name];
+    delete this.usages[name];
+  }
+}
+
+
+},{"itempile":282,"shellwords":333}],359:[function(require,module,exports){
+'use strict';
+
+const Modal = require('voxel-modal');
+const ConsoleWidget = require('console-widget');
+
+module.exports = (game, opts) => new Console(game, opts);
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-keys']
+};
+
+class Console extends Modal {
+  constructor(game, opts) {
+    if (!game.isClient) return;
+
+    // options for ConsoleWidget
+    const widgetOpts = opts;  // pass through voxel-console opts (no need to copy)
+
+    // nothing closes the widget, hide/show is handled by voxel-modal
+    widgetOpts.closeKeys = [];
+
+    const widget = ConsoleWidget(widgetOpts);
+
+    super(game, {element: widget.containerNode});
+
+    this.game = game;
+    this.opts = opts;
+
+    if (!opts.includeTextBindings) {
+      opts.includeTextBindings = {
+        'console': undefined,
+        console2: '/',
+        console3: '.'};
+    }
+
+    this.widget = widget;
+    //this.widget.on 'input', (text) =>  # TODO: handle events, pass up?
+    //  this.widget.log "You said: #{text}"
+
+    this.keys = game.plugins.get('voxel-keys');
+    if (!this.keys) throw new Error('voxel-console requires voxel-keys plugin');
+    this.bindKeys();
+  }
+   
+  bindKeys() {
+    //this.game.buttons.bindings.console ?= 'T' # TODO: bind these keys ourselves?
+    //this.game.buttons.bindings.console2 ?= '/'  # maybe with game-shell, game.shell.bind()
+    //this.game.buttons.bindings.console3 ?= '.'
+
+    ['console', 'console2', 'console3'].forEach((binding) => {
+      this.keys.down.on(binding, () => {
+        const initialText = this.opts.includeTextBindings[binding];
+        this.open(initialText);
+      });
+    });
+  }
+
+  open(initialText) {
+    super.open();
+
+    this.widget.open(initialText);
+  }
+
+  close() {
+    super.close();
+    //this.widget.close();  // modal hides everything
+  }
+
+  log(text) {
+    this.widget.log(text);
+  }
+
+  logNode(node) {
+    this.widget.logNode(node);
+  }
+}
+
+},{"console-widget":105,"voxel-modal":406}],360:[function(require,module,exports){
 module.exports = control
 
 var Stream = require('stream').Stream
@@ -40126,7 +51162,547 @@ function clamp(value, to) {
   return isFinite(to) ? max(min(value, to), -to) : value
 }
 
-},{"stream":44}],309:[function(require,module,exports){
+},{"stream":44}],361:[function(require,module,exports){
+'use strict';
+
+var createBuffer = require('gl-buffer');
+var createVAO = require('gl-vao');
+var glShader = require('gl-shader');
+
+var mat4 = require('gl-mat4');
+
+module.exports = function(game, opts) {
+  return new DecalsPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-mesher', 'voxel-shader', 'voxel-stitch']
+};
+
+function DecalsPlugin(game, opts) {
+  this.game = game;
+  this.shell = game.shell;
+
+  this.mesherPlugin = game.plugins.get('voxel-mesher');
+  if (!this.mesherPlugin) throw new Error('voxel-decals requires voxel-mesher');
+
+  this.shaderPlugin = game.plugins.get('voxel-shader');
+  if (!this.shaderPlugin) throw new Error('voxel-decals requires voxel-shader');
+
+  this.stitchPlugin = game.plugins.get('voxel-stitch');
+  if (!this.stitchPlugin) throw new Error('voxel-stitch requires voxel-shader');
+
+  this.info = []
+  /* for testing
+  [
+    {position:[0,0,0], normal:[-1,0,0], texture:'furnace_top'},
+    {position:[0,1,0], normal:[+1,0,0], texture:'furnace_top'},
+    {position:[0,2,0], normal:[0,+1,0], texture:'furnace_top'},
+    {position:[0,3,0], normal:[0,-1,0], texture:'furnace_top'},
+    {position:[0,4,0], normal:[0,0,+1], texture:'furnace_front_on'},
+    {position:[0,5,0], normal:[0,0,-1], texture:'furnace_top'},
+  ];
+  */
+
+  this.enable();
+}
+
+DecalsPlugin.prototype.add = function(info) {
+  this.info.push(info);
+};
+
+DecalsPlugin.prototype.remove = function(info) {
+  var found = undefined;
+
+  if (Array.isArray(info)) {
+    // backwards compatibility - passed array, only match location
+    var position = info;
+    for (var i = 0; i < this.info.length; i += 1) {
+      if (this.info[i].position[0] === position[0] &&
+          this.info[i].position[1] === position[1] &&
+          this.info[i].position[2] === position[2]) {
+        found = i;
+        break;
+      }
+    }
+  } else {
+    for (var i = 0; i < this.info.length; i += 1) { // TODO: optimize to a map if this is too inefficient
+      if (this.info[i].position[0] === info.position[0] &&
+          this.info[i].position[1] === info.position[1] &&
+          this.info[i].position[2] === info.position[2] &&
+          this.info[i].normal[0] == info.normal[0] &&
+          this.info[i].normal[1] == info.normal[1] &&
+          this.info[i].normal[2] == info.normal[2]) {
+        found = i;
+        break;
+      }
+    }
+  }
+  if (found === undefined) return;
+
+  this.info.splice(found, 1);
+};
+
+DecalsPlugin.prototype.change = function(info) {
+  this.remove(info);
+  this.add(info); // TODO: optimize to change without removing if necessary
+};
+
+DecalsPlugin.prototype.enable = function() {
+  this.shell.on('gl-init', this.onInit = this.shaderInit.bind(this));
+  this.shell.on('gl-render', this.onRender = this.render.bind(this));
+  this.stitchPlugin.on('updateTexture', this.onUpdateTexture = this.update.bind(this));
+};
+
+DecalsPlugin.prototype.disable = function() {
+  this.stitchPlugin.removeListener('updateTexture', this.onUpdateTexture);
+  this.shell.removeListener('gl-render', this.onRender = this.render.bind(this));
+  this.shell.removeListener('gl-init', this.onInit);
+};
+
+DecalsPlugin.prototype.shaderInit = function() {
+  // TODO: refactor with voxel-decals, voxel-chunkborder?
+  this.shader = glShader(this.shell.gl,
+    "#define GLSLIFY 1\n/* voxel-decals vertex shader */attribute vec3 position;attribute vec2 uv;uniform mat4 projection;uniform mat4 view;uniform mat4 model;varying vec2 vUv;void main() {  gl_Position = projection * view * model * vec4(position, 1.0);  vUv = uv;}",
+
+    "/* voxel-decals fragment shader */precision highp float;\n#define GLSLIFY 1\nuniform sampler2D texture;varying vec2 vUv;void main() {  gl_FragColor = texture2D(texture, vUv);}");
+};
+
+DecalsPlugin.prototype.update = function() {
+  // cube face vertices, indexed by normal (based on box-geometry)
+  var cube = {
+    // Back face
+    '0|0|1': [
+    0, 0, 1,
+    1, 0, 1,
+    1, 1, 1,
+
+    0, 0, 1,
+    1, 1, 1,
+    0, 1, 1],
+
+    // Front face
+    '0|0|-1': [
+    0, 0, 0,
+    0, 1, 0,
+    1, 1, 0,
+
+    0, 0, 0,
+    1, 1, 0,
+    1, 0, 0],
+
+    // Top face
+    '0|1|0': [
+    0, 1, 0,
+    0, 1, 1,
+    1, 1, 1,
+
+    0, 1, 0,
+    1, 1, 1,
+    1, 1, 0],
+
+    // Bottom face
+    '0|-1|0': [
+    0, 0, 0,
+    1, 0, 0,
+    1, 0, 1,
+
+    0, 0, 0,
+    1, 0, 1,
+    0, 0, 1],
+
+    // Left face
+    '1|0|0': [
+    1, 0, 0,
+    1, 1, 0,
+    1, 1, 1,
+
+    1, 0, 0,
+    1, 1, 1,
+    1, 0, 1],
+
+    // Right face
+    '-1|0|0': [
+    0, 0, 0,
+    0, 0, 1,
+    0, 1, 1,
+
+    0, 0, 0,
+    0, 1, 1,
+    0, 1, 0],
+  };
+
+  var vertices = [];
+  var uvArray = [];
+
+  for (var i = 0; i < this.info.length; i += 1) {
+    // start with plane corresponding to desired cube face
+    var normal = this.info[i].normal;
+    var plane = cube[normal.join('|')].slice(0);
+
+    // translate into position
+    for (var j = 0; j < plane.length; j += 1) {
+      plane[j] += this.info[i].position[j % 3];
+
+      // and raise out of surface by a small amount to prevent z-fighting
+      plane[j] += normal[j % 3] * 0.001;
+    }
+
+    vertices = vertices.concat(plane);
+
+    // texturing (textures loaded from voxel-stitch updateTexture event)
+    var tileUV = this.stitchPlugin.getTextureUV(this.info[i].texture);
+    if (!tileUV) throw new Error('failed to load decal texture: ' + this.info[i].texture + ' for ' + this.info[i]);
+
+    // cover the texture tile over the two triangles forming a flat plane
+    var planeUV = [
+      tileUV[3],
+      tileUV[0],
+      tileUV[1],
+
+      tileUV[2],
+    ];
+
+    // rotate UVs so texture is always facing up
+    var r = 0;
+    if (normal[0] === -1 || 
+        normal[1] === -1 ||
+        normal[2] === 1) { // TODO: -1?
+      r = 3;
+    }
+
+    uvArray.push(planeUV[(0 + r) % 4][0]); uvArray.push(planeUV[(0 + r) % 4][1]);
+    uvArray.push(planeUV[(1 + r) % 4][0]); uvArray.push(planeUV[(1 + r) % 4][1]);
+    uvArray.push(planeUV[(2 + r) % 4][0]); uvArray.push(planeUV[(2 + r) % 4][1]);
+
+    uvArray.push(planeUV[(0 + r) % 4][0]); uvArray.push(planeUV[(0 + r) % 4][1]);
+    uvArray.push(planeUV[(2 + r) % 4][0]); uvArray.push(planeUV[(2 + r) % 4][1]);
+    uvArray.push(planeUV[(3 + r) % 4][0]); uvArray.push(planeUV[(3 + r) % 4][1]);
+  }
+
+  var uv = new Float32Array(uvArray);
+
+  var gl = this.shell.gl;
+
+  var verticesBuf = createBuffer(gl, new Float32Array(vertices));
+  var uvBuf = createBuffer(gl, uv);
+
+  this.mesh = createVAO(gl, [
+      { buffer: verticesBuf,
+        size: 3
+      },
+      {
+        buffer: uvBuf,
+        size: 2
+      }
+      ]);
+  this.mesh.length = vertices.length/3;
+};
+
+var scratch0 = mat4.create();
+
+DecalsPlugin.prototype.render = function() {
+  if (this.mesh) {
+    var gl = this.shell.gl;
+
+    this.shader.bind();
+    this.shader.attributes.position.location = 0;
+    this.shader.attributes.uv.location = 1;
+    this.shader.uniforms.projection = this.shaderPlugin.projectionMatrix;
+    this.shader.uniforms.view = this.shaderPlugin.viewMatrix;
+    this.shader.uniforms.model = scratch0;
+
+    // use same atlas from voxel-shader TODO: can we reliably avoid binding? if already bound, seems to reuse
+    if (this.stitchPlugin.texture) this.shader.uniforms.texture = this.stitchPlugin.texture.bind();
+
+    this.mesh.bind();
+    this.mesh.draw(gl.TRIANGLES, this.mesh.length);
+    this.mesh.unbind();
+  }
+};
+
+},{"gl-buffer":142,"gl-mat4":162,"gl-shader":190,"gl-vao":201}],362:[function(require,module,exports){
+'use strict';
+
+var ucfirst = require('ucfirst');
+
+module.exports = function(game, opts) {
+  return new DecorativePlugin(game, opts);
+};
+
+module.exports.pluginInfo = {
+  loadAfter: [
+    'voxel-registry', 
+    'voxel-land', // for materials
+    'voxel-recipes']
+};
+
+function DecorativePlugin(game, opts) {
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-decorative requires voxel-registry');
+
+  this.recipes = game.plugins.get('voxel-recipes');
+  if (!this.recipes) throw new Error('voxel-decorative requires voxel-recipes');
+
+  this.storageMaterials = opts.storageMaterials || ['coal', 'iron', 'gold', 'diamond'];
+  this.storageBases = opts.storageBases || {iron: 'ingotIron', gold: 'ingotIron'}; // TODO: refactor, metals? (always require ingots)
+  this.storageHardnessFactor = opts.storageHardnessFactor || 2.0;
+
+  this.enable();
+}
+
+DecorativePlugin.prototype.enable = function() {
+  var registry = this.registry;
+  var recipes = this.recipes;
+  var self = this;
+
+  // "storage" blocks
+  this.storageMaterials.forEach(function(name) {
+    var baseMaterial = self.storageBases[name] || name;
+    var baseHardness = registry.getProp('ore' + ucfirst(baseMaterial), 'hardness') || 20.0;
+
+    registry.registerBlock('block' + ucfirst(name), {
+      texture: name + '_block',
+      displayName: 'Block of ' + ucfirst(name),
+      hardness: baseHardness * self.storageHardnessFactor,
+      creativeTab: 'decorative'
+    });
+
+    // blocking up TODO: require a compressor?
+    recipes.registerAmorphous([
+      baseMaterial, baseMaterial, baseMaterial,
+      baseMaterial, baseMaterial, baseMaterial,
+      baseMaterial, baseMaterial, baseMaterial], ['block' + ucfirst(name)]);
+
+
+    // blocking down TODO: require a macerator?
+    recipes.registerAmorphous(['block' + ucfirst(name)], [baseMaterial, 9]);
+  });
+
+  // stone bricks
+  var hardness = registry.getProp('cobblestone', 'hardness') || 10.0; // match stone hardness
+  registry.registerBlock('stoneBrick', {texture: 'stonebrick', displayName: 'Stone Bricks', hardness: hardness, creativeTab: 'decorative'});
+  registry.registerBlock('stoneBrickCarved', {texture: 'stonebrick_carved', displayName: 'Carved Stone Bricks', hardness: hardness, creativeTab: 'decorative'});
+  registry.registerBlock('stoneBrickCracked', {texture: 'stonebrick_cracked', displayName: 'Cracked Stone Bricks', hardness: hardness, creativeTab: 'decorative'});
+  registry.registerBlock('stoneBrickMossy', {texture: 'stonebrick_mossy', displayName: 'Mossy Stone Bricks', hardness: hardness, creativeTab: 'decorative'});
+
+  recipes.registerPositional([
+      ['stone', 'stone'],
+      ['stone', 'stone']], ['stoneBrick']);
+
+  recipes.registerAmorphous(['stoneBrick'], ['stoneBrickCarved']); // TODO: maybe require using on a chisel?
+  recipes.registerAmorphous(['stoneBrickCarved'], ['stoneBrickCracked']);
+  //recipes.registerAmorphous(['stoneBrickCracked', ['stoneBrick']);
+  // TODO: recipe for mossy (+vines?)
+};
+
+DecorativePlugin.prototype.disable = function() {
+  // TODO
+};
+
+
+},{"ucfirst":363}],363:[function(require,module,exports){
+arguments[4][346][0].apply(exports,arguments)
+},{"dup":346}],364:[function(require,module,exports){
+'use strict';
+
+const playerdat = require('playerdat');
+
+module.exports = (game, opts) => {
+  return new DropPlugin(game, opts)
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-stitch']
+};
+
+class DropPlugin
+{
+  constructor(game, opts) {
+    this.game = game;
+
+    if (!game.isClient) return;
+
+    if (this.game.materials && this.game.materials.artPacks) {
+      this.packs = this.game.materials.artPacks;
+    } else if (this.game.plugins.get('voxel-stitch')) {
+      this.packs = this.game.plugins.get('voxel-stitch').artpacks;
+    }
+
+    if (!this.packs) {
+      throw new Error('voxel-drop requires voxel-stitch or voxel-texture-shader with artPacks');
+    }
+
+    this.enable();
+  }
+
+  enable() {
+    document.body.addEventListener('dragover', this.dragover = (ev) => {
+      ev.stopPropagation();
+      ev.preventDefault();
+    });
+
+    document.body.addEventListener('drop', this.drop = (mouseEvent) => {
+      mouseEvent.stopPropagation();
+      mouseEvent.preventDefault();
+      console.log('drop',mouseEvent);
+
+      const files = mouseEvent.target.files || mouseEvent.dataTransfer.files;
+
+      console.log('Dropped',files);
+      //for (let file of files) {
+      for (let i = 0; i < files.length; ++i) {
+        const file = files[i];
+        console.log('Reading dropped',file);
+
+        if (file.name.endsWith('.zip') || // .zip = artpack
+            file.name.endsWith('.jar')) { //  .jar = artpack too, MC jars (TODO: java plugins via doppio?)
+          const shouldClear = mouseEvent.shiftKey;
+          this.loadArtPack(file, shouldClear);
+        } else if (file.name.endsWith('.js')) { // .js = JavaScript 
+          this.loadScript(file);
+        } else if (file.name.endsWith('.dat')) { // .dat = player data file
+          const shouldAdd = mouseEvent.shiftKey;
+          this.loadPlayerDat(file, shouldAdd);
+        } else {
+          // TODO: detect different files - .png = skin, .mca/=save
+          // TODO: or by file magic headers?
+          window.alert(`Unrecognized file dropped: ${file.name}. Try dropping a resourcepack/artpack (.zip)`);
+        }
+      }
+    });
+  }
+
+  readAll(file, cb) {
+    const reader = new FileReader();
+
+    reader.onload = (readEvent) => {
+      if (readEvent.total !== readEvent.loaded) {
+        return; // TODO: progress bar
+      }
+
+      const result = readEvent.currentTarget.result;
+      cb(result);
+    };
+
+    reader.onerror = (errorEvent) => {
+      console.log(errorEvent);
+      window.alert(`Error reading file: ${errorEvent}`);
+    };
+
+    reader.onabort = (errorEvent) => {
+      console.log(errorEvent);
+      window.alert(`Aborted reading file: ${errorEvent}`);
+    }
+
+    return reader;
+  }
+
+  readAllText(file, cb) {
+    (this.readAll(file, cb)).readAsText(file);
+  }
+
+  readAllData(file, cb) {
+    (this.readAll(file, cb)).readAsArrayBuffer(file);
+  }
+
+  loadScript(file) {
+    this.readAllText(file, (text) => {
+      // load as plugin TODO: improve this?
+      // TODO: require()'s.. http://wzrd.in/ browserify-as-a-service
+      // use Function constructor instead of eval() to control scope
+      try {
+        const createCreatePlugin = new Function(`
+var module = {exports: {}};
+var require = ${this.game.plugins.require};
+
+${text}
+
+return module.exports;
+`);
+      } catch (e) {
+        window.alert(`Exception loading plugin ${file.name}: ${e}`);
+        throw e;
+      }
+
+      const createPlugin = createCreatePlugin();
+      const name = file.name;
+      const opts = {};
+
+      console.log(`loadScript #file.name = ${createPlugin}`);
+
+      if (!createPlugin || typeof createPlugin !== 'function') {
+        // didn't return factory constructor, assume not a plugin
+        console.log(`Ignored non-plugin ${name}, returned ${createPlugin}`);
+        return;
+      }
+
+      //if not createPlugin.pluginInfo
+      //  console.log "Warning: plugin #{name} missing pluginInfo"
+
+      const plugin = this.game.plugins.instantiate(createPlugin, name, opts);
+      if (!plugin) {
+        window.alert('Failed to load plugin '+name);
+      } else {
+        console.log(`Loaded plugin: ${name} = ${plugin}`);
+      }
+    });
+  }
+      
+  loadArtPack(file, shouldClear) {
+    this.readAllData(file, (arrayBuffer) => {
+      // add artwork pack
+
+      if (shouldClear) {
+        // start over, replacing all current packs - unless shift is held down (then add to)
+        this.packs.clear();
+      }
+
+      this.packs.once('refresh', () => {
+        // TODO: listen on proper event instead of guessing timeout
+        // see https://github.com/deathcap/voxel-drop/issues/1
+        window.setTimeout(() => {
+          this.game.showAllChunks();
+        }, 5000);
+      });
+
+      this.packs.addPack(arrayBuffer, file.name);
+
+      // TODO: refresh items too? inventory-window
+    })
+  }
+
+  loadPlayerDat(file, shouldAdd) {
+    this.readAllData(file, (arrayBuffer) => {
+      if (!this.game.plugins.get('voxel-carry')) return;
+
+      const carryInventory = this.game.plugins.get('voxel-carry').inventory;
+
+      playerdat.loadInventory(arrayBuffer, (inventory) => {
+        if (inventory) {
+          if (!shouldAdd) carryInventory.clear(); // start fresh
+
+          for (let i = 0; i < inventory.size; ++i) {
+            if (shouldAdd) {
+              // add anywhere, appending
+              carryInventory.give(inventory.get(i));
+            } else {
+              // copy specific slots, replacing
+              carryInventory.set(i, inventory.get(i));
+            }
+          }
+        }
+      });
+    });
+  }
+
+  disable() {
+    this.body.removeListener('dragover', this.dragover);
+    this.body.removeListener('drop', this.drop);
+  }
+}
+
+
+},{"playerdat":315}],365:[function(require,module,exports){
 (function (process){(function (){
 'use strict'
 var voxel = require('voxel')
@@ -40939,7 +52515,7 @@ Game.prototype.destroy = function() {
 }
 
 }).call(this)}).call(this,require('_process'))
-},{"./":309,"./lib/detector":310,"_process":42,"aabb-3d":311,"collide-3d-tilemap":94,"events":15,"extend":312,"game-shell-fps-camera":113,"gl-now":170,"gl-vec3":201,"inherits":243,"isndarray":251,"ndarray":266,"obsolete":274,"path":41,"spatial-events":313,"tic":297,"voxel":316,"voxel-controls":308,"voxel-mesher":329,"voxel-physicals":332,"voxel-plugins":334,"voxel-raycast":335,"voxel-region-change":336,"voxel-registry":337,"voxel-shader":338,"voxel-stitch":339}],310:[function(require,module,exports){
+},{"./":365,"./lib/detector":366,"_process":42,"aabb-3d":367,"collide-3d-tilemap":104,"events":15,"extend":368,"game-shell-fps-camera":132,"gl-now":189,"gl-vec3":220,"inherits":272,"isndarray":281,"ndarray":302,"obsolete":311,"path":41,"spatial-events":369,"tic":340,"voxel":372,"voxel-controls":360,"voxel-mesher":402,"voxel-physicals":409,"voxel-plugins":413,"voxel-raycast":417,"voxel-region-change":421,"voxel-registry":422,"voxel-shader":425,"voxel-stitch":428}],366:[function(require,module,exports){
 /**
  * @author alteredq / http://alteredqualia.com/
  * @author mr.doob / http://mrdoob.com/
@@ -41000,7 +52576,7 @@ module.exports = function() {
   };
 }
 
-},{}],311:[function(require,module,exports){
+},{}],367:[function(require,module,exports){
 module.exports = AABB
 
 var vec3 = require('gl-matrix').vec3
@@ -41117,7 +52693,7 @@ proto.union = function(aabb) {
 
 
 
-},{"gl-matrix":158}],312:[function(require,module,exports){
+},{"gl-matrix":177}],368:[function(require,module,exports){
 var hasOwn = Object.prototype.hasOwnProperty;
 var toString = Object.prototype.toString;
 var undefined;
@@ -41199,7 +52775,7 @@ module.exports = function extend() {
 };
 
 
-},{}],313:[function(require,module,exports){
+},{}],369:[function(require,module,exports){
 module.exports = SpatialEventEmitter
 
 var slice = [].slice
@@ -41335,7 +52911,7 @@ function finite(bbox) {
          isFinite(bbox.z1())
 }
 
-},{"./tree":314,"aabb-3d":311}],314:[function(require,module,exports){
+},{"./tree":370,"aabb-3d":367}],370:[function(require,module,exports){
 module.exports = Tree
 
 var aabb = require('aabb-3d')
@@ -41461,7 +53037,7 @@ proto.send = function(event, bbox, args) {
   }
 }
 
-},{"aabb-3d":311}],315:[function(require,module,exports){
+},{"aabb-3d":367}],371:[function(require,module,exports){
 var events = require('events')
 var inherits = require('inherits')
 
@@ -41582,7 +53158,7 @@ Chunker.prototype.voxelAtPosition = function(pos, val) {
 }
 
 
-},{"events":15,"inherits":322}],316:[function(require,module,exports){
+},{"events":15,"inherits":378}],372:[function(require,module,exports){
 var chunker = require('./chunker')
 var ndarray = require('ndarray')
 
@@ -41685,7 +53261,7 @@ module.exports.generateExamples = function() {
 }
 
 
-},{"./chunker":315,"./meshers/culled":317,"./meshers/greedy":318,"./meshers/monotone":319,"./meshers/stupid":320,"./meshers/transgreedy":321,"ndarray":266}],317:[function(require,module,exports){
+},{"./chunker":371,"./meshers/culled":373,"./meshers/greedy":374,"./meshers/monotone":375,"./meshers/stupid":376,"./meshers/transgreedy":377,"ndarray":302}],373:[function(require,module,exports){
 //Naive meshing (with face culling)
 function CulledMesh(volume, dims) {
   //Precalculate direction vectors for convenience
@@ -41737,7 +53313,7 @@ if(exports) {
   exports.mesher = CulledMesh;
 }
 
-},{}],318:[function(require,module,exports){
+},{}],374:[function(require,module,exports){
 var GreedyMesh = (function() {
 //Cache buffer internally
 var mask = new Int32Array(4096);
@@ -41854,7 +53430,7 @@ if(exports) {
   exports.mesher = GreedyMesh;
 }
 
-},{}],319:[function(require,module,exports){
+},{}],375:[function(require,module,exports){
 "use strict";
 
 var MonotoneMesh = (function(){
@@ -42107,7 +53683,7 @@ if(exports) {
   exports.mesher = MonotoneMesh;
 }
 
-},{}],320:[function(require,module,exports){
+},{}],376:[function(require,module,exports){
 //The stupidest possible way to generate a Minecraft mesh (I think)
 function StupidMesh(volume, dims) {
   var vertices = [], faces = [], x = [0,0,0], n = 0;
@@ -42143,7 +53719,7 @@ if(exports) {
   exports.mesher = StupidMesh;
 }
 
-},{}],321:[function(require,module,exports){
+},{}],377:[function(require,module,exports){
 var GreedyMesh = (function greedyLoader() {
     
 // contains all forward faces (in terms of scan direction)
@@ -42335,9 +53911,9 @@ if(exports) {
   exports.mesher = GreedyMesh;
 }
 
-},{}],322:[function(require,module,exports){
-arguments[4][76][0].apply(exports,arguments)
-},{"dup":76}],323:[function(require,module,exports){
+},{}],378:[function(require,module,exports){
+arguments[4][85][0].apply(exports,arguments)
+},{"dup":85}],379:[function(require,module,exports){
 'use strict';
 
 var ndarray = require('ndarray');
@@ -42404,7 +53980,103 @@ Flatland.prototype.missingChunk = function(position) {
   this.game.showChunk(chunk);
 };
 
-},{"ndarray":266}],324:[function(require,module,exports){
+},{"ndarray":302}],380:[function(require,module,exports){
+
+module.exports = function(game, opts) {
+  return new Fly(game, opts)
+}
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-keys']
+}
+
+function Fly(game, opts) {
+  this.game = game
+  this.physical = opts.physical
+  if (!this.game) throw new Error('voxel-flight requires game parameter');
+  if (!this.game.isClient) return;
+  this.keys = game.plugins.get('voxel-keys');
+  if (!this.keys) throw new Error('voxel-flight requires voxel-keys plugin');
+  this.flySpeed = opts.flySpeed || 0.8
+
+  this.enable()
+}
+
+Fly.prototype.enable = function() {
+  var self = this
+  var counter = 0
+  var spaceUpAfterFirstDown = false
+  var first = Date.now()
+
+  if (!this.physical) this.physical = this.game.controls.target()
+
+  this.keys.down.on('jump', this.onJumpDown = function() {
+    if (counter === 1) {
+      if (Date.now() - first > 300) {
+        spaceUpAfterFirstDown = false
+        return first = Date.now()
+      } else {
+        if (spaceUpAfterFirstDown) {
+          self.toggleFlying()
+        }
+      }
+      spaceUpAfterFirstDown = false
+      return counter = 0
+    }
+    if (counter === 0) {
+      first = Date.now()
+      counter += 1
+    }
+  });
+ 
+  this.keys.up.on('jump', this.onJumpUp = function() {
+    if (counter === 1) {
+      spaceUpAfterFirstDown = true
+    }
+  });
+}
+
+Fly.prototype.disable = function() {
+  if (this.flying)
+    this.stopFlying()
+
+  this.keys.down.removeListener('jump', this.onJumpDown);
+  this.keys.up.removeListener('jump', this.onJumpUp);
+}
+
+Fly.prototype.startFlying = function() {
+  var self = this
+  this.flying = true
+  var physical = this.physical
+  physical.removeForce(this.game.gravity)
+  physical.onGameTick = function(dt) {
+    if (physical.atRestY() === -1) return self.stopFlying()
+    physical.friction.x = self.flySpeed
+    physical.friction.z = self.flySpeed
+    var press = self.game.controls.state
+    physical.velocity.y = 0
+    if (press['jump']) physical.velocity.y += 0.01
+    if (press['crouch']) physical.velocity.y -= 0.01
+  }
+  this.game.on('tick', physical.onGameTick)
+}
+
+Fly.prototype.stopFlying = function() {
+  this.flying = false
+  var physical = this.physical
+  physical.subjectTo(this.game.gravity)
+  this.game.removeListener('tick', physical.onGameTick)
+}
+
+Fly.prototype.toggleFlying = function() {
+  if (this.flying) {
+    this.stopFlying()
+  } else {
+    this.startFlying()
+  }
+}
+
+},{}],381:[function(require,module,exports){
 'use strict';
 
 var ucfirst = require('ucfirst');
@@ -42483,15 +54155,1725 @@ FluidPlugin.prototype.getFluidNames = function() {
   return Object.keys(this.fluids);
 };
 
-},{"ucfirst":325}],325:[function(require,module,exports){
+},{"ucfirst":382}],382:[function(require,module,exports){
+arguments[4][346][0].apply(exports,arguments)
+},{"dup":346}],383:[function(require,module,exports){
 'use strict';
 
-module.exports = function(s) {
-  return s.substr(0, 1).toUpperCase() + s.substring(1);
+module.exports = function(game, opts) {
+  return new FoodPlugin(game, opts);
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-health']
+};
+
+function FoodPlugin(game, opts) {
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-food requires voxel-registry plugin');
+
+  this.health = game.plugins.get('voxel-health');
+  if (!this.health) throw new Error('voxel-food requires voxel-health plugin');
+
+  this.items = opts.items || {
+    // TODO: rebalance
+    apple: {itemTexture: 'i/apple', foodAmount: 2.0, creativeTab: 'food'},
+    appleGolden: {itemTexture: 'i/apple_golden', foodAmount: 999.0, creativeTab: 'food', displayName: 'Golden Apple'},
+    beefCooked: {itemTexture: 'i/beef_cooked', foodAmount: 2.0, creativeTab: 'food', displayName: 'Cooked Beef'},
+    beefRaw: {itemTexture: 'i/beef_raw', foodAmount: 0.1, creativeTab: 'food', displayName: 'Raw Beef'},
+    bread: {itemTexture: 'i/bread', foodAmount: 3.0, creativeTab: 'food'},
+    cake: {itemTexture: 'i/cake', foodAmount: 3.5, creativeTab: 'food'},
+    carrot: {itemTexture: 'i/carrot', foodAmount: 0.25, creativeTab: 'food'},
+    carrotGolden: {itemTexture: 'i/carrot_golden', foodAmount: 5.0, creativeTab: 'food', displayName: 'Golden Carrot'},
+    chickenCooked: {itemTexture: 'i/chicken_cooked', foodAmount: 2.0, creativeTab: 'food', displayName: 'Cooked Chicken'},
+    chickenRaw: {itemTexture: 'i/chicken_raw', foodAmount: 0.1, creativeTab: 'food', displayName: 'Raw Chicken'},
+    cookie: {itemTexture: 'i/cookie', foodAmount: 0.5, creativeTab: 'food'},
+    melon: {itemTexture: 'i/melon', foodAmount: 0.5, creativeTab: 'food'},
+    potatoBaked: {itemTexture: 'i/potato_baked', foodAmount: 0.75, creativeTab: 'food', displayName: 'Baked Potato'},
+    pumpkinPie: {itemTexture: 'i/pumpkin_pie', foodAmount: 7.0, creativeTab: 'food', displayName: 'Pumpkin Pie'},
+    spiderEye: {itemTexture: 'i/spider_eye', foodAmount: -1.0, creativeTab: 'food', displayName: 'Spider Eye'},
+  };
+
+  this.enable();
+};
+
+FoodPlugin.prototype.enable = function() {
+  for (var name in this.items) {
+    var props = this.items[name];
+
+    props.onUse = this.eat.bind(this, props.foodAmount);
+
+    this.registry.registerItem(name, props);
+  }
+};
+
+FoodPlugin.prototype.disable = function() {
+  // TODO: unregister items
+};
+
+FoodPlugin.prototype.eat = function(amount, item) {
+  var effectiveAmount = this.health.heal(amount);
+
+  if (effectiveAmount === 0) {
+    return false; // didn't eat anything, we're full
+  } else {
+
+    // TODO: emit eat event for voxel-sfx
+
+    return true; // ate something, consume item
+  }
+};
+
+},{}],384:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new FullscreenPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-keys']
+};
+
+function FullscreenPlugin(game, opts) {
+  this.shell = game.shell;
+
+  this.keys = game.plugins.get('voxel-keys');
+  if (!this.keys) throw new Error('voxel-fullscreen requires voxel-keys');
+
+  this.element = opts.element !== undefined ? opts.element : document.body;
+  this.requestFlags = opts.requestFlag !== undefined ? opts.requestFlags : Element.ALLOW_KEYBOARD_INPUT;
+
+  this.pendingRequest = false;
+
+  this.enable();
+}
+
+FullscreenPlugin.prototype.enable = function() {
+  // ensure the full screen is covered on WebKit browsers
+  // https://github.com/deathcap/voxel-fullscreen/issues/1
+  document.body.style.width = '100%';
+
+  this.shell.bind('fullscreen', 'F11');
+  //this.keys.down.on('fullscreen', this.onToggle = this.toggle.bind(this));
+  document.addEventListener('keydown', this.onKeydown = this.keydown.bind(this));
+  this.onChange = this.changed.bind(this);
+  document.addEventListener('fullscreenchange', this.onChange);
+  document.addEventListener('webkitfullscreenchange', this.onChange);
+  document.addEventListener('mozfullscreenchange', this.onChange);
+  document.addEventListener('MSFullscreenchange', this.onChange);
+  document.addEventListener('click', this.onClick = this.click.bind(this));
+};
+
+FullscreenPlugin.prototype.disable = function() {
+  document.removeEventListener('keydown', this.onKeydown);
+  document.removeEventListener('click', this.onClick);
+  document.removeEventListener('MSFullscreenchange', this.onChange);
+  document.removeEventListener('mozfullscreenchange', this.onChange);
+  document.removeEventListener('webkitfullscreenchange', this.onChange);
+  document.removeEventListener('fullscreenchange', this.onChange);
+  //this.keys.down.removeListener('fullscreen', this.onToggle);
+  this.shell.unbind('fullscreen');
+};
+
+FullscreenPlugin.prototype.isFullscreen = function() {
+  return !!(
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement);
+  //return document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen; // non-standard
+};
+
+FullscreenPlugin.prototype.keydown = function(ev) {
+  var code = ev.keyCode;
+  var bindingNames = this.keys.getBindingsNames(code);
+  if (bindingNames.indexOf('fullscreen') == -1) return; // not us
+  // TODO: does this event need to be debounced? repeatedly sent when key is down,
+  // we could track keyup like voxel-keys to avoid repeat handling, but doesn't seem
+  // to be a problem right now (if user really wants to hold F11 to keep toggling...)
+
+  console.log('fullscreen keydown');
+  this.toggle();
+};
+
+// try to enter or exit fullscreen
+// note: if not called in response to user input, entering will be delayed until the next
+// time the user clicks their mouse, which counts as required user interaction (browser feature)
+FullscreenPlugin.prototype.toggle = function() {
+  if (this.isFullscreen()) {
+    console.log('fullscreen leaving');
+    this.leave();
+  } else {
+    console.log('fullscreen entering');
+    this.enter();
+  }
+};
+
+FullscreenPlugin.prototype.enter = function() {
+  // request might be denied: cleared in change(), or replayed in click()
+  this.pendingRequest = true;
+
+  var f = 
+    this.element.requestFullscreen ||
+    this.element.requestFullScreen ||
+    this.element.webkitRequestFullscreen ||
+    this.element.webkitRequestFullScreen ||
+    this.element.mozRequestFullscreen ||
+    this.element.mozRequestFullScreen ||
+    this.element.msRequestFullscreen;
+  if (!f) throw new Error('no requestFullscreen found on '+this.element);
+
+  f.call(this.element, this.requestFlags);
+};
+
+FullscreenPlugin.prototype.leave = function() {
+  var f =
+    document.exitFullscreen ||
+    document.cancelFullscreen ||
+    document.cancelFullScreen ||
+    document.webkitCancelFullscreen ||
+    document.webkitCancelFullScreen ||
+    document.mozCancelFullscreen ||
+    document.mozCancelFullScreen ||
+    document.msExitFullscreen;
+  if (!f) throw new Error('no exitFullscreen found on documnet');
+
+  f.call(document);
+
+  // leaving fullscreen for some reason releases pointer lock,
+  // but we can't re-request it here since it wasn't a mouse action :(
+  //this.shell.pointerLock = true;
+};
+
+FullscreenPlugin.prototype.changed = function() {
+  console.log('fullscreen changed', this.isFullscreen());
+  if (this.isFullscreen() && this.pendingRequest) {
+    this.pendingRequest = false; // fullfilled!
+  }
+};
+
+FullscreenPlugin.prototype.click = function() {
+  if (this.pendingRequest) {
+    // this is our chance to try again
+    this.enter();
+  }
+};
+
+},{}],385:[function(require,module,exports){
+'use strict';
+
+const InventoryDialog = require('voxel-inventory-dialog').InventoryDialog;
+const Inventory = require('inventory');
+const InventoryWindow = require('inventory-window');
+const ItemPile = require('itempile');
+
+module.exports = (game, opts) => new Furnace(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-recipes', 'voxel-carry', 'voxel-blockdata']
+};
+
+class Furnace {
+  constructor(game, opts) {
+    this.game = game;
+
+    if (!opts) opts = {};
+
+    this.playerInventory = game.plugins.get('voxel-carry').inventory || opts.playerInventory; // TODO: proper error if voxel-carry missing
+    if (!this.playerInventory) throw new Error('voxel-inventory-dialog requires "voxel-carry" plugin or playerInventory" set to inventory instance');
+
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-furnace requires "voxel-registry" plugin');
+
+    this.recipes = game.plugins.get('voxel-recipes');
+    if (!this.recipes) throw new Error('voxel-furnace requires "voxel-recipes" plugin');
+
+    if (this.recipes.registerSmelting === undefined) throw new Error('voxel-furnace requires voxel-recipes with smelting recipes');
+
+    this.blockdata = game.plugins.get('voxel-blockdata');
+    if (!this.blockdata) throw new Error('voxel-furnace requires "voxel-blockdata plugin');
+
+    if (opts.registerBlock === undefined) opts.registerBlock = true;
+    if (opts.registerRecipe === undefined) opts.registerRecipe = true;
+    if (opts.registerItems === undefined) opts.registerItems = true;
+    if (opts.registerRecipes === undefined) opts.registerRecipes = true;
+
+    if (this.game.isClient) {
+      this.furnaceDialog = new FurnaceDialog(game, this.playerInventory, this.registry, this.recipes, this.blockdata);
+    }
+
+    this.opts = opts;
+    this.enable();
+  }
+
+  enable() {
+    if (this.opts.registerBlock) {
+      this.registry.registerBlock('furnace', {texture: ['furnace_top', 'cobblestone', 'furnace_front_on'], onInteract: (target) => {
+        // TODO: server-side
+        this.furnaceDialog.open(target);
+        return true;
+      }});
+    }
+
+    if (this.opts.registerRecipe) {
+      this.recipes.registerPositional([
+        ['cobblestone', 'cobblestone', 'cobblestone'],
+        ['cobblestone', undefined, 'cobblestone'],
+        ['cobblestone', 'cobblestone', 'cobblestone']], ['furnace']);
+    }
+
+    if (this.opts.registerItems) {
+      this.registry.registerItem('ingotIron', {itemTexture: 'i/iron_ingot', displayName: 'Iron Ingot'});
+      this.registry.registerItem('nugget', {itemTexture: 'i/gold_nugget', displayName: 'Nugget'}); // TODO: iron_nugget, mod texture
+    }
+
+    if (this.opts.registerRecipes) {
+      this.recipes.registerSmelting('oreIron', new ItemPile('ingotIron')); // TODO: move to voxel-land?
+      this.recipes.registerSmelting('oreCoal', new ItemPile('coal'));
+      this.recipes.registerSmelting('cobblestone', new ItemPile('stone'));
+      this.recipes.registerAmorphous(['ingotIron'], new ItemPile('nugget', 9));
+      this.recipes.registerPositional([
+          ['nugget', 'nugget', 'nugget'],
+          ['nugget', 'nugget', 'nugget'],
+          ['nugget', 'nugget', 'nugget']], new ItemPile('ingotIron'));
+    }
+  }
+
+  disable() {
+    // TODO
+  }
+}
+
+class FurnaceDialog extends InventoryDialog {
+  constructor(game, playerInventory, registry, recipes, blockdata) {
+
+    const burnInventory = new Inventory(1);
+    const burnIW = new InventoryWindow({width:1, registry:registry, inventory:burnInventory, linkedInventory:playerInventory});
+
+    const fuelInventory = new Inventory(1);
+    const fuelIW = new InventoryWindow({width:1, registry:registry, inventory:fuelInventory, linkedInventory:playerInventory});
+
+    const resultInventory = new Inventory(1);
+    const resultIW = new InventoryWindow({inventory:resultInventory, registry:registry, allowDrop:false, linkedInventory:playerInventory});
+
+    // align as follows:
+    // +---------------------------------+
+    // |     [burn]                      |
+    // |             --->  [result]      |
+    // |     [fuel]                      |
+    // +---------------------------------+
+
+    // TODO: fix float:right in voxel-inventory-dialog; would prefer it centered (remove float, but make sure not to break voxel-inventory-crafting)
+    const allDiv = document.createElement('div');
+    allDiv.style.display = 'flex';
+    allDiv.style.justifyContent = 'center';
+    allDiv.style.width = '100%';
+  
+    const burnCont = burnIW.createContainer();
+    const fuelCont = fuelIW.createContainer();
+    const resultCont = resultIW.createContainer();
+
+    burnCont.style.display = 'flex';
+    burnCont.style.flex = '1';
+
+    fuelCont.style.display = 'flex';
+
+    resultCont.style.display = 'flex';
+    resultCont.style.flexFlow = 'column';
+    resultCont.style.justifyContent = 'center';
+
+    // burn and fuel div
+    const bfDiv = document.createElement('div');
+    bfDiv.style.display = 'flex';
+    bfDiv.style.flexFlow = 'column';
+    bfDiv.style.paddingTop = '10px';
+    bfDiv.style.paddingRight = '50px';  // give some space between result slot
+
+    bfDiv.appendChild(burnCont);
+    bfDiv.appendChild(fuelCont);
+
+
+    allDiv.appendChild(bfDiv);
+    allDiv.appendChild(resultCont);
+
+    super(game, {
+      playerLinkedInventory: burnInventory, // TODO: allow selectively linking to burn or fuel inv, depending on item type!
+      upper: [allDiv]
+    });
+
+    this.game = game;
+    this.playerInventory = playerInventory;
+    this.registry = registry;
+    this.recipes = recipes;
+    this.blockdata = blockdata;
+
+    // TODO: clear these inventories on close, or store in per-block metadata
+    this.burnInventory = burnInventory;
+    this.burnInventory.on('changed', () => this.updateSmelting());
+    this.burnIW = burnIW;
+    this.fuelInventory = fuelInventory;
+    this.fuelInventory.on('changed', () => this.updateSmelting());
+    this.fuelIW = fuelIW;
+    this.resultInventory = resultInventory;
+    this.resultIW = resultIW;
+    this.resultIW.on('pickup', () => this.updateSmelting());
+  }
+
+  updateSmelting() {
+    if (this.isSmelting) return; // prevent recursion
+    this.isSmelting = true;
+
+    while (true) {
+      if (!this.isFuel(this.fuelInventory.get(0))) return;
+
+      const smeltedOutput = this.recipes.smelt(this.burnInventory.get(0));
+      if (smeltedOutput === undefined) break; // not smeltable
+
+      if (this.resultInventory.get(0) && (this.resultInventory.get(0).item !== smeltedOutput.item || this.resultInventory.get(0).count == 64)) return; // not empty or stackable or no space
+
+      console.log(`smelting: ${this.fuelInventory} + ${this.burnInventory} = ${this.resultInventory}`);
+
+      const fuel = this.fuelInventory.takeAt(0, 1);
+      const burn = this.burnInventory.takeAt(0, 1); // TODO: custom burn amounts TODO: finite burn times
+
+      this.resultInventory.give(smeltedOutput);
+      
+      console.log(`smelted: ${this.fuelInventory} + ${this.burnInventory} = ${this.resultInventory}`);
+      }
+
+    this.isSmelting = false;
+    this.updateBlockdata();
+    }
+
+  isFuel(itemPile) {
+    if (!itemPile) return false;
+    const props = this.registry.getItemProps(itemPile.item);
+    if (!props) return false;
+
+    const fuelBurnTime = props.fuelBurnTime;
+    if (!fuelBurnTime) return false;
+
+    return true; // TODO: return burn time instead, and use variable length smelting times (GH-4)
+  }
+
+  // persistence
+  // TODO: refactor with voxel-chest and cleanup
+  loadBlockdata(x, y, z) {
+    let bd = this.blockdata.get(x, y, z);
+    if (bd !== undefined) {
+      this.burnInventory.set(0, ItemPile.fromString(bd.burn !== undefined ? bd.burn : ''));
+      this.fuelInventory.set(0, ItemPile.fromString(bd.fuel !== undefined ? bd.fuel : ''));
+      this.resultInventory.set(0, ItemPile.fromString(bd.result !== undefined ? bd.result : ''));
+    } else {
+      bd = {
+        burn:this.burnInventory.get(0) ? this.burnInventory.get(0).toString() : undefined,
+        fuel:this.fuelInventory.get(0) ? this.fuelInventory.get(0).toString() : undefined,
+        result:this.resultInventory.get(0) ?  this.resultInventory.get(0).toString() : undefined
+      };
+      this.blockdata.set(x, y, z, bd);
+    }
+
+    this.activeBlockdata = bd;
+    console.log('load bd',x,y,z,JSON.stringify(this.activeBlockdata));
+  }
+
+  updateBlockdata() {
+    console.log(`burn=${this.burnInventory}, fuel=${this.fuelInventory}, result=${this.resultInventory}`);
+
+    if (this.activeBlockdata === undefined) return;
+    this.activeBlockdata.burn = this.burnInventory.get(0) ? this.burnInventory.get(0).toString() : undefined;
+    this.activeBlockdata.fuel = this.fuelInventory.get(0) ? this.fuelInventory.get(0).toString() : undefined;
+    this.activeBlockdata.result = this.resultInventory.get(0) ? this.resultInventory.get(0).toString() : undefined;
+    console.log('update bd',JSON.stringify(this.activeBlockdata));
+  }
+
+  open(target) {
+    const x = target.voxel[0];
+    const y = target.voxel[1];
+    const z = target.voxel[2];
+    this.loadBlockdata(x, y, z);
+
+    super.open();
+  }
+
+  close() {
+    delete this.activeBlockdata;
+    this.burnInventory.clear();
+    this.fuelInventory.clear();
+    this.resultInventory.clear();
+    super.close();
+  }
+}
+
+},{"inventory":274,"inventory-window":273,"itempile":282,"voxel-inventory-dialog":394}],386:[function(require,module,exports){
+'use strict';
+
+module.exports = (game, opts) => new GamemodePlugin(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-mine', 'voxel-flight', 'voxel-registry', 'voxel-harvest', 'voxel-commands', 'voxel-keys']
+};
+
+class GamemodePlugin {
+  constructor(game, opts) {
+    this.game = game;
+
+    this.keys = this.game.plugins.get('voxel-keys');
+    if (!this.keys) throw new Error('voxel-gamemode requires voxel-keys plugin');
+
+    this.mode = opts.startMode !== undefined ? opts.startMode : 'survival';
+    this.registry = this.game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-gamemode requires "voxel-registry" plugin');
+
+    this.enable();
+  }
+
+  enable() {
+    const commandsPlugin = this.game.plugins.get('voxel-commands');
+    if (commandsPlugin) {
+      commandsPlugin.registerCommand('creative', this.enterCreative.bind(this), '', 'enters creative mode');
+      commandsPlugin.registerCommand('survival', this.enterSurvival.bind(this), '', 'enters survival mode');
+    }
+
+    if (this.game.plugins.isEnabled('voxel-flight') && this.mode == 'survival') {
+        this.game.plugins.disable('voxel-flight');
+    }
+
+    this.keys.registerKey('inventory', 'E');
+    this.keys.down.on('inventory', this.onInventory = () => {
+      if (this.mode === 'creative' && this.game.plugins.isEnabled('voxel-inventory-creative')) {
+        const creative = this.game.plugins.get('voxel-inventory-creative');
+        if (creative) creative.open();
+      } else {
+        const crafting = this.game.plugins.get('voxel-inventory-crafting');
+        if (crafting) crafting.open();
+      }
+    });
+  }
+
+  enterCreative() {
+    this.mode = 'creative';
+    this.game.plugins.enable('voxel-flight');
+    if (this.game.plugins.get('voxel-mine')) this.game.plugins.get('voxel-mine').instaMine = true;
+    if (this.game.plugins.get('voxel-harvest')) this.game.plugins.get('voxel-harvest').enableToolDamage = false;
+    console.log('Entered creative mode');
+    if (this.game.plugins.get('voxel-console')) this.game.plugins.get('voxel-console').log('Entered creative mode');
+  }
+
+  enterSurvival() {
+    this.mode = 'survival';
+    this.game.plugins.disable('voxel-flight');
+    if (this.game.plugins.get('voxel-mine')) this.game.plugins.get('voxel-mine').instaMine = false;
+    if (this.game.plugins.get('voxel-harvest')) this.game.plugins.get('voxel-harvest').enableToolDamage = true;
+    console.log('Entered survival mode');
+    if (this.game.plugins.get('voxel-console')) this.game.plugins.get('voxel-console').log('Entered survival mode');
+  }
+
+  disable() {
+    this.keys.down.removeListener('inventory', this.onInventory);
+    this.keys.unregisterKey('inventory');
+    // TODO: un-registerCommand
+  }
+}
+
+},{}],387:[function(require,module,exports){
+'use strict';
+
+var ItemPile = require('itempile');
+var ucfirst = require('ucfirst');
+
+module.exports = function(game, opts) {
+  return new GlassPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-use', 'voxel-recipes']
+};
+
+function GlassPlugin(game, opts) {
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-glass requires voxel-registry');
+
+  this.use = game.plugins.get('voxel-use');
+  if (!this.use) throw new Error('voxel-glass requires voxel-use');
+
+  this.recipes = game.plugins.get('voxel-recipes'); // optional
+
+  this.colors = opts.colors !== undefined ? opts.colors : ['black', 'blue', 'brown', 'cyan', 'gray', 'green', 'light_blue', 'lime', 'magenta', 'orange', 'pink', 'purple', 'red', 'silver', 'white', 'yellow'];
+
+  this.enable();
+}
+
+// Get X or Z depending on the player orientation
+GlassPlugin.prototype.playerOrientation = function() {
+  var heading = Math.atan2(self.game.cameraVector()[0], self.game.cameraVector()[2]);
+  var dir;
+  if (Math.abs(heading) <= Math.PI / 4) { // 0 +/- 45 degrees // TODO: refactor with voxel-pumpkin, generic block/player orientation module?
+    return 'Z'; // north
+  } else if (Math.PI - Math.abs(heading) <= Math.PI / 4) { // +/-180 +/- 45
+    return 'Z'; // south
+  } else if (heading > 0) { // +90 +/- 45
+    return 'X'; // west
+  } else { // if (heading <= 0) { // -90 +/- 45
+    return 'X'; // east
+  }
+};
+
+GlassPlugin.prototype.enable = function() {
+  this.registry.registerBlock('glass', {texture: 'glass', transparent: true, hardness: 0.2, creativeTab: 'glass', harvestSound: 'random/glass1'});
+
+  for (var i = 0; i < this.colors.length; i += 1) {
+    this.registerPane(this.colors[i]); // TODO: use metablocks?
+  }
+  this.registerPane(''); // clear
+
+  if (this.recipes) {
+    this.recipes.registerPositional([['glass', 'glass', 'glass']], ['glassPane', 3]);
+
+    // TODO: dye recipes, harmonize with https://github.com/deathcap/voxel-wool (API?)
+  }
+};
+
+// Register an item and two blocks for a glass pane of the given color
+GlassPlugin.prototype.registerPane = function(color) {
+  var colorName = ucfirst(color);
+
+  var texture = color !== '' ? ('glass_' + color) : 'glass';
+
+  // item
+  var self = this;
+  this.registry.registerItem('glassPane' + colorName, {
+    displayName: colorName + ' Glass Pane',
+    itemTexture: texture,
+    creativeTab: 'glass',
+    onUse: function(held, target) {
+      // place X or Z pane depending on facing
+      return self.use.useBlock(target, new ItemPile('glassPane' + self.playerOrientation() + colorName)) === undefined;
+    },
+  });
+
+  // oriented blocks
+
+  this.registry.registerBlock('glassPaneZ' + colorName, {
+    harvestSound: 'random/glass1',
+    creativeTab: false,
+    itemDrop: 'glassPane' + colorName,
+    displayName: colorName + ' Glass Pane Z',
+    itemTexture: texture, // flat, not 3D cube
+    texture: texture,     // preload for model below
+    blockModel:
+      [{from: [0,0,7],
+      to: [16,16,2],
+      faceData: {
+        down: {},
+        up: {},
+        north: {},
+        south: {},
+        west: {},
+        east: {}
+        },
+      texture: texture, // for all faces. TODO: use glass_pane_top for narrow faces?
+      }],
+  });
+
+  // same as above but oriented along X axis
+  this.registry.registerBlock('glassPaneX' + colorName, {
+    harvestSound: 'random/glass1',
+    creativeTab: false,
+    itemDrop: 'glassPane' + colorName,
+    displayName: colorName + ' Glass Pane X',
+    itemTexture: texture,
+    texture: texture,
+    blockModel:
+      [{from: [7,0,0],
+      to: [2,16,16],
+      faceData: {
+        down: {},
+        up: {},
+        north: {},
+        south: {},
+        west: {},
+        east: {}
+        },
+      texture: texture,
+      }],
+  });
+};
+
+GlassPlugin.prototype.disable = function() {
+  // TODO: unregister blocks
 };
 
 
-},{}],326:[function(require,module,exports){
+},{"itempile":282,"ucfirst":346}],388:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new HammerPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-mine', 'voxel-inventory-hotbar', 'voxel-recipes']
+};
+
+function HammerPlugin(game, opts) {
+  this.game = game;
+
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-hammer requires voxel-registry plugin');
+
+  this.mine = game.plugins.get('voxel-mine');
+  if (!this.mine) throw new Error('voxel-hammer requires voxel-mine');
+
+  this.hotbar = game.plugins.get('voxel-inventory-hotbar'); // TODO: carry?
+  if (!this.hotbar) throw new Error('voxel-hammer requires voxel-inventory-hotbar');
+
+  this.recipes = game.plugins.get('voxel-recipes'); // optional
+
+  this.enable();
+};
+
+HammerPlugin.prototype.enable = function() {
+  this.registry.registerItem('hammer', {
+    itemTexture: 'items/iron_pickaxe', // TODO
+    displayName: 'Hammer',
+    speed: 25.0,
+    //maxDamage: // TODO
+    toolClass: 'pickaxe',
+  });
+  if (this.recipes) {
+    this.recipes.registerPositional([
+        ['ingotIron', 'ingotIron', 'ingotIron'],
+        ['ingotIron', 'stick', 'ingotIron'],
+        [undefined, 'stick', undefined]], ['hammer']);
+  }
+  this.mine.on('break', this.break.bind(this));
+};
+
+HammerPlugin.prototype.disable = function() {
+};
+
+var around = function(cb) {
+  [-1, 0, 1].forEach(function(dx) {
+    [-1, 0, 1].forEach(function(dy) {
+      [-1, 0, 1].forEach(function(dz) {
+        cb(dx, dy, dz);
+      });
+    });
+  });
+};
+
+HammerPlugin.prototype.break = function(target) {
+  var heldItem = this.hotbar.held();
+
+  if (!heldItem || heldItem.item !== 'hammer') return; // TODO: can voxel-mine call us from registry property, instead? (ala onUse voxel-use)
+  if (target.fromHammer) return; // don't respond to our own events TODO: generic fromPlayer/synthetic property?
+
+  console.log(target);
+  around(function(dx, dy, dz) {
+    var x = target.voxel[0] + (target.normal[0] === 0 ? dx : 0);
+    var y = target.voxel[1] + (target.normal[1] === 0 ? dy : 0);
+    var z = target.voxel[2] + (target.normal[2] === 0 ? dz : 0);
+    console.log(x,y,z);
+
+    this.mine.emit('break', {voxel:[x,y,z], value:target.value, fromHammer:true}); // removes block, damages tool, adds to inventory
+  }.bind(this));
+};
+
+},{}],389:[function(require,module,exports){
+'use strict';
+
+const EventEmitter = require('events').EventEmitter;
+const ItemPile = require('itempile');
+
+module.exports = (game, opts) => new Harvest(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-mine', 'voxel-registry', 'voxel-carry', 'voxel-inventory-hotbar', 'voxel-console']
+};
+
+class Harvest extends EventEmitter {
+  constructor(game, opts) {
+    super();
+
+    this.game = game;
+    this.enableToolDamage = opts.enableToolDamage !== undefined ? opts.enableToolDamage : true;
+
+    this.mine = game.plugins.get('voxel-mine');
+    if (!this.mine) throw new Error('voxel-harvest requires "voxel-mine" plugin');
+
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-harvest requires "voxel-registry" plugin');
+
+    this.playerInventory = game.plugins.get('voxel-carry') ? game.plugins.get('voxel-carry').inventory : opts.playerInventory;
+    if (!this.playerInventory) throw new Error('voxel-harvest requires "voxel-carry" plugin or "playerInventory" option set to inventory instance');
+
+    this.hotbar = game.plugins.get('voxel-inventory-hotbar'); // optional
+    this.console = game.plugins.get('voxel-console'); // optional
+    this.enable();
+  }
+
+  enable() {
+    //this.playerInventory.give new ItemPile('pickaxeWood', 5, {damage:5})
+    //this.playerInventory.give new ItemPile('plankOak', 50)
+    //this.playerInventory.give new ItemPile('pickaxeStone', 1, {damage:0})
+    //this.playerInventory.give new ItemPile('chest', 1)
+
+    this.mine.on('break', this.onBreak = (target) => {
+      //if plugins.isEnabled('debris') # TODO: refactor into module itself (event listener)
+      //  debris(target.voxel, target.value)
+      //else
+      game.setBlock(target.voxel, 0);
+
+      this.damageToolHeld(1);
+
+      // send 'harvest' event, allow preventing (similar to DOM events)
+      event = {
+        target: target,
+        defaultPrevented: false,
+        preventDefault: () => this.defaultPrevented = true
+      };
+      this.emit('harvesting', event);
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      const blockName = this.registry.getBlockName(target.value);
+      const droppedPile = this.block2ItemPile(blockName, this.hotbar ? this.hotbar.held() : undefined);
+      if (droppedPile === undefined) {
+        return;
+      }
+
+      // adds to inventory and refreshes toolbar
+      const excess = this.playerInventory.give(droppedPile);
+
+      if (excess > 0) {
+        // if didn't fit in inventory, un-mine the block since they can't carry it
+        // TODO: handle partial fits, prevent dupes (canFit before giving?) -- needed once have custom drops
+        this.game.setBlock(target.voxel, target.value);
+        // TODO: sfx
+        if (this.console) {
+          this.console.log('You try to mine this block, but are unable to carry it with you (player inventory full)');
+        }
+        return;
+      }
+
+      event = {
+        target: target
+      };
+      this.emit('harvested', event);
+    });
+  }
+
+  disable() {
+    this.mine.removeListener('break', this.onBreak);
+  }
+
+  damageToolHeld(n) {
+    if (n === undefined) n = 1;
+    if (!this.hotbar) return; // no hotbar, no support
+    if (!this.enableToolDamage) return;
+
+    let tool = this.hotbar.held();
+    if (tool === undefined) return; // no tool held
+
+    const maxDamage = this.registry.getProp(tool.item, 'maxDamage');
+    if (maxDamage === undefined) return; // not an item with finite durability
+
+    if (tool.tags.damage === undefined) tool.tags.damage = 0;
+    tool.tags.damage += 1;
+
+    if (tool.tags.damage >= maxDamage) {
+      // break tool # TODO: fanfare
+      tool = undefined;
+    }
+
+    this.hotbar.inventory.set(this.hotbar.inventoryWindow.selectedIndex, tool);
+    this.hotbar.refresh();
+    //console.log 'tool = ',tool
+  }
+
+  block2ItemPile(blockName, heldTool) {
+    let item = this.registry.getProp(blockName, 'itemDrop');
+    if (item == null) {
+      // special case, null = no drops
+      return undefined;
+    }
+    if (item === undefined) {
+      // unspecified, block drops itself
+      item = blockName;
+    }
+
+    const heldToolClass = this.registry.getProp(heldTool !== undefined ? heldTool.item : undefined, 'toolClass');
+    const requiredToolClass = this.registry.getProp(blockName, 'requiredTool');
+    if (requiredToolClass !== undefined && heldToolClass !== requiredToolClass) { // TODO: array
+      // requires a specific tool, and wrong tool was used
+      return undefined;
+    }
+
+    // TODO: option to drop >1 count of item
+    // TODO: option to drop probabilistically, count range min-max, with given chances
+
+    const itemPile = new ItemPile(item, 1)
+
+    return itemPile;
+  }
+}
+
+},{"events":15,"itempile":282}],390:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new HealthBarPlugin(game, opts);
+};
+
+module.exports.pluginInfo = {
+  clientOnly: true,
+  loadAfter: [
+    'voxel-health',           // provides health value
+    'voxel-inventory-hotbar'  // optional, but looks better loading after
+    ]
+};
+
+var cssPercentWidth = function(value, max) {
+  return (value / max * 100.0) + '%';
+}
+
+function HealthBarPlugin(game, opts) {
+  this.opts = opts || {};
+
+  this.healthPlugin = game.plugins && game.plugins.get('voxel-health');
+  if (!this.healthPlugin) throw new Error('voxel-health-bar requires voxel-health plugin');
+
+  this.enable();
+}
+
+HealthBarPlugin.prototype.enable = function() {
+  var opts = this.opts;
+
+  var bar = document.createElement('div');
+  bar.style.backgroundColor = opts.frontColor || 'darkgreen';
+  bar.style.width = cssPercentWidth(this.healthPlugin.startHealth, this.healthPlugin.maxHealth);
+  bar.style.height = '100%';
+
+  var inner = document.createElement('div');
+  inner.style.margin = '0 auto';
+  inner.style.width = opts.width || '880px';
+  inner.style.height = opts.height || '20px';
+  inner.style.backgroundColor = opts.backColor || 'lightgreen';
+  inner.style.opacity = opts.opacity || '0.8';
+  inner.appendChild(bar);
+
+  var container = document.createElement('div');
+  container.setAttribute('id', 'voxel-health-bar');
+  container.style.width = '100%';
+  container.style.position = 'absolute';
+  container.style.bottom = opts.bottom || '100px';
+  container.appendChild(inner);
+  document.body.appendChild(container);
+
+  this.bar = bar;
+  this.container = container;
+
+  this.healthPlugin.on('health', this.onHealth = this.update.bind(this));
+};
+
+HealthBarPlugin.prototype.disable = function() {
+  if (this.container) this.container.parentElement.removeChild(this.container);
+
+  delete this.bar;
+  delete this.container;
+
+  this.healthPlugin.removeListener('health', this.onHealth);
+};
+
+HealthBarPlugin.prototype.update = function() {
+  if (this.bar) this.bar.style.width = this.healthPlugin.percentage() + '%';
+};
+
+},{}],391:[function(require,module,exports){
+'use strict';
+
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
+
+module.exports = function(game, opts) {
+  return new Health(game, opts);
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-commands']
+};
+
+function Health(game, opts) {
+  this.maxHealth = opts.maxHealth || 10;
+  this.minHealth = opts.minHealth || 0;
+  this.startHealth = opts.startHealth || this.maxHealth;
+
+  this.value = this.startHealth;
+
+  this.game = game;
+
+  this.enable();
+}
+
+inherits(Health, EventEmitter);
+
+Health.prototype.enable = function() {
+  if (this.game.plugins && this.game.plugins.isEnabled('voxel-commands')) {
+    this.game.plugins.get('voxel-commands').registerCommand('heal', this.onHeal = this.heal.bind(this, this.maxHealth), '', 'sets health to maximum');
+  }
+};
+
+Health.prototype.disable = function() {
+  if (this.game.plugins && this.game.plugins.isEnabled('voxel-commands')) {
+    this.game.plugins.get('voxel-commands').unregisterCommand('heal', this.onHeal);
+  }
+};
+
+Health.prototype.hurt = function(amount) {
+  if (amount < 0) return this.heal(-amount);
+  if (amount !== Infinity && !Number.isFinite(amount)) throw new Error('voxel-health hurt('+amount+') called with non-finite amount');
+  
+  var oldValue = this.value;
+  this.value -= amount;
+  if (this.value < this.minHealth) 
+    this.value = this.minHealth;
+
+  var effectiveAmount = this.value - oldValue;
+
+  this.emit('health', this.value, oldValue);
+  this.emit('hurt', effectiveAmount, amount, this.value, oldValue);
+
+  if (this.value === this.minHealth) {
+    this.emit('die');
+  }
+
+  return effectiveAmount;
+};
+
+Health.prototype.heal = function(amount) {
+  if (amount < 0) return this.hurt(-amount);
+  if (amount !== Infinity && !Number.isFinite(amount)) throw new Error('voxel-health heal('+amount+') called with non-finite amount');
+
+  var oldValue = this.value;
+
+  this.value += amount;
+  if (this.value > this.maxHealth)
+    this.value = this.maxHealth;
+
+  var effectiveAmount = oldValue - this.value;
+
+  this.emit('health', this.value, oldValue);
+  this.emit('heal', effectiveAmount, amount, this.value, oldValue);
+
+  return effectiveAmount;
+};
+
+Health.prototype.scaledValue = function() {
+  return this.value / this.maxHealth;
+};
+
+Health.prototype.percentage = function() {
+  return this.scaledValue() * 100.0;
+};
+
+
+},{"events":15,"inherits":272}],392:[function(require,module,exports){
+'use strict';
+
+const Inventory = require('inventory');
+const InventoryWindow = require('inventory-window');
+const ItemPile = require('itempile');
+const InventoryDialog = require('voxel-inventory-dialog').InventoryDialog;
+
+module.exports = (game, opts) => new InventoryCrafting(game, opts);
+
+module.exports.pluginInfo = {
+  'loadAfter': ['voxel-recipes', 'voxel-carry', 'voxel-registry']
+};
+
+class InventoryCrafting extends InventoryDialog {
+  constructor(game, opts) {
+
+    const recipes = game.plugins.get('voxel-recipes');
+    if (!recipes) throw new Error('voxel-inventory-crafting requires "voxel-recipes" plugin')
+
+    const registry = game.plugins.get('voxel-registry');
+    if (!registry) throw new Error('voxel-inventory-crafting requires "voxel-registry" plugin')
+
+    const playerInventory = game.plugins.get('voxel-carry').inventory || opts.playerInventory; // TODO: proper error if voxel-carry missing
+    if (!playerInventory) throw new Error('voxel-inventory-dialog requires "voxel-carry" plugin or playerInventory" set to inventory instance');
+
+
+    const craftInventory = new Inventory(2, 2);
+    craftInventory.on( 'changed', () => this.updateCraftingRecipe());
+    const craftIW = new InventoryWindow({inventory:craftInventory, registry:registry, linkedInventory:playerInventory});
+
+    const resultInventory = new Inventory(1);
+    const resultIW = new InventoryWindow({inventory:resultInventory, registry:registry, allowDrop:false, linkedInventory:playerInventory});
+    resultIW.on('pickup', () => this.tookCraftingOutput());
+
+    // crafting + result div, add to upper from InventoryDialog
+    const craftCont = craftIW.createContainer();
+
+    const craftContOuter = document.createElement('div');  // so craftCont can float left
+    craftContOuter.appendChild(craftCont);
+
+    const resultCont = resultIW.createContainer();
+    resultCont.style.display = 'flex';
+    resultCont.style.flexFlow = 'column';
+    resultCont.style.justifyContent = 'center';
+    resultCont.style.marginLeft = '30px';
+
+    const outer = document.createElement('div');
+    outer.style.display = 'flex';
+    outer.style.float = 'right';
+    outer.style.margin = '30px';
+
+    outer.appendChild(craftContOuter);
+    outer.appendChild(resultCont);
+
+    super(game, {
+      upper: [outer]
+    });
+
+    this.game = game;
+    this.recipes = recipes;
+    this.registry = registry;
+    this.craftInventory = craftInventory;
+    this.craftIW = craftIW;
+    this.resultInventory = resultInventory;
+    this.resultIW = resultIW;
+  }
+
+  enable() {
+  }
+
+  disable() {
+  }
+
+  // changed crafting grid, so update recipe output
+  updateCraftingRecipe() {
+    const recipe = this.recipes.find(this.craftInventory);
+    console.log('found recipe',recipe);
+    this.resultInventory.set(0, recipe !== undefined ? recipe.computeOutput(this.craftInventory) : undefined);
+  }
+
+  // picked up crafting recipe output, so consume crafting grid ingredients
+  tookCraftingOutput() {
+    const recipe = this.recipes.find(this.craftInventory);
+    if (recipe === undefined) return;
+
+    recipe.craft(this.craftInventory);
+    this.craftInventory.changed();
+  }
+}
+
+
+},{"inventory":274,"inventory-window":273,"itempile":282,"voxel-inventory-dialog":394}],393:[function(require,module,exports){
+'use strict';
+
+const Inventory = require('inventory');
+const InventoryWindow = require('inventory-window');
+const InventoryDialog = require('voxel-inventory-dialog').InventoryDialog;
+const ItemPile = require('itempile');
+
+module.exports = (game, opts) => new CreativeInventoryPlugin(game, opts);
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-carry']
+}
+
+class CreativeInventoryPlugin extends InventoryDialog {
+  constructor(game, opts) {
+    const registry = game.plugins.get('voxel-registry');
+    if (!registry) throw new Error('voxel-creative-inventory requires voxel-registry')
+
+    const div = document.createElement('div');
+
+    const thisInventory = new Inventory(10, 3); // TODO: multi-paged inventory
+    if (!game.plugins.get('voxel-carry')) throw new Error('voxel-inventory-creative requires voxel-carry');
+    const playerInventory = game.plugins.get('voxel-carry').inventory;
+    const thisIW = new InventoryWindow({inventory:thisInventory, registry:registry, linkedInventory:playerInventory});
+
+    const buttons = document.createElement('div');
+    div.appendChild(buttons);
+    div.appendChild(thisIW.createContainer());
+
+    super(game, {upper: [div]});
+
+    this.game = game;
+    this.hideHiddenItems = opts.hideHiddenItems !== undefined ? opts.hideHiddenItems : true;
+    this.registry = registry;
+    this.thisInventory = thisInventory;
+    this.thisIW = thisIW;
+    this.buttons = buttons;
+  }
+
+  enable() {
+  }
+
+  disable() {
+  }
+
+  open() {
+    const categories = this.scanCategories();
+    this.addButtons(categories);
+    this.populateCategory(categories, this.activeCategory);
+
+    super.open();
+  }
+
+  addButtons(categories) {
+    while(this.buttons.firstChild) {
+      this.buttons.removeChild(this.buttons.firstChild);
+    }
+
+    // sort categories, items and blocks always first
+    const categoryNames = Object.keys(categories);
+    categoryNames.sort((a, b) => {
+      if (a === 'items') a = '0items';
+      if (a === 'blocks') a = '1blocks';
+      if (b === 'items') b = '0items';
+      if (b === 'blocks') b = '1blocks';
+
+      if (a < b) {
+        return -1;
+      } else if (a > b) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    // TODO: real tabs?
+    categoryNames.forEach((category) => {
+      const button = document.createElement('button');
+      button.textContent = category; // TODO: category icons
+      button.addEventListener('click', () => {
+        //  rescan and populate
+        this.populateCategory(this.scanCategories(), category);
+      });
+
+      this.buttons.appendChild(button);
+    })
+  }
+
+  // Scan all items/blocks and return object with categories to item names
+  // Note: items/blocks can be registered at any time! Recall for latest data.
+  scanCategories() {
+    const categories = {};
+
+    // TODO: add a proper API in voxel-registry to get all items and blocks
+
+    // scan for all categories
+    for (let name of Object.keys(this.registry.itemProps)) {
+      const props = this.registry.itemProps[name];
+
+      const category = props.creativeTab !== undefined ? props.creativeTab : 'items';
+      if (category === false) continue;
+
+      if (!categories[category]) categories[category] = [];
+      categories[category].push(name);
+    }
+
+    // group items into their category
+    for (let blockIndex of Object.keys(this.registry.blockProps)) {
+      if ((blockIndex|0) === 0) continue; // skip air
+      const props = this.registry.blockProps[blockIndex];
+
+      const name = this.registry.getBlockName(blockIndex);
+      const category = props.creativeTab !== undefined ? props.creativeTab : 'blocks';
+      if (category === false && this.hideHiddenItems) continue; // special case to hide (for internal technical blocks, etc.)
+
+      if (!categories[category]) categories[category] = [];
+      categories[category].push(name);
+    }
+
+    // TODO: maybe leave unsorted, so items from the same plugin are grouped together?
+    // or perhaps better yet, somehow track the plugin that registered each item?
+    for (let category of Object.keys(categories)) {
+      const items = categories[category];
+      items.sort();
+    }
+
+    console.log(categories);
+    return categories;
+  }
+
+  populateCategory(categories, category) {
+    if (!category) category = 'items';
+    this.activeCategory = category;
+
+    this.thisInventory.clear();
+
+    const items = categories[category];
+    if (!items) items = [];
+
+    for (let i = 0; i < items.length; ++i) {
+      const name = items[i];
+      this.thisInventory.set(i, new ItemPile(name, Infinity));
+    }
+  }
+}
+
+},{"inventory":274,"inventory-window":273,"itempile":282,"voxel-inventory-dialog":394}],394:[function(require,module,exports){
+'use strict';
+
+const Inventory = require('inventory');
+const InventoryWindow = require('inventory-window');
+const ItemPile = require('itempile');
+const ModalDialog = require('voxel-modal-dialog');
+
+// plugin for example purposes
+module.exports = (game, opts) => {
+  return new InventoryDialog(game, opts);
+}
+
+module.exports.pluginInfo = {
+  'loadAfter': ['voxel-recipes', 'voxel-carry', 'voxel-registry']
+};
+
+
+// class for extension in other plugins
+
+class InventoryDialog extends ModalDialog {
+  constructor(game, opts) {
+    super(game, InventoryDialog.createInventoryDialogContent(opts));
+  }
+
+  static createInventoryDialogContent(opts) {
+    const registry = game.plugins.get('voxel-registry');
+    if (!registry) throw new Error('voxel-inventory-dialog requires "voxel-registry" plugin')
+
+    const playerInventory = game.plugins.get('voxel-carry').inventory || opts.playerInventory; // TODO: proper error if voxel-carry missing
+    if (!playerInventory) throw new Error('voxel-inventory-dialog requires "voxel-carry" plugin or playerInventory" set to inventory instance');
+
+    const playerIW = new InventoryWindow({inventory: playerInventory, registry: registry, linkedInventory: opts.playerLinkedInventory});
+
+    // upper section for any other stuff
+    const upper = document.createElement('div');
+
+    if (opts.upper) {
+      for (let element of opts.upper) {
+        upper.appendChild(element);
+      }
+    }
+   
+    const contents = [];
+    contents.push(upper);
+    contents.push(document.createElement('br')); // TODO: better positioning
+    // player inventory at bottom
+    contents.push(playerIW.createContainer());
+
+    opts.contents = contents;
+    opts.escapeKeys = [192, 69]; // '`', 'E';
+
+    return opts;
+  }
+
+  enable() {
+  }
+
+  disable() {
+  }
+}
+
+module.exports.InventoryDialog = InventoryDialog
+
+
+
+},{"inventory":274,"inventory-window":273,"itempile":282,"voxel-modal-dialog":405}],395:[function(require,module,exports){
+'use strict';
+
+const EventEmitter = require('events').EventEmitter;
+const InventoryWindow = require('inventory-window');
+const ever = require('ever');
+
+module.exports = (game, opts) => {
+  if (game.isClient) {
+    return new InventoryHotbarClient(game, opts);
+  } else {
+    return new InventoryHotbarCommon(game, opts);
+  }
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-carry', 'voxel-registry', 'voxel-keys']
+};
+
+class InventoryHotbarCommon extends EventEmitter {
+  constructor(game, opts) {
+    super();
+    this.game = game;;
+
+    if (!opts) opts = {};
+
+    this.inventory = game.plugins.get('voxel-carry').inventory || opts.playerInventory; // TODO: proper error if voxel-carry missing
+    if (!this.inventory ) throw new Error('voxel-inventory-dialog requires "voxel-carry" plugin or playerInventory" set to inventory instance');
+
+    this.selectedIndex = 0;
+  }
+
+  enable() {
+  }
+
+  disable() {
+  }
+
+  give(itemPile){
+    return this.inventory.give(itemPile);
+  }
+
+  take(itemPile) {
+    return this.inventory.take(itemPile);
+  }
+
+  // take some items from the pile the player is currently holding
+  takeHeld() {
+    if (count === undefined) count = 1;
+    return this.inventory.takeAt(this.selectedIndex, count);
+  }
+
+  // completely replace held item pile
+  replaceHeld(itemPile) {
+    return this.inventory.set(this.selectedIndex, itemPile);
+  }
+
+  // get the pile of items the player is currently holding
+  held() {
+    return this.inventory.get(this.selectedIndex);
+  }
+
+  setSelectedIndex(x) {
+    this.selectedIndex = x;
+  }
+}
+
+class InventoryHotbarClient extends InventoryHotbarCommon {
+  constructor(game, opts) {
+    super(game, opts);
+
+    this.game = game;
+
+    this.keys = game.plugins.get('voxel-keys');
+    if (!this.keys) throw new Error('voxel-inventory-hotbar requires voxel-keys plugin');
+
+    this.wheelEnable = opts.wheelEnable !== undefined ? opts.wheelEnable : false; // enable scroll wheel to change slots?
+    this.wheelScale = opts.wheelScale !== undefined ? opts.wheelScale : 1.0;  // mouse wheel scrolling sensitivity
+
+    const registry = game.plugins.get('voxel-registry');
+    const windowOpts = opts.windowOpts !== undefined ? opts.windowOpts : {};
+    if (!windowOpts.registry && registry) windowOpts.registry = registry;
+    if (!windowOpts.inventory) windowOpts.inventory = this.inventory;
+
+    if (windowOpts.inventorySize === undefined) windowOpts.inventorySize = opts.inventorySize;
+    if (windowOpts.inventorySize === undefined) windowOpts.inventorySize = this.inventory.size();
+
+    if (windowOpts.width === undefined) windowOpts.width = opts.width;
+    if (windowOpts.width === undefined) windowOpts.width = windowOpts.inventorySize; // default to one row
+
+    this.inventoryWindow = new InventoryWindow(windowOpts);
+    this.inventoryWindow.selectedIndex = 0;
+    //this.setSelectedIndex(0); // can't set this early; requires DOM
+
+    const container = this.inventoryWindow.createContainer();
+
+    // center at bottom of screen
+    container.style.bottom = '0px';
+    container.style.zIndex = 5;
+    container.style.width = '100%';
+    container.style.position = 'fixed';
+    container.style.float = '';
+    container.style.border = '';  // not tight around edges
+
+    const outerDiv = document.createElement('div');
+    outerDiv.style.width = '100%';
+    outerDiv.style.textAlign = 'center';
+    outerDiv.appendChild(container);
+
+    document.body.appendChild(outerDiv);
+
+    this.enable();
+  }
+
+  setSelectedIndex(x) {
+    event = {
+      oldIndex: this.selectedIndex,
+      newIndex:x,
+      cancelled:false,
+    };
+
+    this.emit('selectionChanging', event);
+    if (event.cancelled) return;
+
+    this.inventoryWindow.setSelected(x);
+    super.setSelectedIndex(x);
+  }
+
+  enable() {
+    this.inventoryWindow.container.style.visibility = '';
+    this.onSlots = {};
+
+    if (this.wheelEnable) {
+      ever(document.body).on('mousewheel', this.mousewheel = (ev) => { // TODO: also DOMScrollWheel for Firefox
+        console.log('mousewheel',ev);
+        let delta = ev.wheelDelta;
+        delta /= this.wheelScale;
+        delta = Math.floor(delta);
+
+        let newSlot = this.selectedIndex + delta;
+        function true_modulo(a, b) { return (a % b + b) % b; } // a %% b
+        newSlot = true_modulo(newSlot, this.inventoryWindow.width);
+        console.log(newSlot);
+        this.setSelectedIndex(newSlot);
+      });
+    }
+
+    if (this.game.shell || this.game.buttons.bindings) { // configurable bindings available
+      for (let slot = 0; slot <= 9; ++slot) {
+        // key numeric 1 is slot 0th, 2 is 1st, .. 0 is last
+        let key;
+        if (slot === 9) {
+          key = '0';
+        } else {
+          key = ''+(slot + 1);
+        }
+
+        // human-readable keybinding name (1-based)
+        const slotName = 'slot' + (slot + 1);
+
+        if (this.game.shell) {
+          this.game.shell.bind(slotName, key);
+        } else if (this.game.buttons.bindings) {
+          this.game.buttons.bindings[key] = slotName;
+        }
+
+        this.keys.down.on(slotName, this.onSlots[key] = () => {
+          this.setSelectedIndex(slot);
+        });
+      }
+    } else {  // fallback kb-controls support
+      throw new Error('fallback kb-controls support removed');
+    }
+
+    super.enable();
+  }
+  
+  disable() {
+    this.inventoryWindow.container.style.visibility = 'hidden';
+
+    if (this.mousewheel !== undefined) ever(document.body).removeListener('mousewheel', this.mousewheel);
+
+    if (this.game.shell) {
+      for (let key = 1; key <= 10; ++key) {
+        this.game.shell.unbind('slot' + key);
+        this.keys.down.removeListener('slot' + key, this.onSlots[key - 1]);
+      }
+    } else if (this.game.buttons.bindings) {
+      for (let key = 1; key <= 10; ++key) {
+        delete this.game.buttons.bindings[key - 1];
+        this.keys.down.removeListener('slot' + key, this.onSlots[key - 1]);
+      }
+    } else {
+      ever(document.body).removeListener('keydown', this.keydown);
+    }
+
+    super.disable();
+  }
+
+  refresh() {
+    this.inventoryWindow.refresh();
+  }
+}
+
+
+},{"events":15,"ever":125,"inventory-window":273}],396:[function(require,module,exports){
+'use strict';
+
+var vkey = require('vkey');
+var EventEmitter = require('events').EventEmitter;
+var inherits = require('inherits');
+var toArray = require('toarray');
+
+module.exports = function(game, opts) {
+  return new KeysPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  clientOnly: true // TODO: server-based keybindings? send keys to server, have it tell client what to do?
+};
+
+function KeysPlugin(game, opts) {
+  this.game = game;
+  if (this.game.shell && this.game.shell.bindings) {
+    this.getBindingsNames = this.getBindingsNamesGS;
+  } else if (this.game.buttons && this.game.buttons.bindings) {
+    this.getBindingsNames = this.getBindingsNamesKB;
+  } else {
+    throw new Error('voxel-keys requires either kb-bindings or game-shell');
+  }
+
+  this.states = {};
+  this.isActive = false;
+
+  this.preventDefaultKeys = opts.preventDefaultKeys !== undefined ? opts.preventDefaultKeys : true;
+  this.preventDefaultContext = opts.preventDefaultContext !== undefined ? opts.preventDefaultContext : true;
+
+  this.down = new EventEmitter();
+  this.up = new EventEmitter();
+  this.changed = new EventEmitter();
+
+  this.enable();
+}
+
+// cleanup key name - based on https://github.com/mikolalysenko/game-shell/blob/master/shell.js
+// and also in voxel-engine TODO: refactor with those
+var filtered_vkey = function(k) {
+  if(k.charAt(0) === '<' && k.charAt(k.length-1) === '>') {
+    k = k.substring(1, k.length-1)
+  }
+  k = k.replace(/\s/g, "-")
+  return k
+}
+
+KeysPlugin.prototype.registerKey = function(name, defaultKey) {
+  if (!this.game.shell) return; // no-op; requires static assignment
+
+  // if no key is bound for this name, bind it (allow customization -
+  // this call only provides a default if none is present)
+  if (!(name in this.game.shell.bindings)) {
+    this.game.shell.bind(name, defaultKey);
+  }
+};
+
+KeysPlugin.prototype.unregisterKey = function(name) {
+  if (!this.game.shell) return;
+
+  this.game.shell.unbind(name); // TODO: only remove default key? something else might use this binding?
+};
+
+// get bound name of pressed key from event, or undefined if none
+
+// for kb-bindings
+KeysPlugin.prototype.getBindingsNamesKB = function(code) {
+  var key = vkey[code];
+  if (key === undefined) return undefined;
+
+  var bindingName = this.game.buttons.bindings[key];
+
+  return toarray(bindingName);
+};
+
+// for game-shell
+KeysPlugin.prototype.getBindingsNamesGS = function(code) {
+  var found = [];
+  var key = vkey[code];
+  if (key === undefined) return undefined;
+
+  key = filtered_vkey(key);
+
+  // TODO: optimize inverse lookup, cache?
+  for (var bindingName in this.game.shell.bindings) {
+    if (this.game.shell.bindings[bindingName].indexOf(key) !== -1) {
+      found.push(bindingName);
+    }
+  }
+  return found;
+};
+
+KeysPlugin.prototype.enable = function() {
+  var self = this;
+
+  if (this.game.shell) {
+    // when game-shell, always listen and check .pointerLock property
+    self.activate(true);
+  } else if (this.game.interact) {
+    // voxel-engine interact module, controls pointer lock
+    this.game.interact.on('attain', this.onAttain = function() {
+      self.activate(true);
+    });
+    this.game.interact.on('release', this.onRelease = function() {
+      self.activate(false);
+    });
+  } else {
+    throw new Error('voxel-keys could not enable, have neither game.shell nor game.interact');
+  }
+
+  if (this.preventDefaultContext) {
+    document.body.addEventListener('contextmenu', this.onContextMenu = function(ev) {
+      ev.preventDefault();
+    });
+  }
+};
+
+KeysPlugin.prototype.disable = function() {
+  if (this.preventDefaultContext) document.body.removeEventListener('contextMenu', this.onContextMenu);
+  this.activate(false);
+  if (!this.game.shell && this.game.interact) {
+    this.game.interact.removeListener('attain', this.onAttain);
+    this.game.interact.removeListener('release', this.onRelease);
+  }
+};
+
+KeysPlugin.prototype.activate = function(flag) {
+  if (this.isActive ^ flag) {
+    if (flag) {
+      document.body.addEventListener('keydown', this.onKeyDown = this.keyDown.bind(this));
+      document.body.addEventListener('keyup', this.onKeyUp = this.keyUp.bind(this));
+    } else {
+      document.body.removeEventListener('keydown', this.onKeyDown);
+      document.body.removeEventListener('keyup', this.onKeyUp);
+      this.states = {};
+    }
+    this.isActive = flag;
+  }
+};
+
+
+KeysPlugin.prototype.keyDown = function(ev) {
+  if (this.game.shell && !this.game.shell.pointerLock) return; // game-shell pointer lock not acquired
+
+  if (this.preventDefaultKeys) ev.preventDefault();
+
+  var code = ev.keyCode; // TODO: keyCode is deprecated in favor of (unimplemented) key, according to https://developer.mozilla.org/en-US/docs/Web/Reference/Events/keydown
+
+  // released -> pressed
+  if (!this.states[code]) {
+    var bindings = this.getBindingsNames(code);
+    for (var i = 0; i < bindings.length; i += 1) {
+      var binding = bindings[i];
+
+      this.down.emit(binding, ev);
+      this.changed.emit(binding, ev);
+    }
+  }
+
+  this.states[code] += 1;
+};
+
+KeysPlugin.prototype.keyUp = function(ev) {
+  if (this.game.shell && !this.game.shell.pointerLock) return;
+
+  if (this.preventDefaultKeys) ev.preventDefault();
+
+  var code = ev.keyCode;
+
+  // pressed -> released
+  if (this.states[code] !== 0) {
+    var bindings = this.getBindingsNames(code);
+    for (var i = 0; i < bindings.length; i += 1) {
+      var binding = bindings[i];
+
+      this.up.emit(binding, ev);
+      this.changed.emit(binding, ev);
+    }
+  }
+
+  this.states[code] = 0;
+};
+
+
+},{"events":15,"inherits":272,"toarray":342,"vkey":397}],397:[function(require,module,exports){
+arguments[4][106][0].apply(exports,arguments)
+},{"dup":106}],398:[function(require,module,exports){
 (function (process){(function (){
 
 var webworkify = require('webworkify');
@@ -42644,7 +56026,7 @@ Land.prototype.unbindEvents = function() {
 };
 
 }).call(this)}).call(this,require('_process'))
-},{"./worker.js":327,"_process":42,"ndarray":266,"unworkify":304,"webworkify":347}],327:[function(require,module,exports){
+},{"./worker.js":399,"_process":42,"ndarray":302,"unworkify":348,"webworkify":451}],399:[function(require,module,exports){
 //'use strict'; // TODO
 
 var ever = require('ever');
@@ -42946,7 +56328,75 @@ module.exports = function() {
 
 
 
-},{"alea":68,"ever":108,"ndarray":266,"ndarray-ops":258,"simplex-noise":294,"voxel-trees":340}],328:[function(require,module,exports){
+},{"alea":68,"ever":125,"ndarray":302,"ndarray-ops":294,"simplex-noise":337,"voxel-trees":429}],400:[function(require,module,exports){
+'use strict';
+
+var vec3 = require('gl-vec3');
+var asarray = require('asarray');
+
+module.exports = function(game, opts) {
+  return new MeasurePlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-recipes', 'voxel-console']
+};
+
+function MeasurePlugin(game, opts) {
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-measure requires voxel-registry plugin');
+
+  this.console = game.plugins.get('voxel-console');
+  if (!this.console) throw new Error('voxel-measure requires voxel-console plugin');
+
+  this.recipes = game.plugins.get('voxel-recipes'); // optional
+  this.registerRecipes = opts.registerRecipe !== undefined ? opts.registerRecipe : true;
+
+  this.startPos = undefined;
+  this.endPos = undefined;
+
+  this.enable();
+}
+
+MeasurePlugin.prototype.enable = function() {
+  this.registry.registerItem('tapeMeasure', {
+    itemTexture: 'i/paper', // TODO
+    onUse: this.use.bind(this),
+    displayName: 'Tape Measure'
+  });
+  if (this.recipes && this.registerRecipes) {
+    this.recipes.registerAmorphous(['stick', 'stick'], ['tapeMeasure']); // TODO: better recipe, with string
+  }
+};
+
+MeasurePlugin.prototype.disable = function() {
+  // TODO: unregister item
+};
+
+// represent a vec3 for a coordinate as a string (x,y,z)
+var strCoords = function(pos) {
+  return '(' + asarray(pos).join(', ') + ')';
+}
+
+MeasurePlugin.prototype.use = function(held, target) {
+  if (!target.voxel) {
+    this.console.log('Right-click a voxel to start measuring'); // TODO: use player position if not clicking a voxel?
+    return;
+  }
+
+  if (!this.startPos) {
+    this.startPos = vec3.fromValues.apply(null, target.voxel);
+    this.console.log('Starting position '+strCoords(this.startPos));
+  } else {
+    var endPos = vec3.fromValues.apply(null, target.voxel);
+    var distance = vec3.distance(this.startPos, endPos);
+
+    this.console.log(distance.toFixed(1) + ' from '+strCoords(this.startPos)+' - '+strCoords(endPos));
+
+    this.startPos = undefined;
+  }
+};
+
+},{"asarray":71,"gl-vec3":220}],401:[function(require,module,exports){
 "use strict"
 
 var ndarray = require("ndarray")
@@ -43013,7 +56463,7 @@ function createVoxelMesh(gl, voxels, voxelSideTextureIDs, voxelSideTextureSizes,
 
 module.exports = createVoxelMesh
 
-},{"./mesh.js":330,"gl-buffer":123,"gl-mat4":143,"gl-vao":182,"ndarray":266,"ndarray-ops":258}],329:[function(require,module,exports){
+},{"./mesh.js":403,"gl-buffer":142,"gl-mat4":162,"gl-vao":201,"ndarray":302,"ndarray-ops":294}],402:[function(require,module,exports){
 'use strict';
 
 var createVoxelMesh = require('./mesh-buffer.js');
@@ -43142,7 +56592,7 @@ MesherPlugin.prototype.splitVoxelArray = function(voxels) {
 };
 
 
-},{"./mesh-buffer.js":328,"block-models":78,"events":15,"gl-buffer":123,"gl-vao":182,"inherits":243,"ndarray":266,"ndarray-ops":258}],330:[function(require,module,exports){
+},{"./mesh-buffer.js":401,"block-models":87,"events":15,"gl-buffer":142,"gl-vao":201,"inherits":272,"ndarray":302,"ndarray-ops":294}],403:[function(require,module,exports){
 "use strict"
 
 var ndarray = require("ndarray")
@@ -43693,9 +57143,601 @@ function computeMesh(array, voxelSideTextureIDs, voxelSideTextureSizes) {
 
 module.exports = computeMesh
 
-},{"cwise-compiler":97,"greedy-mesher":238,"ndarray":266,"typedarray-pool":302}],331:[function(require,module,exports){
-arguments[4][73][0].apply(exports,arguments)
-},{"dup":73}],332:[function(require,module,exports){
+},{"cwise-compiler":110,"greedy-mesher":267,"ndarray":302,"typedarray-pool":345}],404:[function(require,module,exports){
+'use strict';
+
+const EventEmitter = require('events').EventEmitter;
+
+module.exports = (game, opts) => new Mine(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-reach', 'voxel-registry', 'voxel-inventory-hotbar', 'voxel-decals', 'voxel-stitch']
+}
+
+class Mine extends EventEmitter {
+  constructor(game, opts) {
+    super();
+
+    this.game = game;
+    this.registry = game.plugins.get('voxel-registry');
+    this.hotbar = game.plugins.get('voxel-inventory-hotbar');
+
+    this.reach = game.plugins.get('voxel-reach');
+    if (!this.reach) throw new Error('voxel-mine requires "voxel-reach" plugin');
+
+    this.decals = game.plugins.get('voxel-decals');
+    this.stitch = game.plugins.get('voxel-stitch');
+
+    // continuous (non-discrete) firing is required to mine
+    if (this.game.controls) {
+      if (this.game.controls.needs_discrete_fire !== false) {
+        throw new Error('voxel-mine requires discreteFire:false,fireRate:100 in voxel-control options (or voxel-engine controls discreteFire:false,fireRate:100)');
+      }
+      // TODO: can we just set needs_discrete_fire and fire_rate ourselves?
+      this.secondsPerFire = this.game.controls.fire_rate / 1000;  // ms -> s
+    } else {
+      // server-side, game.controls unavailable, assume 100 ms TODO
+      this.secondsPerFire = 100.0 / 1000.0;
+    }
+
+    if (!opts) opts = {};
+    if (opts.instaMine === undefined) opts.instaMine = false;     // instantly mine? (if true, ignores timeToMine)
+    if (opts.timeToMine === undefined) opts.timeToMine = undefined; // callback to get how long it should take to completely mine this block
+    if (opts.progressTexturesPrefix === undefined) opts.progressTexturesPrefix = undefined; // prefix for damage overlay texture filenames; can be undefined to disable the overlay
+    if (opts.progressTexturesCount === undefined) opts.progressTexturesCount = 10; // number of damage textures, cycles 0 to N-1, name = progressTexturesPrefix + #
+
+    if (opts.applyTextureParams === undefined) {
+      opts.applyTextureParams = (texture) => {
+        texture.magFilter = this.game.THREE.NearestFilter;
+        texture.minFilter = this.game.THREE.LinearMipMapLinearFilter;
+        texture.wrapT = this.game.THREE.RepeatWrapping;
+        texture.wrapS = this.game.THREE.RepeatWrapping;
+      }
+    }
+
+    if (opts.defaultTextureURL === undefined) opts.defaultTextureURL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAARElEQVQ4y62TMQoAMAgD8/9PX7cuhYLmnAQTQZMkCdkXT7Mhb5YwHkwwNOQfkOZJNDI1MncLsO5XFFA8oLhQyYGSxMs9lwAf4Z8BoD8AAAAASUVORK5CYII=';
+
+    this.opts = opts;
+
+    this.instaMine = opts.instaMine;
+    this.progress = 0;
+
+    if (this.game.isClient) {
+      // texture overlays require three.js and textures, or voxel-decals with game.shell
+      this.texturesEnabled = !this.opts.disableOverlay && this.opts.progressTexturesPrefix !== undefined;
+      if (this.texturesEnabled && this.game.shell && !this.decals) {
+          throw new Error('voxel-mine with game-shell requires voxel-decals to enable textures');
+      }
+
+      this.overlay = null;
+      this.setupTextures();
+    }
+
+    this.enable();
+  }
+
+  timeToMine(target) {
+    if (this.opts.timeToMine !== undefined) {  // custom callback
+      return this.opts.timeToMine(target);
+    }
+
+    // if no registry, can't lookup per-block hardness, use same for all
+    if (!this.registry) return 9;
+
+    //  from registry, get the innate difficulty of mining this block
+    const blockID = game.getBlock(target.voxel);
+    const blockName = this.registry.getBlockName(blockID);
+    let hardness = this.registry.getProp(blockName, 'hardness')
+    if (hardness === undefined) hardness = 1.0; // seconds
+
+    let effectiveTool = this.registry.getProp(blockName, 'effectiveTool');
+    if (effectiveTool === undefined) effectiveTool = 'pickaxe';
+
+    // if no held item concept, just use registry hardness
+    if (!this.hotbar) return hardness;
+
+    // if hotbar is available - factor in effectiveness of currently held tool, shortens mining time
+    const heldItem = this.hotbar.held();
+    const toolClass = this.registry.getProp(heldItem !== undefined ? heldItem.item : heldItem, 'toolClass');
+
+    let speed = 1.0;
+
+    if (toolClass === effectiveTool) {
+      //  this tool is effective against this block, so it mines faster
+      speed = this.registry.getProp(heldItem !== undefined ? heldItem.item : heldItem, 'speed');
+      if (speed === undefined) speed = 1.0;
+      // TODO: if wrong tool, deal double damage?
+    }
+
+    const finalTimeToMine = Math.max(hardness / speed, 0);
+    // TODO: more complex mining 'classes', e.g. shovel against dirt, axe against wood
+
+    return finalTimeToMine;
+  }
+
+  enable() {
+    this.reach.on('mining', this.onMining = (target) => {
+      if (!target) {
+        console.log('no block mined');
+        return;
+      }
+
+      this.progress += 1;   // incremented each fire (this.secondsPerFire)
+      const progressSeconds = this.progress * this.secondsPerFire; // how long they've been mining
+
+      const hardness = this.timeToMine(target);
+      if (this.instaMine || progressSeconds >= hardness) {
+        this.progress = 0;
+        this.reach.emit('stop mining', target);
+        this.emit('break', target);
+      }
+
+      this.updateForStage(progressSeconds, hardness);
+    });
+
+    this.reach.on('start mining', this.onStartMining = (target) => {
+      if (!target) {
+        return;
+      }
+
+      this.createOverlay(target);
+    });
+
+    this.reach.on('stop mining', this.onStopMining = (target) => {
+      if (!target) {
+        return;
+      }
+
+      // Reset this.progress if mouse released
+      this.destroyOverlay();
+      this.progress = 0;
+    });
+  }
+
+  disable() {
+    this.reach.removeListener('mining', this.onMining);
+    this.reach.removeListener('start mining', this.onStartMining);
+    this.reach.removeListener('stop mining', this.onStopMining);
+  }
+
+  setupTextures() {
+    if (!this.texturesEnabled) {
+      return;
+    }
+
+    this.progressTextures = [];  // TODO: placeholders until loaded?
+
+    this.registry.onTexturesReady(() => this.refreshTextures());
+    if (this.game.materials.artPacks) {
+      this.game.materials.artPacks.on('refresh', () => this.refreshTextures());
+    }
+
+    if (this.decals) {
+      // add to atlas
+      for (let i = 0; i < this.opts.progressTexturesCount; ++i) {
+        const name = this.opts.progressTexturesPrefix + i;
+
+        this.stitch.preloadTexture(name);
+
+        this.progressTextures.push(name);
+      }
+    }
+  }
+
+  refreshTextures() {
+    if (this.decals) {
+      
+    } else {
+      this.progressTextures = [];
+      for (let i = 0; i < this.opts.progressTexturesCount; ++i) {
+        let path = this.registry.getTextureURL(this.opts.progressTexturesPrefix + i);
+        if (path === undefined) {
+          // fallback to default texture if missing
+          if (this.defaultTextureURL.indexOf('data:') === 0) {
+            // for some reason, data: URLs are not allowed with crossOrigin, see https://github.com/mrdoob/three.js/issues/687
+            // warning: this might break other stuff
+            delete this.game.THREE.ImageUtils.crossOrigin;
+          }
+          path = this.defaultTextureURL;
+        }
+        this.progressTextures.push(this.game.THREE.ImageUtils.loadTexture(path));
+      }
+    }
+  }
+
+  createOverlay(target) {
+    if (this.instaMine || !this.texturesEnabled) {
+      return;
+    }
+
+    this.destroyOverlay();
+
+    if (this.decals) {
+      this.decalPosition = target.voxel.slice(0);
+      this.decalNormal = target.normal.slice(0);
+
+      this.decals.add({
+        position: this.decalPosition,
+        normal: this.decalNormal,
+        texture: this.progressTextures[0]});
+
+      this.decals.update();
+    } else {
+      throw new Error('voxel-mine three.js support removed');
+    }
+  }
+
+// Set overlay texture based on mining progress stage
+  updateForStage(progress, hardness) {
+    if (!this.texturesEnabled) {
+      return;
+    }
+
+    const index = Math.floor((progress / hardness) * (this.progressTextures.length - 1));
+    const texture = this.progressTextures[index];
+
+    this.setOverlayTexture(texture);
+  }
+
+  setOverlayTexture(texture) {
+    if (!this.texturesEnabled || (!this.overlay && !this.decalPosition)) {
+      return;
+    }
+
+    if (this.decals) {
+      this.decals.change({
+        position: this.decalPosition,
+        normal: this.decalNormal,
+        texture: texture});
+      this.decals.update();
+    } else {
+      this.opts.applyTextureParams(texture);
+      this.overlay.children[0].material.map = texture;
+      this.overlay.children[0].material.needsUpdate = true;
+    }
+  }
+
+  destroyOverlay() {
+    if (!this.texturesEnabled || (!this.overlay && !this.decalPosition)) {
+      return;
+    }
+
+    if (this.decals) {
+      if (this.decalPosition !== undefined) this.decals.remove(this.decalPosition);
+      this.decals.update();
+      this.decalPosition = undefined;
+    } else {
+      this.game.scene.remove(this.overlay);
+    }
+
+    this.overlay = null;
+  }
+}
+
+},{"events":15}],405:[function(require,module,exports){
+'use strict';
+
+const Modal = require('voxel-modal');
+
+class ModalDialog extends Modal {
+  constructor(game, opts) {
+    super(game, ModalDialog.createDialogContent(opts));
+  }
+
+  static createDialogContent(opts) {
+    if (!opts.contents) opts.contents = [];
+
+    let box;
+
+    if (typeof document !== 'undefined') {
+      // covers the (almost) entire page, for alignment purposes
+      const aligner = document.createElement('div');
+      aligner.setAttribute('class', 'voxel-modal-dialog-aligner');
+      aligner.setAttribute('style', `
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 90%;
+        position: fixed;
+        pointer-events: none;
+        `)
+        // note: height not 100% to give some room for voxel-inventory-hotbar
+
+      // the overall dialog box element
+      box = document.createElement('div');
+      box.setAttribute('class', 'voxel-modal-dialog');
+      box.style.border = '6px outset gray';
+      box.style.visibility = 'hidden';
+      box.style.zIndex = 1;
+      box.style.pointerEvents = 'auto'; // reset pointer-events:none on parent (to allow clicks through canvas)
+      box.style.backgroundImage = 'linear-gradient(rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.5) 100%)';
+
+      for (let content of opts.contents) {
+        box.appendChild(content);
+      }
+
+      aligner.appendChild(box);
+      document.body.appendChild(aligner);
+    }
+
+    opts.element = box
+
+    return opts;
+  }
+}
+
+module.exports = ModalDialog
+
+
+},{"voxel-modal":406}],406:[function(require,module,exports){
+/*jshint globalstrict: true*/
+'use strict';
+
+module.exports = Modal;
+
+var ever = require('ever');
+
+function Modal(game, opts) 
+{
+  this.game = game;
+
+  opts = opts || {};
+  this.element = opts.element;
+  if (!this.element) throw new Error('voxel-modal requires "element" option');
+
+  // shortcut to close:
+  // ` (backquote) -- NOT escape due to pointer-lock https://github.com/deathcap/voxel-modal/issues/1
+  // if you don't have "`", alternative is to click the game canvas (closes automatically on attain)
+  this.escapeKeys = opts.escapeKeys || [192]; 
+
+  this.isOpen = false;
+}
+
+Modal.prototype.open = function() {
+  if (this.isOpen) return;
+
+  var self = this;
+
+  if (this.game.shell) {
+    // exit pointer lock so user can interact with the modal element
+    this.game.shell.pointerLock = false;
+
+    // but re-"want" it so clicking the canvas (outside the modal) will
+    // activate pointer lock (misleading assignment; requires user interaction)
+    this.game.shell.pointerLock = true;
+
+    // when user successfully acquires pointer lock by clicking the game-shell
+    // canvas, get out of the way
+    // TODO: ask game-shell to emit an event for us
+    var self = this;
+    ever(document).on('pointerlockchange', self.onPointerLockChange = function() {
+      if (document.pointerLockElement) {
+        // pointer lock was acquired - close ourselves, resume gameplay
+        self.close();
+        ever(document).removeListener('pointerlockchange', self.onPointerLockChange); // can't seem to use .once with ever (TypeError document removeListener)
+      }
+    });
+    // webkit prefix for older browsers (< Chrome 40)
+    ever(document).on('webkitpointerlockchange', self.onWKPointerLockChange = function() {
+      if (document.webkitPointerLockElement) {
+        self.close();
+        ever(document).removeListener('webkitpointerlockchange', self.onWKPointerLockChange);
+      }
+    });
+    // moz prefix for Firefox
+    ever(document).on('mozpointerlockchange', self.onMPointerLockChange = function() {
+      if (document.mozPointerLockElement) {
+        self.close();
+        ever(document).removeListener('mozpointerlockchange', self.onMPointerLockChange);
+      }
+    });
+  } else if (this.game.interact) {
+    this.game.interact.release();
+
+    this.game.interact.on('attain', this.onAttain = function() {
+      // clicked game, beyond dialog TODO: game-shell needs this, too!
+      self.close();
+    });
+  } else {
+    throw new Error('voxel-modal requires game-shell or interact');
+  }
+
+  ever(document.body).on('keydown', this.onKeydown = function(ev) {
+    if (self.escapeKeys.indexOf(ev.keyCode) !== -1) {
+      self.close();
+      ev.preventDefault();
+    }
+  });
+
+  this.element.style.visibility = '';
+  this.isOpen = true;
+};
+
+Modal.prototype.close = function() {
+  if (!this.isOpen) return;
+
+  ever(document.body).removeListener('keydown', this.onKeydown);
+
+  this.element.style.visibility = 'hidden';
+
+  // resume game interaction
+  if (this.game.shell) {
+    this.game.shell.pointerLock = true;
+  } else if (this.game.interact) {
+    this.game.interact.removeListener('attain', this.onAttain);
+    this.game.interact.request();
+  }
+
+  this.isOpen = false;
+};
+
+Modal.prototype.toggle = function() {
+  if (this.isOpen)
+    this.close();
+  else
+    this.open();
+};
+
+},{"ever":125}],407:[function(require,module,exports){
+'use strict';
+
+var createBuffer = require('gl-buffer');
+var createVAO = require('gl-vao');
+var createSimpleShader = require('simple-3d-shader');
+var mat4 = require('gl-mat4');
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
+var throttle = require('lodash.throttle');
+
+module.exports = function(game, opts) {
+  return new OutlinePlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-mesher', 'voxel-shader']
+};
+
+function OutlinePlugin(game, opts) {
+  this.game = game;
+  this.shell = game.shell;
+
+  this.mesherPlugin = game.plugins.get('voxel-mesher');
+  if (!this.mesherPlugin) throw new Error('voxel-outline requires voxel-mesher');
+
+  this.shaderPlugin = game.plugins.get('voxel-shader');
+  if (!this.shaderPlugin) throw new Error('voxel-outline requires voxel-shader');
+
+  this.showOutline = opts.showOutline !== undefined ? opts.showOutline : true;
+  this.showThrough = opts.showThrough !== undefined ? opts.showThrough : false;
+  this.colorVector = opts.color !== undefined ? opts.color : [1,0,0]; // red, RGB TODO: convert from hex? TODO: same in voxel-chunkborder
+  this.frequency = opts.frequency ? opts.frequency : 100; // milliseconds to throttle raycasting
+
+  this.currentTarget = undefined;
+  this.modelMatrix = mat4.create();
+
+  this.enable();
+}
+inherits(OutlinePlugin, EventEmitter);
+
+OutlinePlugin.prototype.enable = function() {
+  this.shell.on('gl-init', this.onInit = this.shaderInit.bind(this));
+  this.shell.on('gl-render', this.onRender = this.render.bind(this));
+  this.game.on('tick', this.onTick = throttle(this.tick.bind(this), this.frequency));
+};
+
+OutlinePlugin.prototype.disable = function() {
+  this.game.removeListener('tick', this.onTick);
+  this.shell.removeListener('gl-render', this.onRender = this.render.bind(this));
+  this.shell.removeListener('gl-init', this.onInit);
+  this.currentTarget = undefined;
+};
+
+// slightly enlarge the outline to avoid z-fighting voxel
+var epsilon = 0.001; // greater than voxel-wireframe (0.00001) so it doesn't fight there either
+var epsilonVector = [1+epsilon, 1+epsilon, 1+epsilon];
+
+OutlinePlugin.prototype.tick = function() {
+  var hit = this.game.raycastVoxels();
+
+  if (!hit) {
+    // remove outline if any
+    if (this.currentTarget) {
+      this.emit('remove', this.currentTarget.slice());
+    }
+
+    this.currentTarget = undefined;
+    return;
+  }
+
+  // if changed voxel target, update matrix and emit event
+  if (!this.currentTarget ||
+      hit.voxel[0] !== this.currentTarget[0] ||
+      hit.voxel[1] !== this.currentTarget[1] ||
+      hit.voxel[2] !== this.currentTarget[2]) {
+
+    // translate to voxel position
+    mat4.identity(this.modelMatrix);
+    mat4.translate(this.modelMatrix, this.modelMatrix, hit.voxel);
+    mat4.scale(this.modelMatrix, this.modelMatrix, epsilonVector);
+
+    if (this.currentTarget) {
+      this.emit('remove', this.currentTarget.slice());
+    }
+
+    this.currentTarget = hit.voxel.slice();
+    this.emit('highlight', this.currentTarget.slice(), hit);
+  }
+};
+
+OutlinePlugin.prototype.render = function() {
+  if (this.showOutline && this.currentTarget) {
+    var gl = this.shell.gl;
+
+    if (this.showThrough) gl.disable(gl.DEPTH_TEST);
+
+    this.outlineShader.bind();
+    this.outlineShader.attributes.position.location = 0;
+    this.outlineShader.uniforms.projection = this.shaderPlugin.projectionMatrix;
+    this.outlineShader.uniforms.view = this.shaderPlugin.viewMatrix;
+    this.outlineShader.uniforms.model = this.modelMatrix;
+    this.outlineShader.attributes.color = this.colorVector;
+    var outlineVAO = this.mesh;
+    outlineVAO.bind();
+    outlineVAO.draw(gl.LINES, outlineVAO.length);
+    outlineVAO.unbind();
+  }
+};
+
+OutlinePlugin.prototype.shaderInit = function() {
+  this.outlineShader = createSimpleShader(this.shell.gl);
+
+  // create outline mesh
+
+  // TODO: refactor with voxel-chunkborder, very similar
+
+  var w = 1;
+  var outlineVertexArray = new Uint8Array([
+    0,0,0,
+    0,0,w,
+    0,w,0,
+    0,w,w,
+    w,0,0,
+    w,0,w,
+    w,w,0,
+    w,w,w
+  ]);
+
+  var indexArray = new Uint16Array([
+    0,1, 0,2, 2,3, 3,1,
+    0,4, 4,5, 5,1,
+    5,7, 7,3,
+    7,6, 6,2,
+    6,4
+  ]);
+
+  var outlineVertexCount = indexArray.length;
+
+  var gl = this.shell.gl;
+
+  var outlineBuf = createBuffer(gl, outlineVertexArray);
+  var indexBuf = createBuffer(gl, indexArray, gl.ELEMENT_ARRAY_BUFFER);
+
+  var outlineVAO = createVAO(gl, [
+      { buffer: outlineBuf,
+        type: gl.UNSIGNED_BYTE,
+        size: 3
+      }], indexBuf);
+  outlineVAO.length = outlineVertexCount;
+
+  this.mesh = outlineVAO;
+};
+
+
+},{"events":15,"gl-buffer":142,"gl-mat4":162,"gl-vao":201,"inherits":272,"lodash.throttle":286,"simple-3d-shader":334}],408:[function(require,module,exports){
+arguments[4][82][0].apply(exports,arguments)
+},{"dup":82}],409:[function(require,module,exports){
 module.exports = physical
 
 var aabb = require('aabb-3d')
@@ -43955,7 +57997,7 @@ proto.fell = function(distance) {
   return
 }
 
-},{"aabb-3d":66,"gl-matrix":331}],333:[function(require,module,exports){
+},{"aabb-3d":66,"gl-matrix":408}],410:[function(require,module,exports){
 'use strict';
 
 const ItemPile = require('itempile');
@@ -44114,7 +58156,167 @@ class RepairRecipe extends Recipe {
 }
 
 
-},{"craftingrecipes":95,"itempile":252}],334:[function(require,module,exports){
+},{"craftingrecipes":107,"itempile":282}],411:[function(require,module,exports){
+var skin = require('minecraft-skin');
+
+module.exports = function (game) {
+    var mountPoint;
+    var possessed;
+    
+    return function (img, skinOpts) {
+        if (!skinOpts) {
+          skinOpts = {};
+        }
+        skinOpts.scale = skinOpts.scale || new game.THREE.Vector3(0.04, 0.04, 0.04);
+        var playerSkin = skin(game.THREE, img, skinOpts);
+        var player = playerSkin.mesh;
+        var physics = game.makePhysical(player);
+        physics.playerSkin = playerSkin;
+        
+        player.position.set(0, 562, -20);
+        game.scene.add(player);
+        game.addItem(physics);
+        
+        physics.yaw = player;
+        physics.pitch = player.head;
+        physics.subjectTo(game.gravity);
+        physics.blocksCreation = true;
+        
+        game.control(physics);
+        
+        physics.move = function (x, y, z) {
+            var xyz = parseXYZ(x, y, z);
+            physics.yaw.position.x += xyz.x;
+            physics.yaw.position.y += xyz.y;
+            physics.yaw.position.z += xyz.z;
+        };
+        
+        physics.moveTo = function (x, y, z) {
+            var xyz = parseXYZ(x, y, z);
+            physics.yaw.position.x = xyz.x;
+            physics.yaw.position.y = xyz.y;
+            physics.yaw.position.z = xyz.z;
+        };
+        
+        var pov = 1;
+        physics.pov = function (type) {
+            if (type === 'first' || type === 1) {
+                pov = 1;
+            }
+            else if (type === 'third' || type === 3) {
+                pov = 3;
+            }
+            physics.possess();
+        };
+        
+        physics.toggle = function () {
+            physics.pov(pov === 1 ? 3 : 1);
+        };
+        
+        physics.possess = function () {
+            if (possessed) possessed.remove(game.camera);
+            var key = pov === 1 ? 'cameraInside' : 'cameraOutside';
+            player[key].add(game.camera);
+            possessed = player[key];
+        };
+        
+        physics.position = physics.yaw.position;
+        
+        return physics;
+    }
+};
+
+function parseXYZ (x, y, z) {
+    if (typeof x === 'object' && Array.isArray(x)) {
+        return { x: x[0], y: x[1], z: x[2] };
+    }
+    else if (typeof x === 'object') {
+        return { x: x.x || 0, y: x.y || 0, z: x.z || 0 };
+    }
+    return { x: Number(x), y: Number(y), z: Number(z) };
+}
+
+},{"minecraft-skin":289}],412:[function(require,module,exports){
+'use strict';
+
+var createDatgui = require('dat-gui');
+
+module.exports = function(game, opts) {
+  return new PluginsUI(game, opts);
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-debug'],    // for appending to its gui, if available
+  clientOnly: true
+};
+
+function PluginsUI(game, opts) {
+  this.game = game;
+  this.plugins = this.game.plugins;
+
+  opts = opts || {};
+
+  // option to blur self after input, to relinquish keyboard focus to game
+  this.autoBlur = opts.autoBlur || false
+  
+  var guiOpts = opts.guiOpts || {}
+  this.gui = opts.gui || (game.plugins && game.plugins.get('voxel-debug') ? game.plugins.get('voxel-debug').gui : new createDatgui.GUI(guiOpts));
+  this.folder = this.gui.addFolder('plugins');
+
+  this.pluginState = {};
+  this.pluginItems = {};
+
+  // add all existing plugins, already loaded
+  var list = this.plugins.listAll();
+  for (var i = 0; i < list.length; ++i) {
+    this.addPlugin(list[i]);
+  }
+
+  // and listen for events for new plugins, which haven't loaded yet
+  this.plugins.on('new plugin', function(name) {
+    self.addPlugin(name);
+  });
+
+  // update GUI when plugin is enabled/disabled by something else
+  var self = this;
+  this.plugins.on('plugin enabled', function(name) {
+    self.pluginState[name] = true;
+    self.pluginItems[name].updateDisplay();
+  });
+
+  this.plugins.on('plugin disabled', function(name) {
+    self.pluginState[name] = false;
+    self.pluginItems[name].updateDisplay();
+  });
+}
+
+// add plugin checkbox widget
+PluginsUI.prototype.addPlugin = function (name) {
+  this.pluginState[name] = this.plugins.isEnabled(name);
+  if (name in this.pluginItems) { return }
+  this.pluginItems[name] = this.folder.add(this.pluginState, name);
+  this.pluginItems[name].onChange(setStateForPlugin(this, name));
+};
+
+// set new plugin state when user toggles it in GUI
+function setStateForPlugin(self, name) {
+  return function(newState) {
+    if (newState)
+      self.plugins.enable(name);
+    else
+      self.plugins.disable(name);
+
+    // if autoBlur is set, and gui has keyboard focus, blur self
+    if (self.autoBlur && document){
+      if (self.gui.domElement.contains(document.activeElement)) {
+        document.activeElement.blur()
+      }
+    }
+
+  };
+}
+
+},{"dat-gui":117}],413:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 var EventEmitter = require('events').EventEmitter;
@@ -44440,7 +58642,352 @@ Plugins.prototype.destroy = function(name) {
 };
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":42,"events":15,"inherits":243,"tsort":301}],335:[function(require,module,exports){
+},{"_process":42,"events":15,"inherits":272,"tsort":344}],414:[function(require,module,exports){
+arguments[4][346][0].apply(exports,arguments)
+},{"dup":346}],415:[function(require,module,exports){
+'use strict';
+
+var ucfirst = require('ucfirst');
+var ItemPile = require('itempile');
+
+module.exports = function(game, opts) {
+  return new PumpkinPlugin(game, opts);
+};
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-recipes', 'voxel-use']
+};
+
+function PumpkinPlugin(game, opts) {
+  this.game = game;
+  // allow changing carved face after carving it once? (reorienting)
+  this.allowRecarving = typeof opts.allowRecarving !== 'undefined' ? opts.allowRecarving : true;
+
+
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-pumpkin requires voxel-registry plugin');
+  this.use = game.plugins.get('voxel-use');
+  if (!this.use) throw new Error('voxel-pumpkin requires voxel-use plugin');
+  this.recipes = game.plugins.get('voxel-recipes'); // optional
+
+  // block states, textures, names
+
+  this.states = ['natural',
+    'carvedNorth', 'carvedSouth', 'carvedWest', 'carvedEast',
+    'carvedNorthLit', 'carvedSouthLit', 'carvedWestLit', 'carvedEastLit',
+    ];
+
+  // states correspond to array indices of this.state TODO: cleanup
+  this.side2state = {unlit:{north: 1, south: 2, west: 3, east: 4},
+                    lit:{north: 5, south: 6, west: 7, east: 8}};
+  this.toggleLit = {1:5, 2:6, 3:7, 4:8, // light up
+    5:1, 6:2, 7:3, 8:4}; // extinguish
+  this.stateIsLit = {0:false, 1:false, 2:false, 3:false, 4:false,
+    5:true, 6:true, 7:true, 8:true};
+
+
+  this.textures = [
+    ['pumpkin_top', 'pumpkin_side'],
+    // back, front, top, bottom, left, right
+    {back:'pumpkin_face_off', front:'pumpkin_side', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_side', right:'pumpkin_side'},
+    {back:'pumpkin_side', front:'pumpkin_face_off', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_side', right:'pumpkin_side'},
+    {back:'pumpkin_side', front:'pumpkin_side', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_face_off', right:'pumpkin_side'},
+    {back:'pumpkin_side', front:'pumpkin_side', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_side', right:'pumpkin_face_off'},
+
+    // lit
+    {back:'pumpkin_face_on', front:'pumpkin_side', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_side', right:'pumpkin_side'},
+    {back:'pumpkin_side', front:'pumpkin_face_on', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_side', right:'pumpkin_side'},
+    {back:'pumpkin_side', front:'pumpkin_side', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_face_on', right:'pumpkin_side'},
+    {back:'pumpkin_side', front:'pumpkin_side', top:'pumpkin_top', bottom:'pumpkin_top', left:'pumpkin_side', right:'pumpkin_face_on'},
+  ];
+
+  this.displayNames = [
+    'Pumpkin',
+    'Pumpkin Carved North',
+    'Pumpkin Carved South',
+    'Pumpkin Carved East',
+    'Pumpkin Carved West',
+    'Jack-o\'-Lantern North',
+    'Jack-o\'-Lantern South',
+    'Jack-o\'-Lantern West',
+    'Jack-o\'-Lantern East',
+    ];
+
+
+  this.enable();
+};
+
+// get a direction for a face facing towards the player, XZ plane
+PumpkinPlugin.prototype.facingPlayer = function() {
+  var heading = Math.atan2(self.game.cameraVector()[0], self.game.cameraVector()[2]);
+  var dir;
+  if (Math.abs(heading) <= Math.PI / 4) { // 0 +/- 45 degrees
+    return 'north';
+  } else if (Math.PI - Math.abs(heading) <= Math.PI / 4) { // +/-180 +/- 45
+    return 'south';
+  } else if (heading > 0) { // +90 +/- 45
+    return 'west';
+  } else { // if (heading <= 0) { // -90 +/- 45
+    return 'east';
+  }
+};
+
+PumpkinPlugin.prototype.enable = function() {
+  var self = this;
+
+  // items that place blocks with player-facing orientation
+  this.registry.registerItem('pumpkin', {
+    itemTexture: this.textures[0],
+    onUse: function(held, target) {
+      // act as if the block was used, returning true if it was consumed so the item
+      // will be consumed too, otherwise false (if not place, placement blocked)
+      return self.use.useBlock(target, new ItemPile('pumpkinNatural')) === undefined;
+    },
+    creativeTab: 'plants'
+  });
+  this.registry.registerItem('pumpkinCarved', {
+    itemTexture: this.textures[2], // unlit item always facing right
+    displayName: 'Carved Pumpkin',
+    onUse: function(held, target) {
+      return self.use.useBlock(target, new ItemPile('pumpkinCarved' + ucfirst(self.facingPlayer()))) === undefined;
+    },
+    creativeTab: 'plants'
+  });
+  this.registry.registerItem('jackolantern', {
+    itemTexture: this.textures[6],
+    displayName: 'Jack-o\'-Lantern',
+    onUse: function(held, target) {
+      return self.use.useBlock(target, new ItemPile('pumpkinCarved' + ucfirst(self.facingPlayer()) + 'Lit')) === undefined;
+    },
+    creativeTab: 'plants'
+  });
+
+
+  // blocks for voxels in the world
+  this.registry.registerBlocks('pumpkin', this.states.length, {
+    names: this.states.map(function(state) { 
+             return 'pumpkin' + ucfirst(state);
+           }),
+    texture: function(offset) { 
+      return self.textures[offset] || self.textures[0];
+    },
+    displayName: function(offset) {
+      return self.displayNames[offset] || 'Pumpkin '+offset;
+    },
+    creativeTab: false, // hide blocks - the items above are meant to be user-visible instead
+    itemDrop: function(offset) {
+      if (self.states[offset] === 'natural') {
+        return 'pumpkin';
+      }
+      // drop a non-directional item, instead of our directional block itself -- the
+      // item places a block in the correct orientation (based on player heading)
+      return self.stateIsLit[offset] ? 'jackolantern' : 'pumpkinCarved';
+    },
+  });
+
+  // TODO: move to separate modules? shearable, flammable..
+  this.registry.registerItem('shears', {itemTexture: 'items/shears', toolClass: 'shears', onUse: this.useShears.bind(this)});
+
+  if (this.recipes) {
+    this.recipes.registerPositional([
+        [undefined, 'ingotIron'],
+        ['ingotIron', undefined],
+        ], ['shears']);
+  }
+
+  this.registry.registerItem('lighter', {itemTexture: 'items/flint_and_steel', toolClass: 'lighter', onUse: this.useLighter.bind(this)});
+};
+
+PumpkinPlugin.prototype.disable = function() {
+};
+
+PumpkinPlugin.prototype.useShears = function(held, target) {
+  console.log('used shears on',held,target);
+
+  if (!target) return;
+
+  var blockIndex = this.game.getBlock(target.voxel);
+
+  if (this.registry.getBlockBaseName(blockIndex) !== 'pumpkinNatural') {
+    // not a pumpkin of any type!
+    return;
+  }
+
+  var meta = this.registry.getBlockMeta(blockIndex);
+
+  console.log('meta',meta, this.states[meta]);
+
+  if (this.states[meta] !== 'natural' && !this.allowRecarving) {
+    // only uncarved pumpkins can be carved if !this.allowRecarving
+    return;
+  }
+
+  var isLit = this.stateIsLit[meta];
+
+  var newMeta = this.side2state[isLit ? 'lit' : 'unlit'][target.side];
+  console.log('newMeta',newMeta);
+  if (newMeta === undefined) return;
+
+  this.game.setBlock(target.voxel, this.registry.changeBlockMeta(blockIndex, newMeta));
+  // TODO: shears durability
+};
+
+PumpkinPlugin.prototype.useLighter = function(held, target) {
+  if (!target) return;
+
+  var blockIndex = this.game.getBlock(target.voxel);
+
+  if (this.registry.getBlockBaseName(blockIndex) !== 'pumpkinNatural') { // note: base block; includes all meta
+    // TODO: support lighting other blocks on fire
+    return;
+  }
+
+  var meta = this.registry.getBlockMeta(blockIndex);
+
+  var newMeta = this.toggleLit[meta];
+  if (newMeta === undefined) return;
+
+  this.game.setBlock(target.voxel, this.registry.changeBlockMeta(blockIndex, newMeta));
+  // TODO: lighter durability
+};
+
+
+
+},{"itempile":282,"ucfirst":414}],416:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new QuarryPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-blockdata', 'voxel-harvest', 'voxel-carry', 'voxel-recipes']
+};
+
+function QuarryPlugin(game, opts) {
+  this.game = game;
+
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-quarry requires "voxel-registry" plugin');
+
+  this.blockdata = game.plugins.get('voxel-blockdata');
+  if (!this.blockdata) throw new Error('voxel-quarry requires "voxel-blockdata" plugin');
+
+  this.harvest = game.plugins.get('voxel-harvest');
+  if (!this.harvest) throw new Error('voxel-quarry requires "voxel-harvest" plugin');
+
+  this.carry = game.plugins.get('voxel-carry'); // optional
+  this.recipes = game.plugins.get('voxel-recipes'); // optional
+
+  this.registerRecipe = opts.registerRecipe !== undefined ? opts.registerRecipe : true;
+
+  this.rangeX = opts.rangeX || 16;
+  this.rangeY = opts.rangeY || 16;
+  this.rangeZ = opts.rangeZ || 16;
+
+  this.mineDelayMs = opts.mineDelayMs || 200;
+
+  this.enable();
+}
+
+QuarryPlugin.prototype.enable = function() {
+  this.registry.registerBlock('quarry', {
+    texture: 'furnace_top'/* TODO */,
+    onInteract: QuarryPlugin.prototype.interact.bind(this) // TODO: better way to activate, power?
+  });
+
+  if (this.recipes && this.registerRecipe) {
+    this.recipes.registerPositional([
+        ['ingotIron', 'ingotIron', 'ingotIron'],
+        ['ingotIron', 'pickaxeIron', 'ingotIron'], // TODO: require pickaxe damage tag to be 0! (or missing)
+        ['ingotIron', 'ingotIron', 'ingotIron'],
+      ], ['quarry']);
+  }
+};
+
+QuarryPlugin.prototype.disable = function() {
+  // TODO: unregister block
+  // TODO: unregister recipe
+};
+
+QuarryPlugin.prototype.interact = function(target) {
+  this.startMining(target.voxel[0], target.voxel[1], target.voxel[2]);
+};
+
+QuarryPlugin.prototype.progressToCoords = function(progress, sx, sy, sz) {
+  // unpack XZY TODO: support arbitrary ranges (besides rangeX/Y/Z 16)
+  var x = (progress >> 0) & 0xf;
+  var z = (progress >> 4) & 0xf;
+  var y = (progress >> 8) & 0xf;
+
+  x = sx - x;
+  y = sy - y;
+  z = sz - z;
+
+  y -= 1; // always mine directly below quarry
+
+  return [x, y, z];
+};
+
+// start with (x,y,z) = position of quarry block
+QuarryPlugin.prototype.startMining = function(x, y, z) {
+  // initialize stored blockdata
+  var bd = this.blockdata.get(x, y, z);
+
+  if (bd) return; // don't start mining more than once TODO: refactor
+
+  if (!bd) {
+    bd = {progress: 0};
+    this.blockdata.set(x, y, z, bd);
+  }
+
+  this.mine(x, y, z);
+};
+
+// do one block-mining operation
+QuarryPlugin.prototype.mine = function(x, y, z) {
+  // get the blockdata instance, confirm it still exists (not destroyed)
+  var bd = this.blockdata.get(x, y, z);
+  if (!bd) return;  // quarry block destroyed
+
+
+  var target = this.progressToCoords(bd.progress, x, y, z);
+  console.log('quarrying',target.join(','));
+
+  // get the item drop
+  var blockIndex = this.game.getBlock(target);
+  var blockName = this.registry.getBlockName(blockIndex);
+  var itemPile = this.harvest.block2ItemPile(blockName);
+
+  // destroy the block
+  if (this.game.setBlock(target, 0) === false) {
+    // if we failed to mine it.. TODO: actually, setBlock() (at least as of voxel-engine 0.20.1)
+    // has no return value (or 'undefined'), so this clause is never executed. For later. (permissions?)
+    return;
+  }
+  // TODO: voxel-sfx block mining sound. maybe in voxel-harvest (per block type)
+
+  if (this.quarry) {
+    // give the player the mined items TODO: adjacent voxel-chest integration, or an item transport system?
+    var excess = this.carry.inventory.give(itemPile);
+    if (excess > 0) {
+      // full so cannot mine any more TODO: just drop items?
+      return;
+    }
+  } // otherwise, just destroy the items
+
+  // schedule next mining operation
+  bd.progress += 1;
+  if (bd.progress >= 0xfff) {
+    console.log('quarry completed ',x,y,z);
+    // TODO: play a sound with voxel-sfx?
+    // TODO: destroy the quarry itself? single-use?
+    return;
+  }
+  window.setTimeout(this.mine.bind(this, x, y, z), this.mineDelayMs); // TODO: use tic module, or main game loop instead?
+};
+
+
+},{}],417:[function(require,module,exports){
 "use strict"
 
 function traceRay_impl(
@@ -44662,7 +59209,242 @@ function traceRay(voxels, origin, direction, max_d, hit_pos, hit_norm, EPSILON) 
 }
 
 module.exports = traceRay
-},{}],336:[function(require,module,exports){
+},{}],418:[function(require,module,exports){
+arguments[4][85][0].apply(exports,arguments)
+},{"dup":85}],419:[function(require,module,exports){
+'use strict';
+
+var ever = require('ever');
+var inherits = require('inherits');
+var EventEmitter = require('events').EventEmitter;
+var fract = require('fract');
+
+module.exports = function(game, opts) {
+  return new Reach(game, opts);
+};
+
+module.exports.pluginInfo = {
+};
+
+function Reach(game, opts) {
+  this.game = game;
+  opts = opts || {};
+  opts.reachDistance = opts.reachDistance || 8;
+  opts.mouseButton = opts.mouseButton !== undefined ? opts.mouseButton : 0; // left
+
+  this.opts = opts;
+  this.currentTarget = null;
+  this.havePointer = false;
+
+  this.enable();
+}
+
+
+Reach.prototype.enable = function() {
+  var self = this;
+
+  if (this.game.isClient) {
+    if (self.game.shell) {
+      // game-shell
+      Object.defineProperty(self, 'havePointer', {get: function() {
+        return self.game.shell.pointerLock;
+      }});
+    } else if (this.game.interact) {
+      // interact
+      this.game.interact.on('attain', function() {
+        self.havePointer = true;
+      });
+
+      this.game.interact.on('release', function() {
+        self.havePointer = false;
+      });
+    } else {
+      throw new Error('voxel-reach requires interact or game-shell');
+    }
+  }
+
+  // Continuously fired events while button is held down (from voxel-engine)
+  function fire(fireTarget, state) {
+    /*jshint unused:false*/
+    var action, target;
+
+    action = self.action(state);
+    if (!action) {
+      return;
+    }
+
+    target = self.specifyTarget();
+
+    if (action === 'mining' && (self.currentTarget || target)) {
+      // changing target while mouse held (moving mouse)
+      if (!targetsEqual(target, self.currentTarget)) {
+        self.emit('stop mining', self.currentTarget);
+        self.emit('start mining', target);
+      }
+    }
+    self.currentTarget = target;
+
+    self.emit(action, target);
+  }
+
+  // Edge triggered
+  // TODO: refactor
+  function mousedown(ev) {
+    if (!self.havePointer) return;
+    if (ev.button !== self.opts.mouseButton) return; 
+    self.emit('start mining', self.specifyTarget());
+  }
+
+  function mouseup(ev) {
+    if (!self.havePointer) return;
+    if (ev.button !== self.opts.mouseButton)  return;
+    self.currentTarget = null;
+    self.emit('stop mining', self.specifyTarget());
+  }
+
+  this.game.on('fire', fire);
+  if (this.game.isClient) {
+    ever(document.body).on('mousedown', mousedown);
+    ever(document.body).on('mouseup', mouseup);
+  }
+
+  // Save callbacks for removing in disable()
+  this.fire = fire;
+  this.mousedown = mousedown;
+  this.mouseup = mouseup;
+};
+
+Reach.prototype.disable = function() {
+  this.game.removeListener('fire', this.fire);
+  if (this.game.isClient) {
+    ever(document.body).removeListener('mousedown', this.mousedown);
+    ever(document.body).removeListener('mouseup', this.mouseup);
+  }
+};
+
+function targetsEqual(a, b) {
+  var strA = (a && a.voxel) ? a.voxel.join(',') : 'none';
+  var strB = (b && b.voxel) ? b.voxel.join(',') : 'none';
+  return strA === strB;
+}
+
+// Raytrace and get the hit voxel, side, and subcoordinates for passing to events
+Reach.prototype.specifyTarget = function() {
+  var sub, side, hit, value;
+
+  hit = this.game.raycastVoxels(this.game.cameraPosition(), this.game.cameraVector(), this.opts.reachDistance);
+
+  if (!hit) {
+    // air
+    return false;
+  }
+
+  // relative position within voxel where it was hit, range (1..0), for example (0.5, 0.5) is center:
+
+  // (1,1)--(0,1)
+  //   |      |
+  //   |      |
+  // (1,0)--(0,0)
+
+  sub = [fract(hit.position[0]), fract(hit.position[1]), fract(hit.position[2])];
+  // remove coordinate from direction, since it is always 0 (within epilson); convert 3D -> 2D
+  var fix = ((hit.normal.indexOf(1) + 1) || (hit.normal.indexOf(-1) + 1)) - 1; // TODO: deobfuscate
+  sub.splice(fix, 1);
+
+  side = this.normalToCardinal(hit.normal);
+
+  value = this.game.getBlock(hit.voxel);
+
+  return {voxel: hit.voxel, adjacent: hit.adjacent, side: side, sub: sub, normal: hit.normal, value:value};
+};
+
+Reach.prototype.normalToCardinal = function(normal) {
+  return {
+    "1,0,0": "east", // TODO: double-check these conventions
+    "-1,0,0": "west",
+    "0,1,0": "top",
+    "0,-1,0": "bottom",
+    "0,0,1": "south",
+    "0,0,-1": "north"
+  }[normal];
+};
+
+Reach.prototype.cardinalToNormal = function(direction) {
+  return {
+    "east": [1, 0, 0],
+    "west": [-1, 0, 0],
+    "top": [0, 1, 0],
+    "bottom": [0, -1, 0],
+    "south": [0, 0, 1],
+    "north": [0, 0, -1]
+  }[direction];
+};
+
+Reach.prototype.action = function(kb_state) {
+  if (kb_state.fire) {
+    // left-click (hold) = mining
+    return 'mining';
+  } else if (kb_state.firealt) {
+    // right-click = use
+    return 'use';
+  // TODO: middle-click = pick
+  } else {
+    return undefined;
+  }
+};
+
+inherits(Reach, EventEmitter);
+
+},{"events":15,"ever":125,"fract":128,"inherits":418}],420:[function(require,module,exports){
+
+var craftingrecipes = require('craftingrecipes');
+var ItemPile = require('itempile');
+
+module.exports = function(game, opts) {
+  return new RecipesPlugin(game, opts);
+};
+
+function RecipesPlugin(game, opts) {
+  this.craftList = new craftingrecipes.RecipeList();
+  this.smeltMap = {};
+  this.thesaurus = new craftingrecipes.CraftingThesaurus();
+}
+
+RecipesPlugin.prototype.register = function(recipe) {
+  return this.craftList.register(recipe);
+};
+
+RecipesPlugin.prototype.registerAmorphous = function(ingredients, result) {
+  return this.register(new craftingrecipes.AmorphousRecipe(ingredients, ItemPile.fromArrayIfArray(result)));
+};
+
+RecipesPlugin.prototype.registerPositional = function(ingredients, result) {
+  return this.register(new craftingrecipes.PositionalRecipe(ingredients, ItemPile.fromArrayIfArray(result)));
+};
+
+RecipesPlugin.prototype.find = function(inventory) {
+  return this.craftList.find(inventory);
+};
+
+RecipesPlugin.prototype.craft = function(inventory) {
+  return this.craftList.craft(inventory);
+};
+
+RecipesPlugin.prototype.registerSmelting = function(input, output) {
+  if (input in this.craftList)
+    console.log('WARNING: voxel-recipes registerSmelting overwriting recipes '+input+' -> '+output); // TODO: do we care?
+
+  this.craftList[input] = ItemPile.fromArrayIfArray(output);
+};
+
+RecipesPlugin.prototype.smelt = function(input) {
+  if (!input || !input.item) return undefined;
+
+  var output = this.craftList[input.item]; // TODO: smelting inputs of different stack sizes? (vs always 1)
+  return output ? output.clone() : undefined;
+};
+
+},{"craftingrecipes":107,"itempile":282}],421:[function(require,module,exports){
 module.exports = coordinates
 
 var aabb = require('aabb-3d')
@@ -44690,7 +59472,7 @@ function coordinates(spatial, box, regionWidth) {
  
   return emitter
 }
-},{"aabb-3d":66,"events":15}],337:[function(require,module,exports){
+},{"aabb-3d":66,"events":15}],422:[function(require,module,exports){
 'use strict';
 
 module.exports = function(game, opts) {
@@ -44948,7 +59730,173 @@ Registry.prototype.getTextureURL = function(name) {
 
 
 
-},{}],338:[function(require,module,exports){
+},{}],423:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new ScriptblockPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-blockdata']
+};
+
+function ScriptblockPlugin(game, opts) {
+  this.game = game;
+
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-scriptblock requires "voxel-registry" plugin');
+
+  this.blockdata = game.plugins.get('voxel-blockdata');
+  if (!this.blockdata) throw new Error('voxel-scriptblock requires "voxel-blockdata" plugin');
+
+  this.enable();
+}
+
+ScriptblockPlugin.prototype.enable = function() {
+  this.registry.registerBlock('scriptblock', {
+    texture: 'command_block',
+    displayName: 'Script Block',
+    onInteract: ScriptblockPlugin.prototype.interact.bind(this)
+  });
+
+  // TODO: recipe?
+};
+
+ScriptblockPlugin.prototype.disable = function() {
+  // TODO: unregister block
+};
+
+ScriptblockPlugin.prototype.interact = function(target) {
+  var x = target.voxel[0];
+  var y = target.voxel[1];
+  var z = target.voxel[2];
+
+  var bd = this.blockdata.get(x, y, z);
+  if (!bd) {
+    bd = {script: 'alert("Hello, voxel world!")'};
+  }
+
+  // interact (right-click) with top to set script, other sides to run
+  // TODO: run script when block takes damage instead (left-click)
+  if (target.side === 'top') {
+    var newScript = prompt("Script for block at ("+[x,y,z].join(",")+"): ", bd.script);
+
+    if (newScript !== null) {
+      bd.script = newScript;
+    }
+
+    this.blockdata.set(x, y, z, bd);
+  } else {
+    eval(bd.script);
+  }
+
+  // prevent further interaction (like placing blocks, if they clicked us with a block in hand)
+  return true;
+};
+
+},{}],424:[function(require,module,exports){
+'use strict';
+
+var play_audio = require('audio-play');
+
+module.exports = function(game, opts) {
+  return new SfxPlugin(game, opts);
+};
+
+module.exports.pluginInfo = {
+  clientOnly: true,
+  loadAfter: ['voxel-health', 'voxel-harvest', 'voxel-registry']
+};
+
+function SfxPlugin(game, opts) {
+  this.game = game;
+
+  this.artPacks = this.game.materials.artPacks;
+  if (!this.artPacks) throw new Error('voxel-sfx requires game.materials to support artPacks (try voxel-texture-shader)');
+
+  this.registry = game.plugins.get('voxel-registry');
+
+  this.enable();
+}
+
+SfxPlugin.prototype.enable = function() {
+  var self = this;
+
+  this.healthPlugin = this.game.plugins.get('voxel-health');
+  if (this.healthPlugin) {
+    this.healthPlugin.on('hurt', this.onHurt = function() {
+      self.play('damage/fallsmall');
+    });
+  }
+
+  this.mine = this.game.plugins.get('voxel-mine');
+  if (this.mine) {
+    this.mine.on('break', function(target){
+      var blockName = this.registry.getBlockName(target.value); // eg grass
+      var breakSound = this.registry.getProp(blockName, 'breakSound') || 'break/block'
+      self.play(breakSound);
+    });
+  }
+
+  this.harvestPlugin = this.game.plugins.get('voxel-harvest');
+  if (this.harvestPlugin && this.registry) {
+    this.harvestPlugin.on('harvested', this.onHarvested = function(event) {
+      var blockName = self.registry.getBlockName(event.target.value);
+      var harvestSound = self.registry.getProp(blockName, 'harvestSound');
+      if (harvestSound) self.play(harvestSound);
+    });
+  }
+};
+
+SfxPlugin.prototype.disable = function() {
+  if (this.healthPlugin) this.healthPlugin.removeListener('hurt', this.onHurt);
+  if (this.harvestPlugin) this.harvestPlugin.removeListener('harvested', this.onHarvested);
+};
+
+SfxPlugin.prototype.play = function(name, loop, volume, url) {
+  loop = loop || false;
+  url = url || this.artPacks.getSound(name);  // Allows you to specify url out side of resource pack
+  if (!url) {
+    console.log('voxel-sfx sound not found: ' + name + ' URL: ' + url)
+    return false;
+  }
+
+  volume = volume || 1.0;
+
+  console.log('voxel-sfx playing sound',name,url);
+
+  if (loop) {
+    play_audio(url).autoplay().loop();
+  } else {
+    play_audio(url).autoplay();
+  }
+};
+
+SfxPlugin.prototype.pause = function(name, url) {
+  url = url || this.artPacks.getSound(name);  // Allows you to specify url out side of resource pack
+  if (!url) {
+    console.log("Not found: " + name + " URL: " + url)
+    return false;
+  }
+
+  console.log('Pausing sound',name,url);
+
+  play_audio(url).pause();
+};
+
+SfxPlugin.prototype.preload = function(name, url) {
+  url = url || this.artPacks.getSound(name);  // Allows you to specify url out side of resource pack
+  if (!url){
+    console.log("Not found: " + name + " URL: " + url)
+    return false;
+  }
+
+  console.log('Preloading sound',name,url);
+
+  play_audio(url).preload();
+};
+
+},{"audio-play":74}],425:[function(require,module,exports){
 
 var fs = require("fs")
 var glShader = require('gl-shader')
@@ -45108,7 +60056,132 @@ ShaderPlugin.prototype.createCustomModelShader = function() {
                 "                        precision highp float;\n#define GLSLIFY 1\n                                                uniform sampler2D texture;                        varying vec2 vUv;                                                void main() {                        gl_FragColor = texture2D(texture, vUv);                        }");
 };
 
-},{"events":15,"fs":1,"gl-mat4":143,"gl-shader":171,"inherits":243}],339:[function(require,module,exports){
+},{"events":15,"fs":1,"gl-mat4":162,"gl-shader":190,"inherits":272}],426:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new Skyhook(game, opts);
+};
+
+function Skyhook(game, opts) {
+  this.game = game;
+  this.distance = opts.distance || 2;
+  this.registry = game.plugins.get('voxel-registry');
+  if (!this.registry) throw new Error('voxel-skyhook requires voxel-registry plugin');
+
+  this.enable();
+}
+
+Skyhook.prototype.enable = function() {
+  this.registry.registerBlock('skyhook', 
+      {texture: 'cauldron_bottom', // TODO
+       transparent: true,
+       displayName: 'Sky Hook',
+       onUse: this.use.bind(this)
+       });
+};
+
+Skyhook.prototype.disable = function() {
+  // TODO
+};
+
+
+Skyhook.prototype.use = function(held, target) {
+  var avatar = this.game.controls.target().avatar;
+
+  var camera = this.game.cameraVector();
+
+  var x = Math.round(avatar.position.x) + Math.round(camera[0]) * this.distance;
+  var y = Math.round(avatar.position.y) + Math.round(camera[1]) * this.distance;
+  var z = Math.round(avatar.position.z) + Math.round(camera[2]) * this.distance;
+
+  if (this.game.getBlock([x, y, z]) !== 0) {
+    console.log('skyhook blocked');
+    return false;
+  }
+
+  if (!this.game.createBlock([x, y, z], this.registry.getBlockIndex('skyhook'))) {
+    console.log('skyhook occupied');
+    return false;
+  }
+
+  return true; // use up item
+};
+
+},{}],427:[function(require,module,exports){
+'use strict';
+
+module.exports = function(game, opts) {
+  return new SprintPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-keys'],
+  clientOnly: true // TODO: server-side?
+};
+
+function SprintPlugin(game, opts) {
+  this.game = game;
+  this.keys = game.plugins.get('voxel-keys');
+  if (!this.keys) throw new Error('voxel-sprint requires voxel-keys plugin');
+
+  this.walkMaxSpeed = opts.walkMaxSpeed || 0.0056;
+  this.runMaxSpeed = opts.runMaxSpeed || 0.0112;
+
+  this.counter = 0;
+  this.forwardUpAfterFirstDown = false;
+  this.first = Date.now();
+  this.sprinting = false;
+
+  this.enable();
+}
+
+SprintPlugin.prototype.enable = function() {
+  var self = this;
+
+  self.keys.down.on('forward', self.onForwardDown = function() {
+    // logic based on voxel-fly - TODO: refactor as general multi-keypress functionality?
+    if (self.counter === 1) {
+      if (Date.now() - self.first > 300) {
+        self.forwardUpAfterFirstDown = true;
+        self.first = Date.now();
+        return;
+      } else {
+        if (self.forwardUpAfterFirstDown) {
+          self.startSprint();
+        }
+      }
+
+      self.forwardUpAfterFirstDown = false;
+      self.counter = 0;
+    } else if (self.counter === 0) {
+      self.first = Date.now();
+      self.counter += 1;
+    }
+  });
+
+  self.keys.up.on('forward', self.onForwardUp = function() {
+    if (self.sprinting) self.stopSprint();
+  });
+};
+
+SprintPlugin.prototype.disable = function() {
+  this.keys.down.removeListener('forward', this.onForwardDown);
+  this.keys.up.removeListener('forward', this.onForwardUp);
+};
+
+
+SprintPlugin.prototype.startSprint = function() {
+  this.game.controls.walk_max_speed = this.runMaxSpeed;
+  this.sprinting = true;
+};
+
+SprintPlugin.prototype.stopSprint = function() {
+  this.game.controls.walk_max_speed = this.walkMaxSpeed;
+  this.sprinting = false;
+};
+
+
+},{}],428:[function(require,module,exports){
 'use strict';
 
 var createArtpacks = require('artpacks');
@@ -45397,7 +60470,7 @@ StitchPlugin.prototype.showAtlas = function() {
 
 
 
-},{"artpacks":69,"atlaspack":70,"cube-side-array":96,"events":15,"gl-texture2d":178,"inherits":243,"ndarray":266,"ndarray-hash":257,"rect-mip-map":287,"save-pixels":293,"toarray":299,"touchup":300}],340:[function(require,module,exports){
+},{"artpacks":70,"atlaspack":72,"cube-side-array":109,"events":15,"gl-texture2d":197,"inherits":272,"ndarray":302,"ndarray-hash":293,"rect-mip-map":325,"save-pixels":331,"toarray":342,"touchup":343}],429:[function(require,module,exports){
 module.exports = function (opts) {
     if (!opts) opts = {};
     if (opts.bark === undefined) opts.bark = 1;
@@ -45606,7 +60679,463 @@ function applyRules(axiom, rules) {
     return axiom.replace(regexRules(rules), matchRule);
 }
 
-},{}],341:[function(require,module,exports){
+},{}],430:[function(require,module,exports){
+'use strict';
+
+const EventEmitter = require('events').EventEmitter;
+
+module.exports = (game, opts) => new Use(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-reach', 'voxel-registry', 'voxel-inventory-hotbar'],
+};
+
+class Use extends EventEmitter {
+  constructor(game, opts) {
+    super();
+
+    this.game = game;
+
+    this.reach = game.plugins.get('voxel-reach');
+    if (!this.reach) throw new Error('voxel-use requires "voxel-reach" plugin');
+
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-use requires "voxel-registry" plugin');
+
+    this.inventoryHotbar = game.plugins.get('voxel-inventory-hotbar');
+    if (!this.inventoryHotbar) throw new Error('voxel-use requires "voxel-inventory-hotbar" plugin'); // TODO: move held to voxel-carry?
+
+    this.enable();
+  }
+
+  enable() {
+    this.reach.on('use', this.onInteract = (target) => {
+      // 1. block interaction
+      if (target && target.voxel && !this.game.buttons.crouch) {
+        const clickedBlockID = this.game.getBlock(target.voxel);  // TODO: should voxel-reach get this?
+        const clickedBlock = this.registry.getBlockName(clickedBlockID);
+
+        const props = this.registry.getBlockProps(clickedBlock);
+        if (props.onInteract) {
+          // this block handles its own interaction
+          // TODO: redesign this? cancelable event?
+          const preventDefault = props.onInteract(target);
+          if (preventDefault) return;
+        }
+      }
+
+      // 2. use items in hand
+      const held = this.inventoryHotbar.held();
+     
+      if (held && held.item) {
+        const props = this.registry.getItemProps(held.item);
+        if (props && props.onUse) {
+          // 2a. use items
+
+          const ret = props.onUse(held, target);
+          if (typeof ret === 'undefined') {
+            // nothing 
+          } else if (typeof ret === 'number' || typeof ret === 'boolean') {
+            // consume this many
+            const consumeCount = ret|0;
+            this.inventoryHotbar.takeHeld(consumeCount);
+          } else if (typeof ret === 'object') {
+            // (assumed ItemPile instance (TODO: instanceof? but..))
+            // replace item - used for voxel-bucket
+            // TODO: handle if item count >1? this replaces the whole pile
+            this.inventoryHotbar.replaceHeld(ret);
+          }
+        } else if (this.registry.isBlock(held.item)) {
+          // 2b. place itemblocks
+          const newHeld = this.useBlock(target, held);
+          this.inventoryHotbar.replaceHeld(newHeld);
+          this.emit('usedBlock', target, held, newHeld);
+        }
+      } else {
+        console.log('waving');
+      }
+    });
+  }
+
+  // place a block on target and decrement held
+  useBlock(target, held) {
+    if (!target) {
+      // right-clicked air with a block, does nothing
+      // TODO: allow 'using' blocks when clicked in air? (no target) (see also: voxel-skyhook)
+      console.log('waving block');
+      return held;
+    }
+
+    // test if can place block here (not blocked by self), before consuming inventory
+    // (note: canCreateBlock + setBlock = createBlock, but we want to check in between)
+    if (!this.game.canCreateBlock(target.adjacent)) {
+      console.log('blocked');
+      return held;
+    }
+
+    const taken = held.splitPile(1);
+
+    // clear empty piles (wart due to itempile mutability, and can't use takeHeld here
+    // since held may not necessarily come from the hotbar - if someone else calls us)
+    if (held.count === 0) held = undefined;
+
+    if (taken === undefined) {
+      console.log('nothing in this inventory slot to use');
+      return held;
+    }
+
+    const currentBlockID = this.registry.getBlockIndex(taken.item);
+    this.game.setBlock(target.adjacent, currentBlockID);
+    return held;
+  }
+
+  disable() {
+    this.reach.removeListener('use', this.onInteract);
+  }
+}
+
+
+},{"events":15}],431:[function(require,module,exports){
+(function (process){(function (){
+'use strict';
+
+module.exports = (game, opts) => new VoilaPlugin(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-highlight', 'voxel-outline', 'voxel-registry', 'voxel-registry', 'voxel-blockdata', 'voxel-keys'],
+  clientOnly: true,
+};
+
+class VoilaPlugin {
+  constructor(game, opts) {
+    this.game = game;
+    this.hl = game.plugins.get('voxel-highlight');
+    if (!this.hl) this.hl = game.plugins.get('voxel-outline');
+    if (!this.hl) throw new Error('voxel-voila requires voxel-highlight or voxel-outline plugins');
+
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-voila requires voxel-registry plugin');
+
+    if (this.registry.getItemDisplayName === undefined) throw new Error('voxel-voila requires voxel-registry >=0.2.0 with getItemDisplayName');
+
+    this.blockdata = game.plugins.get('voxel-blockdata');
+
+    this.keys = this.game.plugins.get('voxel-keys'); // optional
+
+    this.createNode();
+
+    this.enable();
+  }
+
+  createNode() {
+    this.node = document.createElement('span');
+    this.node.setAttribute('id', 'voxel-voila');
+    this.node.setAttribute('style', `
+background-image: linear-gradient(rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.6) 100%);
+visibility: hidden;
+color: white;
+font-size: 18pt;
+`);
+
+    this.node.textContent = '';
+
+    const container = document.createElement('div');
+    container.setAttribute('style', `
+position: absolute;
+top: 0px;
+width: 100%;
+text-align: center;
+`);
+
+    container.appendChild(this.node);
+    document.body.appendChild(container);
+  }
+
+  update(pos, hit) {
+    this.lastPos = pos;
+    this.lastHit = hit;
+    if (this.lastPos === undefined) {
+      this.clear();
+      return;
+    }
+
+    const index = this.game.getBlock(pos);
+    const name = this.registry.getBlockName(index);
+
+    const displayName = this.registry.getItemDisplayName(name);
+
+    if (this.game.buttons.crouch) { // TODO: voxel-keys state?
+      //  more detailed info when crouching
+
+      this.node.textContent = "";
+
+      const [x, y, z] = pos;
+
+      const lines = [
+        displayName,
+        '',
+        `Name: ${name}`,
+        `Index: ${index}`,
+        `Position: (${x}, ${y}, ${z})`,
+      ];
+
+      if (hit !== undefined && hit.normal !== undefined) {
+        const [nx, ny, nz] = hit.normal;
+        lines.push(`Normal: (${nx}, ${ny}, ${nz})`);
+      }
+
+      const props = this.registry.getBlockProps(name);
+      if (props.requiredTool) {
+        lines.push(`Requires: ${props.requiredTool}`);
+      }
+
+      if (this.blockdata !== undefined) {
+        //  optional attached arbitrary block data
+        const bd = this.blockdata.get(x, y, z);
+        if (bd !== undefined) {
+          //  TODO: show this somewhere
+          lines.push(`Data: ${JSON.stringify(bd)}`);
+        }
+      }
+
+      for (let line of lines) {
+        this.node.appendChild(document.createTextNode(line));
+        this.node.appendChild(document.createElement('br'));
+      }
+    } else {
+      this.node.textContent = displayName;
+    }
+  }
+
+  clear() {
+    this.lastPos = undefined;
+    this.node.textContent = '';
+  }
+
+  enable() {
+    this.node.style.visibility = '';
+
+    this.hl.on('highlight', this.onHighlight = (pos, hit) => {
+      this.update(pos, hit);
+    });
+
+    this.hl.on('remove', this.onRemove = () => {
+      this.clear();
+    });
+
+    if (this.keys) {
+      this.keys.changed.on('crouch', this.onChanged = () => {
+        process.nextTick(() => {
+          this.update(this.lastPos, this.lastHit);
+        });
+      });
+    }
+  }
+
+  disable() {
+    this.hl.removeListener('highlight', this.onHighlight);
+    this.hl.removeListener('remove', this.onRemove);
+    if (this.keys) this.keys.changed.removeListener('crouch', this.onChanged);
+    this.node.style.visibility = 'hidden';
+  }
+}
+
+}).call(this)}).call(this,require('_process'))
+},{"_process":42}],432:[function(require,module,exports){
+'use strict';
+
+require('webvr-polyfill'); // fills navigator.getVRDevices(), etc.
+var mat4 = require('gl-mat4');
+var shallow_copy = require('shallow-copy');
+
+module.exports = function(game, opts) {
+  return new VRPlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  loadAfter: ['game-shell-fps-camera', 'voxel-shader', 'voxel-fullscreen']
+};
+
+function VRPlugin(game, opts) {
+  this.game = game;
+  this.camera = game.plugins.get('game-shell-fps-camera');
+  if (!this.camera) throw new Error('voxel-vr requires game-shell-fps-camera plugin'); // TODO: other cameras
+  this.shader = game.plugins.get('voxel-shader');
+  if (!this.shader) throw new Error('voxel-vr requires voxel-shader plugin');
+  this.fullscreen = game.plugins.get('voxel-fullscreen'); // optional
+
+  this.hmdvrDevice = undefined;
+  this.currentEye = undefined;
+
+  this.projectionMatrixLeft = mat4.create();
+  this.projectionMatrixRight = mat4.create();
+
+  // defaults if no VR device
+  this.translateLeft = [-0.05, 0, 0];
+  this.translateRight = [+0.05, 0, 0];
+  this.FOVsLeft = {
+    upDegrees: 45,
+    downDegrees: 45,
+    leftDegrees: 45,
+    rightDegrees: 45
+  };
+  this.FOVsRight = {
+    upDegrees: 45,
+    downDegrees: 45,
+    leftDegrees: 45,
+    rightDegrees: 45
+  };
+
+  this.enable();
+}
+
+VRPlugin.prototype.enable = function() {
+  // Replace renderer with our own stereoscopic version TODO: only replace renderGLNow?
+  // TODO: replace in this.game.shell.on('init', ...), which is where gl-now adds its render;
+  //  otherwise, this plugin cannot be enabled at startup
+  this.oldRenders = this.game.shell.listeners('render');
+  this.game.shell.removeAllListeners('render');
+  this.game.shell.on('render', this.renderVR.bind(this));
+  this.camera.on('view', this.onView = this.viewVR.bind(this));
+
+  this.oldUpdateProjectionMatrix = this.shader.listeners('updateProjectionMatrix');
+  this.shader.removeAllListeners('updateProjectionMatrix');
+  this.shader.on('updateProjectionMatrix', this.onPerspective = this.perspectiveVR.bind(this));
+
+  if (this.fullscreen) {
+    if (this.requestFlags)  {
+      this.oldRequestFlags = this.fullscreen.requestFlags;
+      this.fullscreen.requestFlags = this.requestFlags;
+    }
+  }
+
+  this.shader.updateProjectionMatrix();
+
+  this.scanDevices();
+};
+
+VRPlugin.prototype.disable = function() {
+  this.game.shell.removeAllListeners('render');
+  for (var i = 0; i < this.oldRenders.length; i += 1) {
+    this.game.shell.on('render', this.oldRenders[i]);
+  }
+
+  this.shader.removeAllListeners('updateProjectionMatrix');
+  for (var i = 0; i < this.oldUpdateProjectionMatrix.length; i += 1) {
+    this.shader.on('updateProjectionMatrix', this.oldUpdateProjectionMatrix[i]);
+  }
+
+  if (this.fullscreen) {
+    if (this.oldRequestFlags) {
+      // no longer fullscreen to the VR device
+      this.fullscreen.requestFlags = this.oldRequestFlags;
+    }
+  }
+};
+
+var xyz2v = function(xyz) {
+  return [xyz.x, xyz.y, xyz.z]
+};
+
+VRPlugin.prototype.scanDevices = function() {
+  if (!('getVRDevices' in navigator)) return; // should be polyfilled by webvr-polyfill, but just in case
+
+  var self = this;
+
+  navigator.getVRDevices().then(function(devices) {
+    for (var i = 0; i < devices.length; i += 1) {
+      var device = devices[i];
+
+      if (device instanceof HMDVRDevice) {
+        // translation vector per eye
+        self.translateLeft = xyz2v(device.getEyeTranslation('left'));
+        self.translateRight = xyz2v(device.getEyeTranslation('right'));
+
+        // field of views per eye
+        // Note: using shallow_copy since left and right might be same object (webvr-polyfill bug?)
+        // but we want to allow adjusting them individually
+        self.FOVsLeft = shallow_copy(device.getRecommendedEyeFieldOfView('left'));
+        self.FOVsRight = shallow_copy(device.getRecommendedEyeFieldOfView('right'));
+        // TODO: .getMaximumEyeFieldOfView
+
+        self.shader.updateProjectionMatrix(); // -> perspectiveVR
+
+        // voxel-fullscreen to the VR device
+        if (self.fullscreen
+          //&& device.hardwareUnitId !== 'polyfill' // hack to exclude non-real (virtual?) devices, so original flags are preserved
+          ) {
+            self.requestFlags = { vrDisplay: device };
+            self.oldRequestFlags = self.fullscreen.requestFlags;
+            self.fullscreen.requestFlags = self.requestFlags;
+        }
+        self.hmdvrDevice = device;
+
+        break; // use only first HMD device found TODO: configurable multiple devices
+      }
+    }
+  }, function(err) {
+    console.log('voxel-vr error in getVRDevices: ',err);
+  });
+};
+
+// Compute the projection matrix, when the viewport changes
+VRPlugin.prototype.perspectiveVR = function(out) {
+  // Save the matrix for each eye, locally
+  mat4.perspectiveFromFieldOfView(this.projectionMatrixLeft, this.FOVsLeft, this.shader.cameraNear, this.shader.cameraFar);
+  mat4.perspectiveFromFieldOfView(this.projectionMatrixRight, this.FOVsRight, this.shader.cameraNear, this.shader.cameraFar);
+  // out sets voxel-shader .projectionMatrix, but we have to (re)set it individually for each eye in renderVR below
+};
+
+// Compute the view matrix, each frame
+VRPlugin.prototype.viewVR = function(out) {
+  var eye = this.currentEye;
+
+  if (eye === 0) {
+    mat4.translate(out, out, this.translateLeft);
+  } else {
+    mat4.translate(out, out, this.translateRight);
+  }
+};
+
+// Render scene twice, once for each eye (replaces gl-now renderGLNow(t))
+VRPlugin.prototype.renderVR = function(t) {
+  var shell = this.game.shell;
+  var scale = this.game.shell.scale;
+  var gl = shell.gl;
+
+  //Bind default framebuffer
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+
+  //Clear buffers
+  if(shell.clearFlags & gl.STENCIL_BUFFER_BIT) {
+    gl.clearStencil(shell.clearStencil)
+  }
+  if(shell.clearFlags & gl.COLOR_BUFFER_BIT) {
+    gl.clearColor(shell.clearColor[0], shell.clearColor[1], shell.clearColor[2], shell.clearColor[3])
+  }
+  if(shell.clearFlags & gl.DEPTH_BUFFER_BIT) {
+    gl.clearDepth(shell.clearDepth)
+  }
+  if(shell.clearFlags) {
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT)
+  }
+
+  // Left eye
+  this.currentEye = 0
+  gl.viewport(0, 0, (shell._width / scale / 2)|0, (shell._height / scale)|0)
+  mat4.copy(this.shader.projectionMatrix, this.projectionMatrixLeft);
+  shell.emit("gl-render", t)
+
+
+  // Right eye
+  this.currentEye = 1
+  gl.viewport((shell._width / scale / 2)|0, 0, (shell._width / scale / 2)|0, (shell._height / scale)|0)
+  mat4.copy(this.shader.projectionMatrix, this.projectionMatrixRight);
+  shell.emit("gl-render", t)
+
+  this.currentEye = undefined
+};
+
+},{"gl-mat4":162,"shallow-copy":332,"webvr-polyfill":447}],433:[function(require,module,exports){
 (function (Buffer){(function (){
 'use strict';
 
@@ -45735,7 +61264,380 @@ WebviewPlugin.prototype.render = function() {
 };
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"buffer":11,"gl-css3d":126}],342:[function(require,module,exports){
+},{"buffer":11,"gl-css3d":145}],434:[function(require,module,exports){
+'use strict';
+
+var ndarray = require('ndarray');
+var ops = require('ndarray-ops');
+var createBuffer = require('gl-buffer');
+var createVAO = require('gl-vao');
+var mat4 = require('gl-mat4');
+var createSimpleShader = require('simple-3d-shader');
+
+module.exports = function(game, opts) {
+  return new WireframePlugin(game, opts);
+};
+module.exports.pluginInfo = {
+  clientOnly: true,
+  loadAfter: ['voxel-shader', 'voxel-mesher', 'voxel-keys'],
+};
+
+function WireframePlugin(game, opts) {
+  this.game = game;
+  this.shell = game.shell;
+  if (!this.shell) throw new Error('voxel-wireframe requires voxel-engine-stackgl');
+
+  this.shaderPlugin = game.plugins.get('voxel-shader');
+  if (!this.shaderPlugin) throw new Error('voxel-wireframe requires voxel-shader plugin');
+
+  this.mesherPlugin = game.plugins.get('voxel-mesher');
+  if (!this.mesherPlugin) throw new Error('voxel-wireframe requires voxel-mesher plugin');
+
+  this.keysPlugin = game.plugins.get('voxel-keys'); // optional
+
+  this.showWireframe = opts.showWireframe !== undefined ? opts.showWireframe : false;
+  this.requireShift = opts.requireShift !== undefined ? opts.requireShift : true;
+
+  this.color = opts.color ? opts.color : [0, 1, 0]; // green
+
+  this.enable();
+}
+
+WireframePlugin.prototype.enable = function() {
+  this.shell.bind('wireframe', 'F9');
+  if (this.keysPlugin) this.keysPlugin.down.on('wireframe', this.onToggle = this.toggle.bind(this));
+  this.shell.on('gl-init', this.onInit = this.shaderInit.bind(this));
+  this.shell.on('gl-render', this.onRender = this.render.bind(this));
+  this.mesherPlugin.on('meshed', this.onMeshed = this.createWireMesh.bind(this));
+};
+
+WireframePlugin.prototype.disable = function() {
+  this.mesherPlugin.removeListener('meshed', this.onMeshed);
+  this.shell.removeListener('gl-render', this.onRender);
+  this.shell.removeListener('gl-init', this.onInit);
+  if (this.keysPlugin) this.keysPlugin.down.removeListener('wireframe', this.onToggle);
+  this.shell.unbind('wireframe');
+};
+
+WireframePlugin.prototype.shaderInit = function() {
+  this.wireShader = createSimpleShader(this.shell.gl);
+};
+
+WireframePlugin.prototype.toggle = function(ev) {
+  if (this.requireShift && ev && !ev.shiftKey) return;
+  this.showWireframe = !this.showWireframe;
+};
+
+WireframePlugin.prototype.createWireMesh = function(mesh, gl, vert_data) {
+  //Create wire mesh
+  var triangleVertexCount = !mesh.vertexArrayObjects.surface ? 0 : mesh.vertexArrayObjects.surface.length
+  var wireVertexCount = 2 * triangleVertexCount
+  var wireVertexArray = ndarray(new Uint8Array(wireVertexCount * 3), [triangleVertexCount, 2, 3])
+  var trianglePositions = ndarray(vert_data, [triangleVertexCount, 3], [8, 1], 0)
+  ops.assign(wireVertexArray.pick(undefined, 0, undefined), trianglePositions)
+  var wires = wireVertexArray.pick(undefined, 1, undefined)
+  for(var i=0; i<3; ++i) {
+    ops.assign(wires.lo(i).step(3), trianglePositions.lo((i+1)%3).step(3))
+  }
+  var wireBuf = createBuffer(gl, wireVertexArray.data)
+  var wireVAO = createVAO(gl, [
+    { "buffer": wireBuf,
+      "type": gl.UNSIGNED_BYTE,
+      "size": 3,
+      "offset": 0,
+      "stride": 3,
+      "normalized": false
+    }
+  ])
+  wireVAO.length = wireVertexCount
+
+  mesh.vertexArrayObjects.wireframe = wireVAO
+};
+
+var modelMatrix = mat4.create();
+
+WireframePlugin.prototype.render = function() {
+  if(this.showWireframe) {
+    var gl = this.shell.gl
+
+    //Bind the wire shader
+    this.wireShader.bind()
+    this.wireShader.attributes.position.location = 0
+    this.wireShader.uniforms.projection = this.shaderPlugin.projectionMatrix
+    this.wireShader.uniforms.view = this.shaderPlugin.viewMatrix
+    this.wireShader.attributes.color = this.color;
+
+    for (var chunkIndex in this.game.voxels.meshes) {
+      var mesh = this.game.voxels.meshes[chunkIndex];
+
+      // compensate for voxel padding in voxel-mesher
+      var pad = -1;
+      mat4.translate(modelMatrix, mesh.modelMatrix, [pad, pad, pad]);
+
+      // avoid z-fighting with voxels and voxel-outline (0.001)
+      var epsilon = 0.00001;
+      mat4.scale(modelMatrix, modelMatrix, [1 + epsilon, 1 + epsilon, 1 + epsilon]);
+
+      this.wireShader.uniforms.model = modelMatrix
+      var wireVAO = mesh.vertexArrayObjects.wireframe // set in createWireMesh() above
+      wireVAO.bind()
+      gl.drawArrays(gl.LINES, 0, wireVAO.length)
+      wireVAO.unbind()
+    }
+  }
+};
+
+
+},{"gl-buffer":142,"gl-mat4":162,"gl-vao":201,"ndarray":302,"ndarray-ops":294,"simple-3d-shader":334}],435:[function(require,module,exports){
+arguments[4][346][0].apply(exports,arguments)
+},{"dup":346}],436:[function(require,module,exports){
+'use strict';
+
+const ucfirst = require('ucfirst');
+
+module.exports = (game, opts) => new WoolPlugin(game, opts);
+
+class WoolPlugin {
+  constructor(game, opts) {
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-wool requires voxel-registry plugin');
+
+    this.colors = ['black', 'blue', 'brown', 'cyan', 'gray', 'green', 'light_blue', 'lime', 'magenta', 'orange', 'pink', 'purple', 'red', 'silver', 'white', 'yellow'];  // TODO: order?
+
+    this.enable();
+  }
+
+  enable() {
+    this.registry.registerBlocks('wool', this.colors.length, {
+      names: this.colors.map((color) => 'wool' + ucfirst(color)),
+      texture: (offset) => 'wool_colored_' + (this.colors[offset] || this.colors[0]),
+      displayName: (offset) => ucfirst(this.colors[offset]) + ' Wool',
+      creativeTab: 'decorative',
+    });
+  }
+
+  disable() {
+    // TODO: remove blocks
+  }
+}
+
+},{"ucfirst":435}],437:[function(require,module,exports){
+'use strict';
+
+const InventoryDialog = require('voxel-inventory-dialog').InventoryDialog;
+const Inventory = require('inventory');
+const InventoryWindow = require('inventory-window');
+
+module.exports = (game, opts) => new Workbench(game, opts);
+
+module.exports.pluginInfo = {
+  loadAfter: ['voxel-registry', 'voxel-recipes', 'voxel-carry']
+};
+
+class Workbench {
+  constructor(game, opts) {
+    this.game = game;
+    if (!opts) opts = {};
+
+    this.playerInventory = game.plugins.get('voxel-carry').inventory || opts.playerInventory; // TODO: proper error if voxel-carry missing
+    if (!this.playerInventory) throw new Error('voxel-inventory-dialog requires "voxel-carry" plugin or playerInventory" set to inventory instance');
+
+    this.registry = game.plugins.get('voxel-registry');
+    if (!this.registry) throw new Error('voxel-workbench requires "voxel-registry" plugin');
+
+    this.recipes = game.plugins.get('voxel-recipes');
+    if (!this.recipes) throw new Error('voxel-workbench requires "voxel-recipes" plugin');
+
+    if (opts.registerBlock === undefined) opts.registerBlock = true;
+    if (opts.registerRecipe === undefined) opts.registerRecipe = true;
+   
+    if (this.game.isClient) {
+      this.workbenchDialog = new WorkbenchDialog(game, this.playerInventory, this.registry, this.recipes);
+    }
+
+    this.opts = opts;
+    this.enable();
+  }
+
+  enable() {
+    if (this.opts.registerBlock) {
+      this.registry.registerBlock('workbench', {texture: ['crafting_table_top', 'planks_oak', 'crafting_table_side'], onInteract: () => {
+        // TODO: server-side
+        this.workbenchDialog.open()
+        return true;
+      }
+      });
+    }
+
+    if (this.opts.registerRecipe) {
+      this.recipes.registerAmorphous(['wood.plank', 'wood.plank', 'wood.plank', 'wood.plank'], ['workbench']);
+    }
+  }
+
+  disable() {
+    // TODO
+  }
+}
+
+class WorkbenchDialog extends InventoryDialog {
+  constructor(game, playerInventory, registry, recipes) {
+
+    // TODO: clear these inventories on close, or store in per-block metadata
+    const craftInventory = new Inventory(3, 3)
+    craftInventory.on('changed', () => this.updateCraftingRecipe());
+    const craftIW = new InventoryWindow({width:3, registry:registry, inventory:craftInventory, linkedInventory:playerInventory});
+
+    const resultInventory = new Inventory(1);
+    const resultIW = new InventoryWindow({inventory:resultInventory, registry:registry, allowDrop:false, linkedInventory:playerInventory});
+    resultIW.on('pickup', () => this.tookCraftingOutput());
+
+    // crafting + result div, upper
+    const crDiv = document.createElement('div');
+    crDiv.style.display = 'flex';
+    crDiv.style.flexFlow = 'row';
+    crDiv.style.justifyContent = 'center';
+
+    const empty = document.createElement('div');
+    empty.style.width = '33%';
+   
+    const craftCont = craftIW.createContainer();
+    const craftContOuter = document.createElement('div');
+    craftContOuter.style.width = '33%';
+    craftContOuter.style.paddingTop = '15px'; // top space
+    craftContOuter.appendChild(craftCont);
+
+    const resultCont = resultIW.createContainer();
+    resultCont.style.alignSelf = 'center';
+    resultCont.style.marginLeft = '30px';  // separate from crafting grid
+    const resultContOuter = document.createElement('div');
+    resultContOuter.style.display = 'flex';
+    resultContOuter.style.width = '33%';
+    resultContOuter.style.flexFlow = 'column';
+    resultContOuter.style.justifyContent = 'center';
+    resultContOuter.appendChild(resultCont);
+
+    crDiv.appendChild(empty);
+    crDiv.appendChild(craftContOuter);
+    crDiv.appendChild(resultContOuter);
+
+    super(game, {
+      upper: [crDiv]
+    });
+
+    this.game = game;
+    this.playerInventory = playerInventory;
+    this.registry = registry;
+    this.recipes = recipes;
+
+    this.craftIW = craftIW;
+    this.craftInventory = craftInventory;
+
+    this.resultInventory = resultInventory;
+    this.resultIW = resultIW;
+  }
+
+  // changed crafting grid, so update recipe output
+  updateCraftingRecipe() {
+    const recipe = this.recipes.find(this.craftInventory);
+    console.log('found recipe',recipe);
+    this.resultInventory.set(0, recipe !== undefined ? recipe.computeOutput(this.craftInventory) : undefined);
+  }
+
+  // picked up crafting recipe output, so consume crafting grid ingredients
+  tookCraftingOutput() {
+    const recipe = this.recipes.find(this.craftInventory);
+    if (recipe === undefined) return;
+
+    recipe.craft(this.craftInventory);
+    this.craftInventory.changed();
+  }
+
+  close() {
+    // exiting workbench returns in-progress crafting ingredients to player
+    // TODO: inventory transfer() method
+    for (let i = 0; i < this.craftInventory.size(); ++i) {
+      if (this.craftInventory.get(i)) {
+        const excess = this.playerInventory.give(this.craftInventory.get(i));
+        //if excess // too bad, player loses if can't fit
+      }
+
+      this.craftInventory.set(i, undefined);
+    }
+
+    super.close()
+  }
+}
+
+
+
+},{"inventory":274,"inventory-window":273,"voxel-inventory-dialog":394}],438:[function(require,module,exports){
+'use strict';
+
+module.exports = (game, opts) => new ZenPlugin(game, opts);
+module.exports.pluginInfo = {
+  clientOnly: true,
+  loadAfter: ['voxel-keys']
+};
+
+class ZenPlugin {
+  constructor(game, opts) {
+    this.game = game;
+    this.keys = game.plugins.get('voxel-keys');
+    if (!this.keys) throw new Error('voxel-zen requires voxel-keys plugin');
+
+    this.zenMode = false;
+    this.enable();
+  }
+
+  enter() {
+    if (document.getElementById('logo')) document.getElementById('logo').style.visibility = 'hidden';
+    if (document.getElementById('stats')) document.getElementById('stats').style.visibility = 'hidden';
+    this.game.plugins.disable('voxel-inventory-hotbar'); // TODO: add explicit method to toggle visibility instead of disabling entire plugin?
+    this.game.plugins.disable('voxel-voila');
+    this.game.plugins.disable('voxel-health-bar');
+    if (this.getDatgui()) {
+      this.getDatgui().style.visibility = 'hidden';
+    }
+    this.zenMode = true;
+  }
+
+  leave() {
+    if (document.getElementById('logo')) document.getElementById('logo').style.visibility = '';
+    if (document.getElementById('stats')) document.getElementById('stats').style.visibility = '';
+    this.game.plugins.enable('voxel-inventory-hotbar'); // TODO: remember state, only re-enable if was enabled first?
+    this.game.plugins.enable('voxel-voila');
+    this.game.plugins.enable('voxel-health-bar');
+    if (this.getDatgui()) {
+      this.getDatgui().style.visibility = '';
+    }
+    this.zenMode = false;
+  }
+
+  getDatgui() {
+    const a = document.getElementsByClassName('dg'); // TODO: find out how dat.gui handle 'H' hotkey and Close Button, might do more than hiding? (tick listeners)
+    if (a) return a[0];
+  }
+
+  toggle() {
+    if (this.zenMode) {
+      this.leave();
+    } else {
+      this.enter();
+    }
+  }
+
+  enable() {
+    this.keys.down.on('zen', this.down = () => {
+      this.toggle();
+    });
+  }
+
+  disable() {
+    this.keys.down.remove('zen', this.down);
+  }
+}
+
+},{}],439:[function(require,module,exports){
 // Copyright (C) 2011 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -46422,7 +62324,7 @@ WebviewPlugin.prototype.render = function() {
   }
 })();
 
-},{}],343:[function(require,module,exports){
+},{}],440:[function(require,module,exports){
 var hiddenStore = require('./hidden-store.js');
 
 module.exports = createStore;
@@ -46443,7 +62345,7 @@ function createStore() {
     };
 }
 
-},{"./hidden-store.js":344}],344:[function(require,module,exports){
+},{"./hidden-store.js":441}],441:[function(require,module,exports){
 module.exports = hiddenStore;
 
 function hiddenStore(obj, key) {
@@ -46461,7 +62363,7 @@ function hiddenStore(obj, key) {
     return store;
 }
 
-},{}],345:[function(require,module,exports){
+},{}],442:[function(require,module,exports){
 // Original - @Gozola.
 // https://gist.github.com/Gozala/1269991
 // This is a reimplemented version (with a few bug fixes).
@@ -46492,7 +62394,7 @@ function weakMap() {
     }
 }
 
-},{"./create-store.js":343}],346:[function(require,module,exports){
+},{"./create-store.js":440}],443:[function(require,module,exports){
 'use strict'
 
 var weakMap = typeof WeakMap === 'undefined' ? require('weak-map') : WeakMap
@@ -46534,7 +62436,2558 @@ function initWebGLEW(gl) {
   return extensions
 }
 module.exports = initWebGLEW
-},{"weak-map":342}],347:[function(require,module,exports){
+},{"weak-map":439}],444:[function(require,module,exports){
+/*
+ * Copyright 2015 Boris Smus. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * The base class for all VR devices.
+ */
+function VRDevice() {
+  this.hardwareUnitId = 'polyfill';
+}
+
+/**
+ * The base class for all VR HMD devices.
+ */
+function HMDVRDevice() {
+}
+HMDVRDevice.prototype = new VRDevice();
+
+/**
+ * The base class for all VR position sensor devices.
+ */
+function PositionSensorVRDevice() {
+}
+PositionSensorVRDevice.prototype = new VRDevice();
+
+module.exports.VRDevice = VRDevice;
+module.exports.HMDVRDevice = HMDVRDevice;
+module.exports.PositionSensorVRDevice = PositionSensorVRDevice;
+
+},{}],445:[function(require,module,exports){
+/*
+ * Copyright 2015 Boris Smus. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var HMDVRDevice = require('./base.js').HMDVRDevice;
+
+// Constants from vrtoolkit: https://github.com/googlesamples/cardboard-java.
+var INTERPUPILLARY_DISTANCE = 0.06;
+var DEFAULT_MAX_FOV_LEFT_RIGHT = 40;
+var DEFAULT_MAX_FOV_BOTTOM = 40;
+var DEFAULT_MAX_FOV_TOP = 40;
+
+/**
+ * The HMD itself, providing rendering parameters.
+ */
+function CardboardHMDVRDevice() {
+  // Set display constants.
+  this.eyeTranslationLeft = {
+    x: INTERPUPILLARY_DISTANCE * -0.5,
+    y: 0,
+    z: 0
+  };
+  this.eyeTranslationRight = {
+    x: INTERPUPILLARY_DISTANCE * 0.5,
+    y: 0,
+    z: 0
+  };
+
+  // From com/google/vrtoolkit/cardboard/FieldOfView.java.
+  this.recommendedFOV = {
+    upDegrees: DEFAULT_MAX_FOV_TOP,
+    downDegrees: DEFAULT_MAX_FOV_BOTTOM,
+    leftDegrees: DEFAULT_MAX_FOV_LEFT_RIGHT,
+    rightDegrees: DEFAULT_MAX_FOV_LEFT_RIGHT
+  };
+}
+CardboardHMDVRDevice.prototype = new HMDVRDevice();
+
+CardboardHMDVRDevice.prototype.getRecommendedEyeFieldOfView = function(whichEye) {
+  return this.recommendedFOV;
+};
+
+CardboardHMDVRDevice.prototype.getEyeTranslation = function(whichEye) {
+  if (whichEye == 'left') {
+    return this.eyeTranslationLeft;
+  }
+  if (whichEye == 'right') {
+    return this.eyeTranslationRight;
+  }
+};
+
+module.exports = CardboardHMDVRDevice;
+
+},{"./base.js":444}],446:[function(require,module,exports){
+/*
+ * Copyright 2015 Boris Smus. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var PositionSensorVRDevice = require('./base.js').PositionSensorVRDevice;
+var THREE = require('./three-math.js');
+
+/**
+ * The positional sensor, implemented using web DeviceOrientation APIs.
+ */
+function GyroPositionSensorVRDevice() {
+  // Subscribe to deviceorientation events.
+  window.addEventListener('deviceorientation', this.onDeviceOrientationChange.bind(this));
+  window.addEventListener('orientationchange', this.onScreenOrientationChange.bind(this));
+  this.deviceOrientation = null;
+  this.screenOrientation = window.orientation;
+
+  // Helper objects for calculating orientation.
+  this.finalQuaternion = new THREE.Quaternion();
+  this.deviceEuler = new THREE.Euler();
+  this.screenTransform = new THREE.Quaternion();
+  // -PI/2 around the x-axis.
+  this.worldTransform = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
+}
+GyroPositionSensorVRDevice.prototype = new PositionSensorVRDevice();
+
+/**
+ * Returns {orientation: {x,y,z,w}, position: null}.
+ * Position is not supported since we can't do 6DOF.
+ */
+GyroPositionSensorVRDevice.prototype.getState = function() {
+  return {
+    orientation: this.getOrientation(),
+    position: null
+  }
+};
+
+GyroPositionSensorVRDevice.prototype.onDeviceOrientationChange =
+    function(deviceOrientation) {
+  this.deviceOrientation = deviceOrientation;
+};
+
+GyroPositionSensorVRDevice.prototype.onScreenOrientationChange =
+    function(screenOrientation) {
+  this.screenOrientation = window.orientation;
+};
+
+GyroPositionSensorVRDevice.prototype.getOrientation = function() {
+  if (this.deviceOrientation == null) {
+    return null;
+  }
+
+  // Rotation around the z-axis.
+  var alpha = THREE.Math.degToRad(this.deviceOrientation.alpha);
+  // Front-to-back (in portrait) rotation (x-axis).
+  var beta = THREE.Math.degToRad(this.deviceOrientation.beta);
+  // Left to right (in portrait) rotation (y-axis).
+  var gamma = THREE.Math.degToRad(this.deviceOrientation.gamma);
+  var orient = THREE.Math.degToRad(this.screenOrientation);
+
+  // Use three.js to convert to quaternion. Lifted from
+  // https://github.com/richtr/threeVR/blob/master/js/DeviceOrientationController.js
+  this.deviceEuler.set(beta, alpha, -gamma, 'YXZ');
+  this.finalQuaternion.setFromEuler(this.deviceEuler);
+  this.minusHalfAngle = -orient / 2;
+  this.screenTransform.set(0, Math.sin(this.minusHalfAngle), 0, Math.cos(this.minusHalfAngle));
+  this.finalQuaternion.multiply(this.screenTransform);
+  this.finalQuaternion.multiply(this.worldTransform);
+
+  return this.finalQuaternion;
+};
+
+
+module.exports = GyroPositionSensorVRDevice;
+
+},{"./base.js":444,"./three-math.js":449}],447:[function(require,module,exports){
+/*
+ * Copyright 2015 Boris Smus. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var WebVRPolyfill = require('./webvr-polyfill.js');
+
+new WebVRPolyfill();
+
+},{"./webvr-polyfill.js":450}],448:[function(require,module,exports){
+/*
+ * Copyright 2015 Boris Smus. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var PositionSensorVRDevice = require('./base.js').PositionSensorVRDevice;
+var THREE = require('./three-math.js');
+
+// How much to rotate per key stroke.
+var KEY_SPEED = 0.15;
+var KEY_ANIMATION_DURATION = 80;
+
+// How much to rotate for mouse events.
+var MOUSE_SPEED_X = 0.5;
+var MOUSE_SPEED_Y = 0.3;
+
+/**
+ * Another virtual position sensor, this time implemented using keyboard and
+ * mouse APIs. This is designed as for desktops/laptops where no Device*
+ * events work.
+ */
+function MouseKeyboardPositionSensorVRDevice() {
+  // Attach to mouse and keyboard events.
+  window.addEventListener('keydown', this.onKeyDown_.bind(this));
+  window.addEventListener('mousemove', this.onMouseMove_.bind(this));
+  window.addEventListener('mousedown', this.onMouseDown_.bind(this));
+  window.addEventListener('mouseup', this.onMouseUp_.bind(this));
+
+  this.phi = 0;
+  this.theta = 0;
+
+  // Variables for keyboard-based rotation animation.
+  this.targetAngle = null;
+
+  // State variables for calculations.
+  this.euler = new THREE.Euler();
+  this.orientation = new THREE.Quaternion();
+
+  // Variables for mouse-based rotation.
+  this.rotateStart = new THREE.Vector2();
+  this.rotateEnd = new THREE.Vector2();
+  this.rotateDelta = new THREE.Vector2();
+}
+MouseKeyboardPositionSensorVRDevice.prototype = new PositionSensorVRDevice();
+
+/**
+ * Returns {orientation: {x,y,z,w}, position: null}.
+ * Position is not supported for parity with other PositionSensors.
+ */
+MouseKeyboardPositionSensorVRDevice.prototype.getState = function() {
+  this.euler.set(this.phi, this.theta, 0, 'YXZ');
+  this.orientation.setFromEuler(this.euler);
+
+  return {
+    orientation: this.orientation,
+    position: null
+  }
+};
+
+MouseKeyboardPositionSensorVRDevice.prototype.onKeyDown_ = function(e) {
+  // Track WASD and arrow keys.
+  if (e.keyCode == 38 || e.keyCode == 87) { // W or Up key.
+    this.animatePhi_(this.phi + KEY_SPEED);
+  } else if (e.keyCode == 39 || e.keyCode == 68) { // D or Right key.
+    this.animateTheta_(this.theta - KEY_SPEED);
+  } else if (e.keyCode == 40 || e.keyCode == 83) { // S or Down key.
+    this.animatePhi_(this.phi - KEY_SPEED);
+  } else if (e.keyCode == 37 || e.keyCode == 65) { // A or Left key.
+    this.animateTheta_(this.theta + KEY_SPEED);
+  }
+};
+
+MouseKeyboardPositionSensorVRDevice.prototype.animateTheta_ = function(targetAngle) {
+  this.animateKeyTransitions_('theta', targetAngle);
+};
+
+MouseKeyboardPositionSensorVRDevice.prototype.animatePhi_ = function(targetAngle) {
+  this.animateKeyTransitions_('phi', targetAngle);
+};
+
+/**
+ * Start an animation to transition an angle from one value to another.
+ */
+MouseKeyboardPositionSensorVRDevice.prototype.animateKeyTransitions_ = function(angleName, targetAngle) {
+  // If an animation is currently running, cancel it.
+  if (this.angleAnimation) {
+    clearInterval(this.angleAnimation);
+  }
+  var startAngle = this[angleName];
+  var startTime = new Date();
+  // Set up an interval timer to perform the animation.
+  this.angleAnimation = setInterval(function() {
+    // Once we're finished the animation, we're done.
+    var elapsed = new Date() - startTime;
+    if (elapsed >= KEY_ANIMATION_DURATION) {
+      this[angleName] = targetAngle;
+      clearInterval(this.angleAnimation);
+      return;
+    }
+    // Linearly interpolate the angle some amount.
+    var percent = elapsed / KEY_ANIMATION_DURATION;
+    this[angleName] = startAngle + (targetAngle - startAngle) * percent;
+  }.bind(this), 1000/60);
+};
+
+MouseKeyboardPositionSensorVRDevice.prototype.onMouseDown_ = function(e) {
+  this.rotateStart.set(e.clientX, e.clientY);
+  this.isDragging = true;
+};
+
+// Very similar to https://gist.github.com/mrflix/8351020
+MouseKeyboardPositionSensorVRDevice.prototype.onMouseMove_ = function(e) {
+  if (!this.isDragging) {
+    return;
+  }
+  this.rotateEnd.set(e.clientX, e.clientY);
+  // Calculate how much we moved in mouse space.
+  this.rotateDelta.subVectors(this.rotateEnd, this.rotateStart);
+  this.rotateStart.copy(this.rotateEnd);
+
+  // Keep track of the cumulative euler angles.
+  var element = document.body;
+  this.phi += 2 * Math.PI * this.rotateDelta.y / element.clientHeight * MOUSE_SPEED_Y;
+  this.theta += 2 * Math.PI * this.rotateDelta.x / element.clientWidth * MOUSE_SPEED_X;
+};
+
+MouseKeyboardPositionSensorVRDevice.prototype.onMouseUp_ = function(e) {
+  this.isDragging = false;
+};
+
+module.exports = MouseKeyboardPositionSensorVRDevice;
+
+},{"./base.js":444,"./three-math.js":449}],449:[function(require,module,exports){
+/*
+ * A subset of THREE.js, providing mostly quaternion and euler-related
+ * operations, manually lifted from
+ * https://github.com/mrdoob/three.js/tree/master/src/math, as of 9c30286b38df039fca389989ff06ea1c15d6bad1
+ */
+
+// Only use if the real THREE is not provided.
+var THREE = window.THREE || {};
+
+// If some piece of THREE is missing, fill it in here.
+if (!THREE.Quaternion || !THREE.Vector3 || !THREE.Vector2 || !THREE.Euler) {
+console.log('No THREE.js found.');
+
+
+/*** START Quaternion ***/
+
+/**
+ * @author mikael emtinger / http://gomo.se/
+ * @author alteredq / http://alteredqualia.com/
+ * @author WestLangley / http://github.com/WestLangley
+ * @author bhouston / http://exocortex.com
+ */
+
+THREE.Quaternion = function ( x, y, z, w ) {
+
+	this._x = x || 0;
+	this._y = y || 0;
+	this._z = z || 0;
+	this._w = ( w !== undefined ) ? w : 1;
+
+};
+
+THREE.Quaternion.prototype = {
+
+	constructor: THREE.Quaternion,
+
+	_x: 0,_y: 0, _z: 0, _w: 0,
+
+	get x () {
+
+		return this._x;
+
+	},
+
+	set x ( value ) {
+
+		this._x = value;
+		this.onChangeCallback();
+
+	},
+
+	get y () {
+
+		return this._y;
+
+	},
+
+	set y ( value ) {
+
+		this._y = value;
+		this.onChangeCallback();
+
+	},
+
+	get z () {
+
+		return this._z;
+
+	},
+
+	set z ( value ) {
+
+		this._z = value;
+		this.onChangeCallback();
+
+	},
+
+	get w () {
+
+		return this._w;
+
+	},
+
+	set w ( value ) {
+
+		this._w = value;
+		this.onChangeCallback();
+
+	},
+
+	set: function ( x, y, z, w ) {
+
+		this._x = x;
+		this._y = y;
+		this._z = z;
+		this._w = w;
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	copy: function ( quaternion ) {
+
+		this._x = quaternion.x;
+		this._y = quaternion.y;
+		this._z = quaternion.z;
+		this._w = quaternion.w;
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	setFromEuler: function ( euler, update ) {
+
+		if ( euler instanceof THREE.Euler === false ) {
+
+			throw new Error( 'THREE.Quaternion: .setFromEuler() now expects a Euler rotation rather than a Vector3 and order.' );
+		}
+
+		// http://www.mathworks.com/matlabcentral/fileexchange/
+		// 	20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
+		//	content/SpinCalc.m
+
+		var c1 = Math.cos( euler._x / 2 );
+		var c2 = Math.cos( euler._y / 2 );
+		var c3 = Math.cos( euler._z / 2 );
+		var s1 = Math.sin( euler._x / 2 );
+		var s2 = Math.sin( euler._y / 2 );
+		var s3 = Math.sin( euler._z / 2 );
+
+		if ( euler.order === 'XYZ' ) {
+
+			this._x = s1 * c2 * c3 + c1 * s2 * s3;
+			this._y = c1 * s2 * c3 - s1 * c2 * s3;
+			this._z = c1 * c2 * s3 + s1 * s2 * c3;
+			this._w = c1 * c2 * c3 - s1 * s2 * s3;
+
+		} else if ( euler.order === 'YXZ' ) {
+
+			this._x = s1 * c2 * c3 + c1 * s2 * s3;
+			this._y = c1 * s2 * c3 - s1 * c2 * s3;
+			this._z = c1 * c2 * s3 - s1 * s2 * c3;
+			this._w = c1 * c2 * c3 + s1 * s2 * s3;
+
+		} else if ( euler.order === 'ZXY' ) {
+
+			this._x = s1 * c2 * c3 - c1 * s2 * s3;
+			this._y = c1 * s2 * c3 + s1 * c2 * s3;
+			this._z = c1 * c2 * s3 + s1 * s2 * c3;
+			this._w = c1 * c2 * c3 - s1 * s2 * s3;
+
+		} else if ( euler.order === 'ZYX' ) {
+
+			this._x = s1 * c2 * c3 - c1 * s2 * s3;
+			this._y = c1 * s2 * c3 + s1 * c2 * s3;
+			this._z = c1 * c2 * s3 - s1 * s2 * c3;
+			this._w = c1 * c2 * c3 + s1 * s2 * s3;
+
+		} else if ( euler.order === 'YZX' ) {
+
+			this._x = s1 * c2 * c3 + c1 * s2 * s3;
+			this._y = c1 * s2 * c3 + s1 * c2 * s3;
+			this._z = c1 * c2 * s3 - s1 * s2 * c3;
+			this._w = c1 * c2 * c3 - s1 * s2 * s3;
+
+		} else if ( euler.order === 'XZY' ) {
+
+			this._x = s1 * c2 * c3 - c1 * s2 * s3;
+			this._y = c1 * s2 * c3 - s1 * c2 * s3;
+			this._z = c1 * c2 * s3 + s1 * s2 * c3;
+			this._w = c1 * c2 * c3 + s1 * s2 * s3;
+
+		}
+
+		if ( update !== false ) this.onChangeCallback();
+
+		return this;
+
+	},
+
+	setFromAxisAngle: function ( axis, angle ) {
+
+		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
+
+		// assumes axis is normalized
+
+		var halfAngle = angle / 2, s = Math.sin( halfAngle );
+
+		this._x = axis.x * s;
+		this._y = axis.y * s;
+		this._z = axis.z * s;
+		this._w = Math.cos( halfAngle );
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	setFromRotationMatrix: function ( m ) {
+
+		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
+
+		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
+
+		var te = m.elements,
+
+			m11 = te[ 0 ], m12 = te[ 4 ], m13 = te[ 8 ],
+			m21 = te[ 1 ], m22 = te[ 5 ], m23 = te[ 9 ],
+			m31 = te[ 2 ], m32 = te[ 6 ], m33 = te[ 10 ],
+
+			trace = m11 + m22 + m33,
+			s;
+
+		if ( trace > 0 ) {
+
+			s = 0.5 / Math.sqrt( trace + 1.0 );
+
+			this._w = 0.25 / s;
+			this._x = ( m32 - m23 ) * s;
+			this._y = ( m13 - m31 ) * s;
+			this._z = ( m21 - m12 ) * s;
+
+		} else if ( m11 > m22 && m11 > m33 ) {
+
+			s = 2.0 * Math.sqrt( 1.0 + m11 - m22 - m33 );
+
+			this._w = ( m32 - m23 ) / s;
+			this._x = 0.25 * s;
+			this._y = ( m12 + m21 ) / s;
+			this._z = ( m13 + m31 ) / s;
+
+		} else if ( m22 > m33 ) {
+
+			s = 2.0 * Math.sqrt( 1.0 + m22 - m11 - m33 );
+
+			this._w = ( m13 - m31 ) / s;
+			this._x = ( m12 + m21 ) / s;
+			this._y = 0.25 * s;
+			this._z = ( m23 + m32 ) / s;
+
+		} else {
+
+			s = 2.0 * Math.sqrt( 1.0 + m33 - m11 - m22 );
+
+			this._w = ( m21 - m12 ) / s;
+			this._x = ( m13 + m31 ) / s;
+			this._y = ( m23 + m32 ) / s;
+			this._z = 0.25 * s;
+
+		}
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	setFromUnitVectors: function () {
+
+		// http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
+
+		// assumes direction vectors vFrom and vTo are normalized
+
+		var v1, r;
+
+		var EPS = 0.000001;
+
+		return function ( vFrom, vTo ) {
+
+			if ( v1 === undefined ) v1 = new THREE.Vector3();
+
+			r = vFrom.dot( vTo ) + 1;
+
+			if ( r < EPS ) {
+
+				r = 0;
+
+				if ( Math.abs( vFrom.x ) > Math.abs( vFrom.z ) ) {
+
+					v1.set( - vFrom.y, vFrom.x, 0 );
+
+				} else {
+
+					v1.set( 0, - vFrom.z, vFrom.y );
+
+				}
+
+			} else {
+
+				v1.crossVectors( vFrom, vTo );
+
+			}
+
+			this._x = v1.x;
+			this._y = v1.y;
+			this._z = v1.z;
+			this._w = r;
+
+			this.normalize();
+
+			return this;
+
+		}
+
+	}(),
+
+	inverse: function () {
+
+		this.conjugate().normalize();
+
+		return this;
+
+	},
+
+	conjugate: function () {
+
+		this._x *= - 1;
+		this._y *= - 1;
+		this._z *= - 1;
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	dot: function ( v ) {
+
+		return this._x * v._x + this._y * v._y + this._z * v._z + this._w * v._w;
+
+	},
+
+	lengthSq: function () {
+
+		return this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w;
+
+	},
+
+	length: function () {
+
+		return Math.sqrt( this._x * this._x + this._y * this._y + this._z * this._z + this._w * this._w );
+
+	},
+
+	normalize: function () {
+
+		var l = this.length();
+
+		if ( l === 0 ) {
+
+			this._x = 0;
+			this._y = 0;
+			this._z = 0;
+			this._w = 1;
+
+		} else {
+
+			l = 1 / l;
+
+			this._x = this._x * l;
+			this._y = this._y * l;
+			this._z = this._z * l;
+			this._w = this._w * l;
+
+		}
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	multiply: function ( q, p ) {
+
+		if ( p !== undefined ) {
+
+			console.warn( 'THREE.Quaternion: .multiply() now only accepts one argument. Use .multiplyQuaternions( a, b ) instead.' );
+			return this.multiplyQuaternions( q, p );
+
+		}
+
+		return this.multiplyQuaternions( this, q );
+
+	},
+
+	multiplyQuaternions: function ( a, b ) {
+
+		// from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
+
+		var qax = a._x, qay = a._y, qaz = a._z, qaw = a._w;
+		var qbx = b._x, qby = b._y, qbz = b._z, qbw = b._w;
+
+		this._x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+		this._y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+		this._z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+		this._w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	multiplyVector3: function ( vector ) {
+
+		console.warn( 'THREE.Quaternion: .multiplyVector3() has been removed. Use is now vector.applyQuaternion( quaternion ) instead.' );
+		return vector.applyQuaternion( this );
+
+	},
+
+	slerp: function ( qb, t ) {
+
+		if ( t === 0 ) return this;
+		if ( t === 1 ) return this.copy( qb );
+
+		var x = this._x, y = this._y, z = this._z, w = this._w;
+
+		// http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
+
+		var cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
+
+		if ( cosHalfTheta < 0 ) {
+
+			this._w = - qb._w;
+			this._x = - qb._x;
+			this._y = - qb._y;
+			this._z = - qb._z;
+
+			cosHalfTheta = - cosHalfTheta;
+
+		} else {
+
+			this.copy( qb );
+
+		}
+
+		if ( cosHalfTheta >= 1.0 ) {
+
+			this._w = w;
+			this._x = x;
+			this._y = y;
+			this._z = z;
+
+			return this;
+
+		}
+
+		var halfTheta = Math.acos( cosHalfTheta );
+		var sinHalfTheta = Math.sqrt( 1.0 - cosHalfTheta * cosHalfTheta );
+
+		if ( Math.abs( sinHalfTheta ) < 0.001 ) {
+
+			this._w = 0.5 * ( w + this._w );
+			this._x = 0.5 * ( x + this._x );
+			this._y = 0.5 * ( y + this._y );
+			this._z = 0.5 * ( z + this._z );
+
+			return this;
+
+		}
+
+		var ratioA = Math.sin( ( 1 - t ) * halfTheta ) / sinHalfTheta,
+		ratioB = Math.sin( t * halfTheta ) / sinHalfTheta;
+
+		this._w = ( w * ratioA + this._w * ratioB );
+		this._x = ( x * ratioA + this._x * ratioB );
+		this._y = ( y * ratioA + this._y * ratioB );
+		this._z = ( z * ratioA + this._z * ratioB );
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	equals: function ( quaternion ) {
+
+		return ( quaternion._x === this._x ) && ( quaternion._y === this._y ) && ( quaternion._z === this._z ) && ( quaternion._w === this._w );
+
+	},
+
+	fromArray: function ( array, offset ) {
+
+		if ( offset === undefined ) offset = 0;
+
+		this._x = array[ offset ];
+		this._y = array[ offset + 1 ];
+		this._z = array[ offset + 2 ];
+		this._w = array[ offset + 3 ];
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	toArray: function ( array, offset ) {
+
+		if ( array === undefined ) array = [];
+		if ( offset === undefined ) offset = 0;
+
+		array[ offset ] = this._x;
+		array[ offset + 1 ] = this._y;
+		array[ offset + 2 ] = this._z;
+		array[ offset + 3 ] = this._w;
+
+		return array;
+
+	},
+
+	onChange: function ( callback ) {
+
+		this.onChangeCallback = callback;
+
+		return this;
+
+	},
+
+	onChangeCallback: function () {},
+
+	clone: function () {
+
+		return new THREE.Quaternion( this._x, this._y, this._z, this._w );
+
+	}
+
+};
+
+THREE.Quaternion.slerp = function ( qa, qb, qm, t ) {
+
+	return qm.copy( qa ).slerp( qb, t );
+
+}
+
+/*** END Quaternion ***/
+/*** START Vector2 ***/
+/**
+ * @author mrdoob / http://mrdoob.com/
+ * @author philogb / http://blog.thejit.org/
+ * @author egraether / http://egraether.com/
+ * @author zz85 / http://www.lab4games.net/zz85/blog
+ */
+
+THREE.Vector2 = function ( x, y ) {
+
+	this.x = x || 0;
+	this.y = y || 0;
+
+};
+
+THREE.Vector2.prototype = {
+
+	constructor: THREE.Vector2,
+
+	set: function ( x, y ) {
+
+		this.x = x;
+		this.y = y;
+
+		return this;
+
+	},
+
+	setX: function ( x ) {
+
+		this.x = x;
+
+		return this;
+
+	},
+
+	setY: function ( y ) {
+
+		this.y = y;
+
+		return this;
+
+	},
+
+	setComponent: function ( index, value ) {
+
+		switch ( index ) {
+
+			case 0: this.x = value; break;
+			case 1: this.y = value; break;
+			default: throw new Error( 'index is out of range: ' + index );
+
+		}
+
+	},
+
+	getComponent: function ( index ) {
+
+		switch ( index ) {
+
+			case 0: return this.x;
+			case 1: return this.y;
+			default: throw new Error( 'index is out of range: ' + index );
+
+		}
+
+	},
+
+	copy: function ( v ) {
+
+		this.x = v.x;
+		this.y = v.y;
+
+		return this;
+
+	},
+
+	add: function ( v, w ) {
+
+		if ( w !== undefined ) {
+
+			console.warn( 'THREE.Vector2: .add() now only accepts one argument. Use .addVectors( a, b ) instead.' );
+			return this.addVectors( v, w );
+
+		}
+
+		this.x += v.x;
+		this.y += v.y;
+
+		return this;
+
+	},
+
+	addVectors: function ( a, b ) {
+
+		this.x = a.x + b.x;
+		this.y = a.y + b.y;
+
+		return this;
+
+	},
+
+	addScalar: function ( s ) {
+
+		this.x += s;
+		this.y += s;
+
+		return this;
+
+	},
+
+	sub: function ( v, w ) {
+
+		if ( w !== undefined ) {
+
+			console.warn( 'THREE.Vector2: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.' );
+			return this.subVectors( v, w );
+
+		}
+
+		this.x -= v.x;
+		this.y -= v.y;
+
+		return this;
+
+	},
+
+	subVectors: function ( a, b ) {
+
+		this.x = a.x - b.x;
+		this.y = a.y - b.y;
+
+		return this;
+
+	},
+
+	multiply: function ( v ) {
+
+		this.x *= v.x;
+		this.y *= v.y;
+
+		return this;
+
+	},
+
+	multiplyScalar: function ( s ) {
+
+		this.x *= s;
+		this.y *= s;
+
+		return this;
+
+	},
+
+	divide: function ( v ) {
+
+		this.x /= v.x;
+		this.y /= v.y;
+
+		return this;
+
+	},
+
+	divideScalar: function ( scalar ) {
+
+		if ( scalar !== 0 ) {
+
+			var invScalar = 1 / scalar;
+
+			this.x *= invScalar;
+			this.y *= invScalar;
+
+		} else {
+
+			this.x = 0;
+			this.y = 0;
+
+		}
+
+		return this;
+
+	},
+
+	min: function ( v ) {
+
+		if ( this.x > v.x ) {
+
+			this.x = v.x;
+
+		}
+
+		if ( this.y > v.y ) {
+
+			this.y = v.y;
+
+		}
+
+		return this;
+
+	},
+
+	max: function ( v ) {
+
+		if ( this.x < v.x ) {
+
+			this.x = v.x;
+
+		}
+
+		if ( this.y < v.y ) {
+
+			this.y = v.y;
+
+		}
+
+		return this;
+
+	},
+
+	clamp: function ( min, max ) {
+
+		// This function assumes min < max, if this assumption isn't true it will not operate correctly
+
+		if ( this.x < min.x ) {
+
+			this.x = min.x;
+
+		} else if ( this.x > max.x ) {
+
+			this.x = max.x;
+
+		}
+
+		if ( this.y < min.y ) {
+
+			this.y = min.y;
+
+		} else if ( this.y > max.y ) {
+
+			this.y = max.y;
+
+		}
+
+		return this;
+	},
+
+	clampScalar: ( function () {
+
+		var min, max;
+
+		return function ( minVal, maxVal ) {
+
+			if ( min === undefined ) {
+
+				min = new THREE.Vector2();
+				max = new THREE.Vector2();
+
+			}
+
+			min.set( minVal, minVal );
+			max.set( maxVal, maxVal );
+
+			return this.clamp( min, max );
+
+		};
+
+	} )(),
+
+	floor: function () {
+
+		this.x = Math.floor( this.x );
+		this.y = Math.floor( this.y );
+
+		return this;
+
+	},
+
+	ceil: function () {
+
+		this.x = Math.ceil( this.x );
+		this.y = Math.ceil( this.y );
+
+		return this;
+
+	},
+
+	round: function () {
+
+		this.x = Math.round( this.x );
+		this.y = Math.round( this.y );
+
+		return this;
+
+	},
+
+	roundToZero: function () {
+
+		this.x = ( this.x < 0 ) ? Math.ceil( this.x ) : Math.floor( this.x );
+		this.y = ( this.y < 0 ) ? Math.ceil( this.y ) : Math.floor( this.y );
+
+		return this;
+
+	},
+
+	negate: function () {
+
+		this.x = - this.x;
+		this.y = - this.y;
+
+		return this;
+
+	},
+
+	dot: function ( v ) {
+
+		return this.x * v.x + this.y * v.y;
+
+	},
+
+	lengthSq: function () {
+
+		return this.x * this.x + this.y * this.y;
+
+	},
+
+	length: function () {
+
+		return Math.sqrt( this.x * this.x + this.y * this.y );
+
+	},
+
+	normalize: function () {
+
+		return this.divideScalar( this.length() );
+
+	},
+
+	distanceTo: function ( v ) {
+
+		return Math.sqrt( this.distanceToSquared( v ) );
+
+	},
+
+	distanceToSquared: function ( v ) {
+
+		var dx = this.x - v.x, dy = this.y - v.y;
+		return dx * dx + dy * dy;
+
+	},
+
+	setLength: function ( l ) {
+
+		var oldLength = this.length();
+
+		if ( oldLength !== 0 && l !== oldLength ) {
+
+			this.multiplyScalar( l / oldLength );
+		}
+
+		return this;
+
+	},
+
+	lerp: function ( v, alpha ) {
+
+		this.x += ( v.x - this.x ) * alpha;
+		this.y += ( v.y - this.y ) * alpha;
+
+		return this;
+
+	},
+
+	equals: function ( v ) {
+
+		return ( ( v.x === this.x ) && ( v.y === this.y ) );
+
+	},
+
+	fromArray: function ( array, offset ) {
+
+		if ( offset === undefined ) offset = 0;
+
+		this.x = array[ offset ];
+		this.y = array[ offset + 1 ];
+
+		return this;
+
+	},
+
+	toArray: function ( array, offset ) {
+
+		if ( array === undefined ) array = [];
+		if ( offset === undefined ) offset = 0;
+
+		array[ offset ] = this.x;
+		array[ offset + 1 ] = this.y;
+
+		return array;
+
+	},
+
+	fromAttribute: function ( attribute, index, offset ) {
+
+	    if ( offset === undefined ) offset = 0;
+
+	    index = index * attribute.itemSize + offset;
+
+	    this.x = attribute.array[ index ];
+	    this.y = attribute.array[ index + 1 ];
+
+	    return this;
+
+	},
+
+	clone: function () {
+
+		return new THREE.Vector2( this.x, this.y );
+
+	}
+
+};
+/*** END Vector2 ***/
+/*** START Vector3 ***/
+
+/**
+ * @author mrdoob / http://mrdoob.com/
+ * @author *kile / http://kile.stravaganza.org/
+ * @author philogb / http://blog.thejit.org/
+ * @author mikael emtinger / http://gomo.se/
+ * @author egraether / http://egraether.com/
+ * @author WestLangley / http://github.com/WestLangley
+ */
+
+THREE.Vector3 = function ( x, y, z ) {
+
+	this.x = x || 0;
+	this.y = y || 0;
+	this.z = z || 0;
+
+};
+
+THREE.Vector3.prototype = {
+
+	constructor: THREE.Vector3,
+
+	set: function ( x, y, z ) {
+
+		this.x = x;
+		this.y = y;
+		this.z = z;
+
+		return this;
+
+	},
+
+	setX: function ( x ) {
+
+		this.x = x;
+
+		return this;
+
+	},
+
+	setY: function ( y ) {
+
+		this.y = y;
+
+		return this;
+
+	},
+
+	setZ: function ( z ) {
+
+		this.z = z;
+
+		return this;
+
+	},
+
+	setComponent: function ( index, value ) {
+
+		switch ( index ) {
+
+			case 0: this.x = value; break;
+			case 1: this.y = value; break;
+			case 2: this.z = value; break;
+			default: throw new Error( 'index is out of range: ' + index );
+
+		}
+
+	},
+
+	getComponent: function ( index ) {
+
+		switch ( index ) {
+
+			case 0: return this.x;
+			case 1: return this.y;
+			case 2: return this.z;
+			default: throw new Error( 'index is out of range: ' + index );
+
+		}
+
+	},
+
+	copy: function ( v ) {
+
+		this.x = v.x;
+		this.y = v.y;
+		this.z = v.z;
+
+		return this;
+
+	},
+
+	add: function ( v, w ) {
+
+		if ( w !== undefined ) {
+
+			console.warn( 'THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead.' );
+			return this.addVectors( v, w );
+
+		}
+
+		this.x += v.x;
+		this.y += v.y;
+		this.z += v.z;
+
+		return this;
+
+	},
+
+	addScalar: function ( s ) {
+
+		this.x += s;
+		this.y += s;
+		this.z += s;
+
+		return this;
+
+	},
+
+	addVectors: function ( a, b ) {
+
+		this.x = a.x + b.x;
+		this.y = a.y + b.y;
+		this.z = a.z + b.z;
+
+		return this;
+
+	},
+
+	sub: function ( v, w ) {
+
+		if ( w !== undefined ) {
+
+			console.warn( 'THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.' );
+			return this.subVectors( v, w );
+
+		}
+
+		this.x -= v.x;
+		this.y -= v.y;
+		this.z -= v.z;
+
+		return this;
+
+	},
+
+	subVectors: function ( a, b ) {
+
+		this.x = a.x - b.x;
+		this.y = a.y - b.y;
+		this.z = a.z - b.z;
+
+		return this;
+
+	},
+
+	multiply: function ( v, w ) {
+
+		if ( w !== undefined ) {
+
+			console.warn( 'THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead.' );
+			return this.multiplyVectors( v, w );
+
+		}
+
+		this.x *= v.x;
+		this.y *= v.y;
+		this.z *= v.z;
+
+		return this;
+
+	},
+
+	multiplyScalar: function ( scalar ) {
+
+		this.x *= scalar;
+		this.y *= scalar;
+		this.z *= scalar;
+
+		return this;
+
+	},
+
+	multiplyVectors: function ( a, b ) {
+
+		this.x = a.x * b.x;
+		this.y = a.y * b.y;
+		this.z = a.z * b.z;
+
+		return this;
+
+	},
+
+	applyEuler: function () {
+
+		var quaternion;
+
+		return function ( euler ) {
+
+			if ( euler instanceof THREE.Euler === false ) {
+
+				console.error( 'THREE.Vector3: .applyEuler() now expects a Euler rotation rather than a Vector3 and order.' );
+
+			}
+
+			if ( quaternion === undefined ) quaternion = new THREE.Quaternion();
+
+			this.applyQuaternion( quaternion.setFromEuler( euler ) );
+
+			return this;
+
+		};
+
+	}(),
+
+	applyAxisAngle: function () {
+
+		var quaternion;
+
+		return function ( axis, angle ) {
+
+			if ( quaternion === undefined ) quaternion = new THREE.Quaternion();
+
+			this.applyQuaternion( quaternion.setFromAxisAngle( axis, angle ) );
+
+			return this;
+
+		};
+
+	}(),
+
+	applyMatrix3: function ( m ) {
+
+		var x = this.x;
+		var y = this.y;
+		var z = this.z;
+
+		var e = m.elements;
+
+		this.x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ] * z;
+		this.y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ] * z;
+		this.z = e[ 2 ] * x + e[ 5 ] * y + e[ 8 ] * z;
+
+		return this;
+
+	},
+
+	applyMatrix4: function ( m ) {
+
+		// input: THREE.Matrix4 affine matrix
+
+		var x = this.x, y = this.y, z = this.z;
+
+		var e = m.elements;
+
+		this.x = e[ 0 ] * x + e[ 4 ] * y + e[ 8 ]  * z + e[ 12 ];
+		this.y = e[ 1 ] * x + e[ 5 ] * y + e[ 9 ]  * z + e[ 13 ];
+		this.z = e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z + e[ 14 ];
+
+		return this;
+
+	},
+
+	applyProjection: function ( m ) {
+
+		// input: THREE.Matrix4 projection matrix
+
+		var x = this.x, y = this.y, z = this.z;
+
+		var e = m.elements;
+		var d = 1 / ( e[ 3 ] * x + e[ 7 ] * y + e[ 11 ] * z + e[ 15 ] ); // perspective divide
+
+		this.x = ( e[ 0 ] * x + e[ 4 ] * y + e[ 8 ]  * z + e[ 12 ] ) * d;
+		this.y = ( e[ 1 ] * x + e[ 5 ] * y + e[ 9 ]  * z + e[ 13 ] ) * d;
+		this.z = ( e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z + e[ 14 ] ) * d;
+
+		return this;
+
+	},
+
+	applyQuaternion: function ( q ) {
+
+		var x = this.x;
+		var y = this.y;
+		var z = this.z;
+
+		var qx = q.x;
+		var qy = q.y;
+		var qz = q.z;
+		var qw = q.w;
+
+		// calculate quat * vector
+
+		var ix =  qw * x + qy * z - qz * y;
+		var iy =  qw * y + qz * x - qx * z;
+		var iz =  qw * z + qx * y - qy * x;
+		var iw = - qx * x - qy * y - qz * z;
+
+		// calculate result * inverse quat
+
+		this.x = ix * qw + iw * - qx + iy * - qz - iz * - qy;
+		this.y = iy * qw + iw * - qy + iz * - qx - ix * - qz;
+		this.z = iz * qw + iw * - qz + ix * - qy - iy * - qx;
+
+		return this;
+
+	},
+
+	project: function () {
+
+		var matrix;
+
+		return function ( camera ) {
+
+			if ( matrix === undefined ) matrix = new THREE.Matrix4();
+
+			matrix.multiplyMatrices( camera.projectionMatrix, matrix.getInverse( camera.matrixWorld ) );
+			return this.applyProjection( matrix );
+
+		};
+
+	}(),
+
+	unproject: function () {
+
+		var matrix;
+
+		return function ( camera ) {
+
+			if ( matrix === undefined ) matrix = new THREE.Matrix4();
+
+			matrix.multiplyMatrices( camera.matrixWorld, matrix.getInverse( camera.projectionMatrix ) );
+			return this.applyProjection( matrix );
+
+		};
+
+	}(),
+
+	transformDirection: function ( m ) {
+
+		// input: THREE.Matrix4 affine matrix
+		// vector interpreted as a direction
+
+		var x = this.x, y = this.y, z = this.z;
+
+		var e = m.elements;
+
+		this.x = e[ 0 ] * x + e[ 4 ] * y + e[ 8 ]  * z;
+		this.y = e[ 1 ] * x + e[ 5 ] * y + e[ 9 ]  * z;
+		this.z = e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z;
+
+		this.normalize();
+
+		return this;
+
+	},
+
+	divide: function ( v ) {
+
+		this.x /= v.x;
+		this.y /= v.y;
+		this.z /= v.z;
+
+		return this;
+
+	},
+
+	divideScalar: function ( scalar ) {
+
+		if ( scalar !== 0 ) {
+
+			var invScalar = 1 / scalar;
+
+			this.x *= invScalar;
+			this.y *= invScalar;
+			this.z *= invScalar;
+
+		} else {
+
+			this.x = 0;
+			this.y = 0;
+			this.z = 0;
+
+		}
+
+		return this;
+
+	},
+
+	min: function ( v ) {
+
+		if ( this.x > v.x ) {
+
+			this.x = v.x;
+
+		}
+
+		if ( this.y > v.y ) {
+
+			this.y = v.y;
+
+		}
+
+		if ( this.z > v.z ) {
+
+			this.z = v.z;
+
+		}
+
+		return this;
+
+	},
+
+	max: function ( v ) {
+
+		if ( this.x < v.x ) {
+
+			this.x = v.x;
+
+		}
+
+		if ( this.y < v.y ) {
+
+			this.y = v.y;
+
+		}
+
+		if ( this.z < v.z ) {
+
+			this.z = v.z;
+
+		}
+
+		return this;
+
+	},
+
+	clamp: function ( min, max ) {
+
+		// This function assumes min < max, if this assumption isn't true it will not operate correctly
+
+		if ( this.x < min.x ) {
+
+			this.x = min.x;
+
+		} else if ( this.x > max.x ) {
+
+			this.x = max.x;
+
+		}
+
+		if ( this.y < min.y ) {
+
+			this.y = min.y;
+
+		} else if ( this.y > max.y ) {
+
+			this.y = max.y;
+
+		}
+
+		if ( this.z < min.z ) {
+
+			this.z = min.z;
+
+		} else if ( this.z > max.z ) {
+
+			this.z = max.z;
+
+		}
+
+		return this;
+
+	},
+
+	clampScalar: ( function () {
+
+		var min, max;
+
+		return function ( minVal, maxVal ) {
+
+			if ( min === undefined ) {
+
+				min = new THREE.Vector3();
+				max = new THREE.Vector3();
+
+			}
+
+			min.set( minVal, minVal, minVal );
+			max.set( maxVal, maxVal, maxVal );
+
+			return this.clamp( min, max );
+
+		};
+
+	} )(),
+
+	floor: function () {
+
+		this.x = Math.floor( this.x );
+		this.y = Math.floor( this.y );
+		this.z = Math.floor( this.z );
+
+		return this;
+
+	},
+
+	ceil: function () {
+
+		this.x = Math.ceil( this.x );
+		this.y = Math.ceil( this.y );
+		this.z = Math.ceil( this.z );
+
+		return this;
+
+	},
+
+	round: function () {
+
+		this.x = Math.round( this.x );
+		this.y = Math.round( this.y );
+		this.z = Math.round( this.z );
+
+		return this;
+
+	},
+
+	roundToZero: function () {
+
+		this.x = ( this.x < 0 ) ? Math.ceil( this.x ) : Math.floor( this.x );
+		this.y = ( this.y < 0 ) ? Math.ceil( this.y ) : Math.floor( this.y );
+		this.z = ( this.z < 0 ) ? Math.ceil( this.z ) : Math.floor( this.z );
+
+		return this;
+
+	},
+
+	negate: function () {
+
+		this.x = - this.x;
+		this.y = - this.y;
+		this.z = - this.z;
+
+		return this;
+
+	},
+
+	dot: function ( v ) {
+
+		return this.x * v.x + this.y * v.y + this.z * v.z;
+
+	},
+
+	lengthSq: function () {
+
+		return this.x * this.x + this.y * this.y + this.z * this.z;
+
+	},
+
+	length: function () {
+
+		return Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
+
+	},
+
+	lengthManhattan: function () {
+
+		return Math.abs( this.x ) + Math.abs( this.y ) + Math.abs( this.z );
+
+	},
+
+	normalize: function () {
+
+		return this.divideScalar( this.length() );
+
+	},
+
+	setLength: function ( l ) {
+
+		var oldLength = this.length();
+
+		if ( oldLength !== 0 && l !== oldLength  ) {
+
+			this.multiplyScalar( l / oldLength );
+		}
+
+		return this;
+
+	},
+
+	lerp: function ( v, alpha ) {
+
+		this.x += ( v.x - this.x ) * alpha;
+		this.y += ( v.y - this.y ) * alpha;
+		this.z += ( v.z - this.z ) * alpha;
+
+		return this;
+
+	},
+
+	cross: function ( v, w ) {
+
+		if ( w !== undefined ) {
+
+			console.warn( 'THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead.' );
+			return this.crossVectors( v, w );
+
+		}
+
+		var x = this.x, y = this.y, z = this.z;
+
+		this.x = y * v.z - z * v.y;
+		this.y = z * v.x - x * v.z;
+		this.z = x * v.y - y * v.x;
+
+		return this;
+
+	},
+
+	crossVectors: function ( a, b ) {
+
+		var ax = a.x, ay = a.y, az = a.z;
+		var bx = b.x, by = b.y, bz = b.z;
+
+		this.x = ay * bz - az * by;
+		this.y = az * bx - ax * bz;
+		this.z = ax * by - ay * bx;
+
+		return this;
+
+	},
+
+	projectOnVector: function () {
+
+		var v1, dot;
+
+		return function ( vector ) {
+
+			if ( v1 === undefined ) v1 = new THREE.Vector3();
+
+			v1.copy( vector ).normalize();
+
+			dot = this.dot( v1 );
+
+			return this.copy( v1 ).multiplyScalar( dot );
+
+		};
+
+	}(),
+
+	projectOnPlane: function () {
+
+		var v1;
+
+		return function ( planeNormal ) {
+
+			if ( v1 === undefined ) v1 = new THREE.Vector3();
+
+			v1.copy( this ).projectOnVector( planeNormal );
+
+			return this.sub( v1 );
+
+		}
+
+	}(),
+
+	reflect: function () {
+
+		// reflect incident vector off plane orthogonal to normal
+		// normal is assumed to have unit length
+
+		var v1;
+
+		return function ( normal ) {
+
+			if ( v1 === undefined ) v1 = new THREE.Vector3();
+
+			return this.sub( v1.copy( normal ).multiplyScalar( 2 * this.dot( normal ) ) );
+
+		}
+
+	}(),
+
+	angleTo: function ( v ) {
+
+		var theta = this.dot( v ) / ( this.length() * v.length() );
+
+		// clamp, to handle numerical problems
+
+		return Math.acos( THREE.Math.clamp( theta, - 1, 1 ) );
+
+	},
+
+	distanceTo: function ( v ) {
+
+		return Math.sqrt( this.distanceToSquared( v ) );
+
+	},
+
+	distanceToSquared: function ( v ) {
+
+		var dx = this.x - v.x;
+		var dy = this.y - v.y;
+		var dz = this.z - v.z;
+
+		return dx * dx + dy * dy + dz * dz;
+
+	},
+
+	setEulerFromRotationMatrix: function ( m, order ) {
+
+		console.error( 'THREE.Vector3: .setEulerFromRotationMatrix() has been removed. Use Euler.setFromRotationMatrix() instead.' );
+
+	},
+
+	setEulerFromQuaternion: function ( q, order ) {
+
+		console.error( 'THREE.Vector3: .setEulerFromQuaternion() has been removed. Use Euler.setFromQuaternion() instead.' );
+
+	},
+
+	getPositionFromMatrix: function ( m ) {
+
+		console.warn( 'THREE.Vector3: .getPositionFromMatrix() has been renamed to .setFromMatrixPosition().' );
+
+		return this.setFromMatrixPosition( m );
+
+	},
+
+	getScaleFromMatrix: function ( m ) {
+
+		console.warn( 'THREE.Vector3: .getScaleFromMatrix() has been renamed to .setFromMatrixScale().' );
+
+		return this.setFromMatrixScale( m );
+	},
+
+	getColumnFromMatrix: function ( index, matrix ) {
+
+		console.warn( 'THREE.Vector3: .getColumnFromMatrix() has been renamed to .setFromMatrixColumn().' );
+
+		return this.setFromMatrixColumn( index, matrix );
+
+	},
+
+	setFromMatrixPosition: function ( m ) {
+
+		this.x = m.elements[ 12 ];
+		this.y = m.elements[ 13 ];
+		this.z = m.elements[ 14 ];
+
+		return this;
+
+	},
+
+	setFromMatrixScale: function ( m ) {
+
+		var sx = this.set( m.elements[ 0 ], m.elements[ 1 ], m.elements[  2 ] ).length();
+		var sy = this.set( m.elements[ 4 ], m.elements[ 5 ], m.elements[  6 ] ).length();
+		var sz = this.set( m.elements[ 8 ], m.elements[ 9 ], m.elements[ 10 ] ).length();
+
+		this.x = sx;
+		this.y = sy;
+		this.z = sz;
+
+		return this;
+	},
+
+	setFromMatrixColumn: function ( index, matrix ) {
+
+		var offset = index * 4;
+
+		var me = matrix.elements;
+
+		this.x = me[ offset ];
+		this.y = me[ offset + 1 ];
+		this.z = me[ offset + 2 ];
+
+		return this;
+
+	},
+
+	equals: function ( v ) {
+
+		return ( ( v.x === this.x ) && ( v.y === this.y ) && ( v.z === this.z ) );
+
+	},
+
+	fromArray: function ( array, offset ) {
+
+		if ( offset === undefined ) offset = 0;
+
+		this.x = array[ offset ];
+		this.y = array[ offset + 1 ];
+		this.z = array[ offset + 2 ];
+
+		return this;
+
+	},
+
+	toArray: function ( array, offset ) {
+
+		if ( array === undefined ) array = [];
+		if ( offset === undefined ) offset = 0;
+
+		array[ offset ] = this.x;
+		array[ offset + 1 ] = this.y;
+		array[ offset + 2 ] = this.z;
+
+		return array;
+
+	},
+
+	fromAttribute: function ( attribute, index, offset ) {
+
+	    if ( offset === undefined ) offset = 0;
+
+	    index = index * attribute.itemSize + offset;
+
+	    this.x = attribute.array[ index ];
+	    this.y = attribute.array[ index + 1 ];
+	    this.z = attribute.array[ index + 2 ];
+
+	    return this;
+
+	},
+
+	clone: function () {
+
+		return new THREE.Vector3( this.x, this.y, this.z );
+
+	}
+
+};
+/*** END Vector3 ***/
+/*** START Euler ***/
+/**
+ * @author mrdoob / http://mrdoob.com/
+ * @author WestLangley / http://github.com/WestLangley
+ * @author bhouston / http://exocortex.com
+ */
+
+THREE.Euler = function ( x, y, z, order ) {
+
+	this._x = x || 0;
+	this._y = y || 0;
+	this._z = z || 0;
+	this._order = order || THREE.Euler.DefaultOrder;
+
+};
+
+THREE.Euler.RotationOrders = [ 'XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX' ];
+
+THREE.Euler.DefaultOrder = 'XYZ';
+
+THREE.Euler.prototype = {
+
+	constructor: THREE.Euler,
+
+	_x: 0, _y: 0, _z: 0, _order: THREE.Euler.DefaultOrder,
+
+	get x () {
+
+		return this._x;
+
+	},
+
+	set x ( value ) {
+
+		this._x = value;
+		this.onChangeCallback();
+
+	},
+
+	get y () {
+
+		return this._y;
+
+	},
+
+	set y ( value ) {
+
+		this._y = value;
+		this.onChangeCallback();
+
+	},
+
+	get z () {
+
+		return this._z;
+
+	},
+
+	set z ( value ) {
+
+		this._z = value;
+		this.onChangeCallback();
+
+	},
+
+	get order () {
+
+		return this._order;
+
+	},
+
+	set order ( value ) {
+
+		this._order = value;
+		this.onChangeCallback();
+
+	},
+
+	set: function ( x, y, z, order ) {
+
+		this._x = x;
+		this._y = y;
+		this._z = z;
+		this._order = order || this._order;
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	copy: function ( euler ) {
+
+		this._x = euler._x;
+		this._y = euler._y;
+		this._z = euler._z;
+		this._order = euler._order;
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	setFromRotationMatrix: function ( m, order, update ) {
+
+		var clamp = THREE.Math.clamp;
+
+		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
+
+		var te = m.elements;
+		var m11 = te[ 0 ], m12 = te[ 4 ], m13 = te[ 8 ];
+		var m21 = te[ 1 ], m22 = te[ 5 ], m23 = te[ 9 ];
+		var m31 = te[ 2 ], m32 = te[ 6 ], m33 = te[ 10 ];
+
+		order = order || this._order;
+
+		if ( order === 'XYZ' ) {
+
+			this._y = Math.asin( clamp( m13, - 1, 1 ) );
+
+			if ( Math.abs( m13 ) < 0.99999 ) {
+
+				this._x = Math.atan2( - m23, m33 );
+				this._z = Math.atan2( - m12, m11 );
+
+			} else {
+
+				this._x = Math.atan2( m32, m22 );
+				this._z = 0;
+
+			}
+
+		} else if ( order === 'YXZ' ) {
+
+			this._x = Math.asin( - clamp( m23, - 1, 1 ) );
+
+			if ( Math.abs( m23 ) < 0.99999 ) {
+
+				this._y = Math.atan2( m13, m33 );
+				this._z = Math.atan2( m21, m22 );
+
+			} else {
+
+				this._y = Math.atan2( - m31, m11 );
+				this._z = 0;
+
+			}
+
+		} else if ( order === 'ZXY' ) {
+
+			this._x = Math.asin( clamp( m32, - 1, 1 ) );
+
+			if ( Math.abs( m32 ) < 0.99999 ) {
+
+				this._y = Math.atan2( - m31, m33 );
+				this._z = Math.atan2( - m12, m22 );
+
+			} else {
+
+				this._y = 0;
+				this._z = Math.atan2( m21, m11 );
+
+			}
+
+		} else if ( order === 'ZYX' ) {
+
+			this._y = Math.asin( - clamp( m31, - 1, 1 ) );
+
+			if ( Math.abs( m31 ) < 0.99999 ) {
+
+				this._x = Math.atan2( m32, m33 );
+				this._z = Math.atan2( m21, m11 );
+
+			} else {
+
+				this._x = 0;
+				this._z = Math.atan2( - m12, m22 );
+
+			}
+
+		} else if ( order === 'YZX' ) {
+
+			this._z = Math.asin( clamp( m21, - 1, 1 ) );
+
+			if ( Math.abs( m21 ) < 0.99999 ) {
+
+				this._x = Math.atan2( - m23, m22 );
+				this._y = Math.atan2( - m31, m11 );
+
+			} else {
+
+				this._x = 0;
+				this._y = Math.atan2( m13, m33 );
+
+			}
+
+		} else if ( order === 'XZY' ) {
+
+			this._z = Math.asin( - clamp( m12, - 1, 1 ) );
+
+			if ( Math.abs( m12 ) < 0.99999 ) {
+
+				this._x = Math.atan2( m32, m22 );
+				this._y = Math.atan2( m13, m11 );
+
+			} else {
+
+				this._x = Math.atan2( - m23, m33 );
+				this._y = 0;
+
+			}
+
+		} else {
+
+			console.warn( 'THREE.Euler: .setFromRotationMatrix() given unsupported order: ' + order )
+
+		}
+
+		this._order = order;
+
+		if ( update !== false ) this.onChangeCallback();
+
+		return this;
+
+	},
+
+	setFromQuaternion: function () {
+
+		var matrix;
+
+		return function ( q, order, update ) {
+
+			if ( matrix === undefined ) matrix = new THREE.Matrix4();
+			matrix.makeRotationFromQuaternion( q );
+			this.setFromRotationMatrix( matrix, order, update );
+
+			return this;
+
+		};
+
+	}(),
+
+	setFromVector3: function ( v, order ) {
+
+		return this.set( v.x, v.y, v.z, order || this._order );
+
+	},
+
+	reorder: function () {
+
+		// WARNING: this discards revolution information -bhouston
+
+		var q = new THREE.Quaternion();
+
+		return function ( newOrder ) {
+
+			q.setFromEuler( this );
+			this.setFromQuaternion( q, newOrder );
+
+		};
+
+	}(),
+
+	equals: function ( euler ) {
+
+		return ( euler._x === this._x ) && ( euler._y === this._y ) && ( euler._z === this._z ) && ( euler._order === this._order );
+
+	},
+
+	fromArray: function ( array ) {
+
+		this._x = array[ 0 ];
+		this._y = array[ 1 ];
+		this._z = array[ 2 ];
+		if ( array[ 3 ] !== undefined ) this._order = array[ 3 ];
+
+		this.onChangeCallback();
+
+		return this;
+
+	},
+
+	toArray: function () {
+
+		return [ this._x, this._y, this._z, this._order ];
+
+	},
+
+	toVector3: function ( optionalResult ) {
+
+		if ( optionalResult ) {
+
+			return optionalResult.set( this._x, this._y, this._z );
+
+		} else {
+
+			return new THREE.Vector3( this._x, this._y, this._z );
+
+		}
+
+	},
+
+	onChange: function ( callback ) {
+
+		this.onChangeCallback = callback;
+
+		return this;
+
+	},
+
+	onChangeCallback: function () {},
+
+	clone: function () {
+
+		return new THREE.Euler( this._x, this._y, this._z, this._order );
+
+	}
+
+};
+/*** END Euler ***/
+
+}
+
+module.exports = THREE;
+
+},{}],450:[function(require,module,exports){
+/*
+ * Copyright 2015 Boris Smus. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var CardboardHMDVRDevice = require('./cardboard-hmd-vr-device.js');
+var GyroPositionSensorVRDevice = require('./gyro-position-sensor-vr-device.js');
+var MouseKeyboardPositionSensorVRDevice = require('./mouse-keyboard-position-sensor-vr-device.js');
+var HMDVRDevice = require('./base.js').HMDVRDevice;
+var PositionSensorVRDevice = require('./base.js').PositionSensorVRDevice;
+
+function WebVRPolyfill() {
+  this.devices = [];
+
+  // Feature detect for existing WebVR API.
+  if (navigator.getVRDevices) {
+    return;
+  }
+
+  // Initialize our virtual VR devices.
+  if (this.isCardboardCompatible()) {
+    this.devices.push(new CardboardHMDVRDevice());
+  }
+
+  // Polyfill using the right position sensor.
+  if (this.isMobile()) {
+    this.devices.push(new GyroPositionSensorVRDevice());
+  } else {
+    this.devices.push(new MouseKeyboardPositionSensorVRDevice());
+  }
+
+  // Provide navigator.getVRDevices.
+  navigator.getVRDevices = this.getVRDevices.bind(this);
+
+  // Provide the CardboardHMDVRDevice and PositionSensorVRDevice objects.
+  window.HMDVRDevice = HMDVRDevice;
+  window.PositionSensorVRDevice = PositionSensorVRDevice;
+}
+
+WebVRPolyfill.prototype.getVRDevices = function() {
+  var devices = this.devices;
+  return new Promise(function(resolve, reject) {
+    try {
+      resolve(devices);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+/**
+ * Determine if a device is mobile.
+ */
+WebVRPolyfill.prototype.isMobile = function() {
+  return /Android/i.test(navigator.userAgent) ||
+      /iPhone|iPad|iPod/i.test(navigator.userAgent);;
+};
+
+WebVRPolyfill.prototype.isCardboardCompatible = function() {
+  // For now, support all iOS and Android devices.
+  return this.isMobile();
+};
+
+module.exports = WebVRPolyfill;
+
+},{"./base.js":444,"./cardboard-hmd-vr-device.js":445,"./gyro-position-sensor-vr-device.js":446,"./mouse-keyboard-position-sensor-vr-device.js":448}],451:[function(require,module,exports){
 var bundleFn = arguments[3];
 var sources = arguments[4];
 var cache = arguments[5];
@@ -46588,7 +65041,7 @@ module.exports = function (fn) {
     ));
 };
 
-},{}],348:[function(require,module,exports){
+},{}],452:[function(require,module,exports){
 
 var bops = require("bops");
 
@@ -46647,7 +65100,7 @@ function consolidate(buffers) {
 }
 
 
-},{"bops":79}],349:[function(require,module,exports){
+},{"bops":88}],453:[function(require,module,exports){
 /* Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>
  * Version: 1.0.0.1
  * LastModified: Dec 25 1999
@@ -47403,7 +65856,7 @@ exports.inflate = function (input) {
 };
 
 
-},{"./buffer-io":348,"bops":79}],350:[function(require,module,exports){
+},{"./buffer-io":452,"bops":88}],454:[function(require,module,exports){
 (function (process){(function (){
 // Tom Robinson
 // Kris Kowal
@@ -47868,4 +66321,4 @@ var decodeDateTime = function (date, time) {
 
 
 }).call(this)}).call(this,require('_process'))
-},{"./inflate":349,"_process":42,"bops":79,"fs":1}]},{},[65]);
+},{"./inflate":453,"_process":42,"bops":88,"fs":1}]},{},[65]);
